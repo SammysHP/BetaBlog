@@ -3,8 +3,8 @@
 /*
     'admin_pw_hash' = md5('salt' . 'password')
     
-    'pase_url' = http://example.com/blog/
-                                   ^^^^^  <-- only this
+    'base_url' = http://example.com/blog/
+                                   ^^^^^^ <-- only this
 */
 
 abstract class CONFIG {
@@ -17,7 +17,7 @@ abstract class CONFIG {
         
         'admin_pw_hash'   => '',
         'salt'            => '',
-        'base_url'        => '',
+        'base_url'        => '/',
         'pagesize'        => 10
     );
     

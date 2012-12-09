@@ -7,7 +7,9 @@ require_once("klein.php");
 
 setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'de');
 
-with('/betablog', function () {
+$namespace = rtrim(CONFIG::GET('base_url'), '/');
+
+with($namespace, function () {
 
     // Environment
     respond(function ($request, $response) {
@@ -16,7 +18,7 @@ with('/betablog', function () {
         };
         $response->requireLogin = function ($request, $response) {
             if (!$request->session('loggedin', false)) {
-                $response->redirect(CONFIG::GET('base_url') . '/login');
+                $response->redirect(CONFIG::GET('base_url') . 'login');
             }
         };
         $response->layout('tpl/page.html');
@@ -78,7 +80,7 @@ with('/betablog', function () {
         }
 
         $response->flash('wrongpw', 'wrongpw');
-        $response->redirect($response->baseurl . '/login');
+        $response->redirect($response->baseurl . 'login');
     });
 
     // Logout
@@ -110,9 +112,9 @@ with('/betablog', function () {
         $post->create();
 
         if ($request->param('save', false)) {
-            $response->redirect($response->baseurl . '/edit/' . $post->getId());
+            $response->redirect($response->baseurl . 'edit/' . $post->getId());
         } else {
-            $response->redirect($response->baseurl . '/post/' . $post->getId());
+            $response->redirect($response->baseurl . 'post/' . $post->getId());
         }
     });
 
@@ -140,9 +142,9 @@ with('/betablog', function () {
         $post->save();
 
         if ($request->param('save', false)) {
-            $response->redirect($response->baseurl . '/edit/' . $post->getId());
+            $response->redirect($response->baseurl . 'edit/' . $post->getId());
         } else {
-            $response->redirect($response->baseurl . '/post/' . $post->getId());
+            $response->redirect($response->baseurl . 'post/' . $post->getId());
         }
     });
 
@@ -162,7 +164,7 @@ with('/betablog', function () {
             POST::delete($request->param('id'));
             $response->redirect($response->baseurl);
         } else {
-            $response->redirect($response->baseurl . '/post/' . $request->param('id'));
+            $response->redirect($response->baseurl . 'post/' . $request->param('id'));
         }
     });
 

@@ -10,21 +10,21 @@ echo '<div id="pagination">';
 /*
 $prev = $this->paginationCurrent - 1;
 if ($prev > 0) {
-    echo "<a href=\"{$this->baseurl}/page/{$prev}\" class=\"skip\">«</a>";
+    echo "<a href=\"{$this->baseurl}page/{$prev}\" class=\"skip\">«</a>";
 }
 */
 
 if ($this->paginationCount > 1) {
     for ($i = 1; $i <= $this->paginationCount; $i++) {
         $current = ($this->paginationCurrent == $i ? ' class="current"' : 'other');
-        echo "<a href=\"{$this->baseurl}/page/{$i}\"{$current}>{$i}</a>";
+        echo "<a href=\"{$this->baseurl}page/{$i}\"{$current}>{$i}</a>";
     }
 }
 
 /*
 $next = $this->paginationCurrent + 1;
 if ($next <= $this->paginationCount) {
-    echo "<a href=\"{$this->baseurl}/page/{$next}\" class=\"skip\">»</a>";
+    echo "<a href=\"{$this->baseurl}page/{$next}\" class=\"skip\">»</a>";
 }
 */
 

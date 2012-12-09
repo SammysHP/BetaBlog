@@ -11,7 +11,7 @@
     <head>
         <meta charset="utf-8" />
         <title><?php echo $this->htmlescape($this->title); ?></title>
-        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/style.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>style.css" />
         <!--[if lt IE 7]>
         <style type="text/css">
         #wrapper {
@@ -27,8 +27,8 @@
             <div id="container">
                 <div id="header">
                     <div id="navigation">
-                        <a href="<?php echo $this->baseurl . '/archive'; ?>">Archiv</a>
-                        <a href="<?php echo $this->baseurl . '/search'; ?>">Suche</a>
+                        <a href="<?php echo $this->baseurl . 'archive'; ?>">Archiv</a>
+                        <a href="<?php echo $this->baseurl . 'search'; ?>">Suche</a>
                         <a href="http://www.sammyshp.de/mypage/">Über</a>
                     </div>
                     <h1><a href="<?php echo $this->baseurl; ?>">SammysHP</a></h1>
@@ -44,10 +44,10 @@
                 </div>
                 <div style="float: right;">
                     <?php if ($this->loggedin) { ?>
-                    <a href="<?php echo $this->baseurl . '/create'; ?>">Neuer Beitrag</a>
-                    <a href="<?php echo $this->baseurl . '/logout'; ?>">Logout</a>
+                    <a href="<?php echo $this->baseurl . 'create'; ?>">Neuer Beitrag</a>
+                    <a href="<?php echo $this->baseurl . 'logout'; ?>">Logout</a>
                     <?php } else { ?>
-                    <a href="<?php echo $this->baseurl . '/login'; ?>">Login</a>
+                    <a href="<?php echo $this->baseurl . 'login'; ?>">Login</a>
                     <?php } ?>
                     |
                     <a href="http://www.sammyshp.de/mypage/impressum.html">Impressum</a>

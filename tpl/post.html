@@ -24,9 +24,9 @@
 
     <?php if ($this->loggedin) { ?>
     <div class="adminbox">
-        <a href="<?php echo $this->baseurl . '/edit/'   . $this->post->getId(); ?>">bearbeiten</a>
+        <a href="<?php echo $this->baseurl . 'edit/'   . $this->post->getId(); ?>">bearbeiten</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="<?php echo $this->baseurl . '/delete/' . $this->post->getId(); ?>">löschen</a>
+        <a href="<?php echo $this->baseurl . 'delete/' . $this->post->getId(); ?>">löschen</a>
         <?php
         if (!$this->post->isPublished()) {
             echo '<br /><span style="color: red;">nicht veröffentlicht</span>';
@@ -35,7 +35,7 @@
     </div>
     <?php } ?>
 
-    <h2><a href="<?php echo $this->baseurl . '/post/' . $this->post->getId(); ?>"><?php echo $this->htmlescape($this->post->getTitle()); ?></a></h2>
+    <h2><a href="<?php echo $this->baseurl . 'post/' . $this->post->getId(); ?>"><?php echo $this->htmlescape($this->post->getTitle()); ?></a></h2>
 
     <?php
     echo $this->post->getContent();
@@ -43,7 +43,7 @@
         if ($this->fullentry) {
             echo $this->post->getExtended();
         } else {
-            echo '<div class="morelink"><a href="' . $this->baseurl . '/post/' . $this->post->getId() . '">weiter »</a></div>';
+            echo '<div class="morelink"><a href="' . $this->baseurl . 'post/' . $this->post->getId() . '">weiter »</a></div>';
         }
     }
     ?>
@@ -51,7 +51,7 @@
     <div class="tags"><?php
         $tags = array();
         foreach ($this->post->getTags() as $tag) {
-            $tags[] = '<a href="' . $this->baseurl . '/tag/' . rawurlencode($tag) . '">' . $this->htmlescape($tag) . '</a>';
+            $tags[] = '<a href="' . $this->baseurl . 'tag/' . rawurlencode($tag) . '">' . $this->htmlescape($tag) . '</a>';
         }
         echo implode(', ', $tags);
     ?></div>

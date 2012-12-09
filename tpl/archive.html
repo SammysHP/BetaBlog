@@ -9,11 +9,11 @@ echo '<table id="postform" border="0" cellspacing="20" cellpadding="0" style="wi
 foreach ($this->posts as $post) {
     echo '<tr>';
         echo '<td class="left">' . date("d.m.Y H:i", $post->getDate()) . '</td>';
-        echo '<td><a href="' . $this->baseurl . '/post/' . $post->getId() . '">' . $post->getTitle() . '</a>';
+        echo '<td><a href="' . $this->baseurl . 'post/' . $post->getId() . '">' . $post->getTitle() . '</a>';
         echo '<div class="tags" style="text-align: left;">';
         $tags = array();
         foreach ($post->getTags() as $tag) {
-            $tags[] = '<a href="' . $this->baseurl . '/tag/' . rawurlencode($tag) . '">' . $this->htmlescape($tag) . '</a>';
+            $tags[] = '<a href="' . $this->baseurl . 'tag/' . rawurlencode($tag) . '">' . $this->htmlescape($tag) . '</a>';
         }
         echo implode(', ', $tags);
         echo '</div>';
