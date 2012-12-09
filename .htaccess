@@ -1,0 +1,11 @@
+<filesMatch "^(Post|Database|klein|config).php$">
+    deny from all
+</filesMatch>
+
+RewriteEngine on
+
+RewriteBase /betablog
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)  index.php [L]

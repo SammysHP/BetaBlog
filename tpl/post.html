@@ -1,0 +1,59 @@
+<?php
+/*
+    $this->baseurl
+    $this->loggedin
+    $this->htmlescape()
+    $this->post
+    $this->fullentry
+    $this->backurl
+*/
+?>
+<div class="entry">
+    <?php
+    if ($this->fullentry) {
+        echo '<a href="' . $this->backurl . '" class="backlink">« zurück</a>';
+    }
+    ?>
+
+    <div class="date">
+        <span class="day"><?php echo date("j", $this->post->getDate()); ?></span>.<br />
+        <div>
+            <?php echo strftime("%B", $this->post->getDate()) . date(' Y<\b\r />G:i', $this->post->getDate()); ?>
+        </div>
+    </div>
+
+    <?php if ($this->loggedin) { ?>
+    <div class="adminbox">
+        <a href="<?php echo $this->baseurl . '/edit/'   . $this->post->getId(); ?>">bearbeiten</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="<?php echo $this->baseurl . '/delete/' . $this->post->getId(); ?>">löschen</a>
+        <?php
+        if (!$this->post->isPublished()) {
+            echo '<br /><span style="color: red;">nicht veröffentlicht</span>';
+        }
+        ?>
+    </div>
+    <?php } ?>
+
+    <h2><a href="<?php echo $this->baseurl . '/post/' . $this->post->getId(); ?>"><?php echo $this->htmlescape($this->post->getTitle()); ?></a></h2>
+
+    <?php
+    echo $this->post->getContent();
+    if ($this->post->getExtended()) {
+        if ($this->fullentry) {
+            echo $this->post->getExtended();
+        } else {
+            echo '<div class="morelink"><a href="' . $this->baseurl . '/post/' . $this->post->getId() . '">weiter »</a></div>';
+        }
+    }
+    ?>
+
+    <div class="tags"><?php
+        $tags = array();
+        foreach ($this->post->getTags() as $tag) {
+            $tags[] = '<a href="' . $this->baseurl . '/tag/' . rawurlencode($tag) . '">' . $this->htmlescape($tag) . '</a>';
+        }
+        echo implode(', ', $tags);
+    ?></div>
+
+</div>

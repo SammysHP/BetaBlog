@@ -1,0 +1,32 @@
+<?php
+/*
+    $this->baseurl
+    $this->htmlescape()
+    $this->post
+*/
+?>
+<form action="#" method="POST">
+    <table id="postform" border="0" cellspacing="20" cellpadding="0">
+        <tr>
+            <td class="left">Titel:</td><td><input type="text" name="title" class="inputfield" value="<?php echo $this->htmlescape($this->post->getTitle()); ?>" /></td>
+        </tr>
+        <tr>
+            <td class="left">Datum:</td><td><input type="text" name="date" class="inputfield" value="<?php echo date("Y-m-d H:i:s", $this->post->getDate()); ?>" /></td>
+        </tr>
+        <tr>
+            <td class="left">Veröffentlicht:</td><td><input type="checkbox" name="published" <?php if ($this->post->isPublished()) echo 'checked="checked" '; ?>/></td>
+        </tr>
+        <tr>
+            <td class="left">Inhalt:</td><td><textarea rows="10" name="content" class="inputfield"><?php echo $this->htmlescape($this->post->getContent()); ?></textarea></td>
+        </tr>
+        <tr>
+            <td class="left">Erweitert:</td><td><textarea rows="20" name="extended" class="inputfield"><?php echo $this->htmlescape($this->post->getExtended()); ?></textarea></td>
+        </tr>
+        <tr>
+            <td class="left">Tags:</td><td><input type="text" name="tags" class="inputfield" value="<?php echo $this->htmlescape(implode(' ', $this->post->getTags())); ?>" /></td>
+        </tr>
+        <tr>
+            <td class="left"></td><td><input type="submit" value="Speichern" name="save" /> <input type="submit" value="Absenden" name="submit" /></td>
+        </tr>
+    </table>
+</form>

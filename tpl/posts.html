@@ -1,0 +1,14 @@
+<?php
+/*
+    $this->posts
+    ----
+    include(post.html)
+    include(pagination.html)
+*/
+
+foreach ($this->posts as $post) {
+    $this->post = $post;
+    $this->partial('tpl/post.html');
+}
+
+$this->partial('tpl/pagination.html');

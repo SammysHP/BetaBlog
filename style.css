@@ -1,0 +1,253 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    background: #ffffff;
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    color: #222222;
+    height: 100%;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #9a2e2e;
+}
+
+#topbar {
+    background: #000000;
+    width: 100%;
+    height: 0.8em;
+}
+
+#bottombar {
+    background: #000000;
+    width: 100%;
+    height: 3em;
+    color: #cccccc;
+    letter-spacing: 0.1em;
+    position: absolute;
+    bottom: 0;
+}
+
+#bottombar div {
+    margin: 1em 2em;
+    font-size: 0.8em;
+}
+
+#bottombar a {
+    padding: 0 0.3em;
+    margin: 0 0.5em;
+}
+
+#bottombar a:hover {
+    border-bottom: 1px dashed #ffffff;
+    color: #ffffff;
+    padding-bottom: 2px;
+}
+
+#wrapper {
+    min-height: 100%;
+    position: relative;
+}
+
+#container {
+    width: 50em;
+    margin: auto;
+    margin-top: 3em;
+    padding-bottom: 3em;
+}
+
+.entry {
+    margin: 0 8em 4em 12em;
+    min-height: 8em;
+}
+
+.entry p {
+    margin-bottom: 1em;
+    text-align: justify;
+}
+
+.entry p a {
+    text-decoration: underline;
+    color: #748300;
+}
+
+.morelink {
+    margin-top: -0.5em;
+    color: #aaaaaa;
+}
+
+.backlink {
+    float: left;
+    margin-top: -2em;
+    color: #aaaaaa;
+}
+
+.entry ul {
+    margin-bottom: 1.2em;
+    margin-left: 3em;
+    list-style-type: disc;
+}
+
+.date {
+    font-variant: small-caps;
+    float: left;
+    margin-left: -12em;
+    width: 10em;
+    text-align: right;
+    margin-top: 1em;
+    letter-spacing: 0.1em;
+    /*color: #666666;*/
+}
+
+.day {
+    font-size: 2.5em;
+    line-height: 0.8em;
+    padding-right: 0.1em;
+    letter-spacing: 0em;
+}
+
+.adminbox {
+    float: right;
+    width: 11em;
+    font-size: 0.7em;
+    margin-right: -12em;
+    margin-top: 2em;
+}
+
+.tags {
+    text-align: right;
+    font-size: 0.7em;
+    color: #aaaaaa;
+}
+
+#header {
+    margin-bottom: 5em;
+}
+
+h1 {
+    border-bottom: 1px solid #ccc;
+    font-size: 3em;
+    font-weight: bold;
+    padding-left: 1em;
+    padding-bottom: 0.3em;
+    font-family: Arial, sans-serif;
+}
+
+h1 a:hover {
+    color: inherit;
+}
+
+#navigation {
+    float: right;
+    margin-top: 1.7em;
+    margin-right: 3em;
+}
+
+#navigation a {
+    margin-left: 1.7em;
+    padding: 0 0.5em;
+    color: #aaaaaa;
+    font-variant: small-caps;
+    font-size: 0.9em;
+    letter-spacing: 0.1em;
+}
+
+#navigation a:hover {
+    color: #222222;
+    border-bottom: 1px dashed #aaaaaa;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin-bottom: 0.7em;
+}
+
+#pagination {
+    text-align: center;
+    margin-bottom: 5em;
+}
+
+#pagination a {
+    background: url('img/paging.png') no-repeat scroll 0% 100%;
+    color: #ffffff;
+    padding: 10px;
+    padding-top: 0;
+}
+
+#pagination a:hover {
+    background: url('img/paging.png') no-repeat scroll 50% 100%;
+    color: #222222;
+}
+
+#pagination .current {
+    background: url('img/paging.png') no-repeat scroll 50% 100%;
+    color: #222222;
+}
+
+#pagination .skip {
+    background: none;
+    color: #222222;
+    padding: 10px;
+    padding-top: 0px;
+}
+
+#pagination .skip:hover {
+    background: none;
+    font-weight: bold;
+}
+
+pre {
+    margin: 0 1em 1.4em 1em;
+    background: url('img/code.png') top right no-repeat #f3f3f3;
+    padding: 0.5em;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1.2em;
+    font-size: 0.8em;
+    letter-spacing: -0.05em;
+    color: #000000;
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+#popup {
+    width: 15em;
+    margin: auto;
+    margin-top: 8em;
+    margin-bottom: 8em;
+    padding: 2em;
+    background: #000000;
+    color: #cccccc;
+}
+
+#popup input {
+    margin-top: 1em;
+    width: 100%;
+}
+
+#postform {
+    width: 90%;
+    margin: auto;
+}
+
+#postform .left {
+    width: 10em;
+    text-align: right;
+    vertical-align: top;
+}
+
+#postform .inputfield {
+    display: block;
+    width: 100%;
+}

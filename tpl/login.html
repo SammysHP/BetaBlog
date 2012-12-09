@@ -1,0 +1,17 @@
+<?php
+/*
+    $this->flashes('wrongpw')
+*/
+?>
+<div id="popup">
+    <form action="#" method="POST">
+        <div>Passwort:</div>
+        <div><input type="password" name="password" /></div>
+        <?php
+        if (count($this->flashes('wrongpw')) > 0) {
+            echo '<p style="color: red;">Passwort falsch!</p>';
+        }
+        ?>
+        <div><input type="submit" value="Login" /></div>
+    </form>
+</div>
