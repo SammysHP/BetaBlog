@@ -28,7 +28,10 @@ with($namespace, function () {
         $response->backurl = $request->session('backurl', $response->baseurl);
         $response->onError(function ($response, $err_msg) {
             $response->redirect($response->baseurl);
-        });        
+        });
+        $response->abouturl = CONFIG::GET('about_url');
+        $response->infourl = CONFIG::GET('info_url');
+        $response->headertitle = CONFIG::GET('header_title');
     });
 
     // Pages
@@ -175,7 +178,8 @@ with($namespace, function () {
 
     // Search (handler)
     respond('POST', '/search', function ($request, $response) {
-        $response->redirect('http://www.google.com/search?hl=de&q=' . rawurlencode(stripslashes($request->param('keywords'))) . '+site%3Awww.sammyshp.de%2Fbetablog%2F');
+        $searchstring = stripslashes($request->param('keywords')) . ' site:' . rtrim($_SERVER['HTTP_HOST'], '/') . $response->baseurl;
+        $response->redirect('http://www.google.com/search?hl=de&q=' . rawurlencode($searchstring));
     });
 
     // Installation
