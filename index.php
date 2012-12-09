@@ -59,6 +59,13 @@ with($namespace, function () {
         $response->render('tpl/archive.html');
     });
 
+    // RSS
+    respond('GET', '/rss', function ($request, $response) {
+        $response->posts = Post::findByPage(1, 10);
+        $response->header('Content-type', 'application/rss+xml');
+        $response->partial('tpl/rss.html');
+    });
+
     // Tag-search
     respond('GET', '/tag/[*:tag]', function ($request, $response) {
         $response->session('backurl', $request->uri());

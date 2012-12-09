@@ -1,0 +1,30 @@
+<?php
+/*
+    $this->title
+    $this->posts
+    $this->baseurl
+    $this->htmlescape()
+*/
+
+echo '<' . '?xml version="1.0" encoding="utf-8"?' . '>' ?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title><?php echo $this->title; ?></title>
+        <link>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl; ?></link>
+        <pubDate><?php echo date("D, d M Y H:i:s T", time()); ?></pubDate>
+        
+        <?php
+        foreach ($this->posts as $post) { ?>
+        <item>
+            <title><?php echo $this->htmlescape($post->getTitle()); ?></title>
+            <content:encoded>
+                <?php echo $this->htmlescape($post->getContent()); ?>
+                <?php echo $this->htmlescape($post->getExtended()); ?>
+            </content:encoded>
+            <link>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl . 'post/' . $post->getId(); ?></link>
+            <guid>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl . 'post/' . $post->getId(); ?></guid>
+            <pubDate><?php echo date("D, d M Y H:i:s T", $post->getDate()); ?></pubDate>
+        </item>
+        <?php } ?>
+    </channel>
+</rss>
