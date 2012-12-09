@@ -175,7 +175,7 @@ with($namespace, function () {
 
     // Search (handler)
     respond('POST', '/search', function ($request, $response) {
-        $response->redirect('http://www.google.com/search?hl=de&q=' . rawurlencode($request->param('keywords')) . '+site%3Awww.sammyshp.de%2Fbetablog%2F');
+        $response->redirect('http://www.google.com/search?hl=de&q=' . rawurlencode(stripslashes($request->param('keywords'))) . '+site%3Awww.sammyshp.de%2Fbetablog%2F');
     });
 
     // Installation
