@@ -26,12 +26,12 @@ with($namespace, function () {
         $response->title = "SammysHP | Blog";
         $response->baseurl = CONFIG::GET('base_url');
         $response->backurl = $request->session('backurl', $response->baseurl);
-        $response->onError(function ($response, $err_msg) {
-            $response->redirect($response->baseurl);
-        });
         $response->abouturl = CONFIG::GET('about_url');
         $response->infourl = CONFIG::GET('info_url');
         $response->headertitle = CONFIG::GET('header_title');
+        $response->onError(function ($response, $err_msg) {
+            $response->render('tpl/error.html');
+        });
     });
 
     // Pages
