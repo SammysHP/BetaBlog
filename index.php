@@ -49,6 +49,11 @@ with($namespace, function () {
         $response->post = Post::findById($request->param('id'), !$response->loggedin);
         $response->title .= ' -- ' . $response->post->getTitle();
         $response->fullentry = true;
+        $tags = array();
+        foreach ($response->post->getTags() as $tag) {
+            $tags[] = $response->htmlescape($tag);
+        }
+        $response->htmlkeywords = implode(', ', $tags);
         $response->render('tpl/post.html');
     });
 

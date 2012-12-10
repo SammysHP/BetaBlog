@@ -4,6 +4,7 @@
     $this->loggedin
     $this->htmlescape()
     $this->title
+    $this->htmlkeywords
     
     $this->abouturl
     $this->infourl
@@ -15,6 +16,7 @@
     <head>
         <meta charset="utf-8" />
         <title><?php echo $this->htmlescape($this->title); ?></title>
+        <meta name="keywords" content="<?php echo $this->htmlkeywords; ?>" />
         <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php echo $this->baseurl; ?>rss" />
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>style.css" />
         <!--[if lt IE 7]>
