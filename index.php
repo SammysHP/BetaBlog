@@ -123,7 +123,7 @@ with($namespace, function () {
             stripslashes($request->param('content')),
             stripslashes($request->param('extended')),
             strtotime($request->param('date')),
-            explode(' ', stripslashes($request->param('tags'))),
+            preg_split('@ @', stripslashes($request->param('tags')), NULL, PREG_SPLIT_NO_EMPTY),
             ($request->param('published') != '')
         );
         $post->create();

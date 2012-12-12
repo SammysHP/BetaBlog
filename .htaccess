@@ -1,4 +1,4 @@
-<filesMatch "^(Post|Database|klein|config).php$">
+<filesMatch "^(Post|Tag|Database|klein|config).php$">
     deny from all
 </filesMatch>
 

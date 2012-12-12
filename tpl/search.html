@@ -12,7 +12,7 @@
 </div>
 
 
-<div style="text-align: center; padding: 0 2em;"><?php
+<div style="text-align: center; padding: 0 6em;"><?php
     $max = 1;
     foreach ($this->alltags as $tag) {
         if ($tag[1] > $max) {
@@ -26,5 +26,5 @@
         $tags[] = '<a href="' . $this->baseurl . 'tag/' . rawurlencode($tag[0]) . '" style="font-size: ' . $size . 'em;">' . $this->htmlescape($tag[0]) . '</a>';
     }
     
-    echo implode('&nbsp;&nbsp;&nbsp;', $tags);
+    echo implode('&nbsp; &nbsp;', $tags);
 ?></div>
