@@ -3,6 +3,7 @@
 require_once("config.php");
 require_once("Database.php");
 require_once("Post.php");
+require_once("Tag.php");
 require_once("klein.php");
 
 setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'de');
@@ -109,6 +110,7 @@ with($namespace, function () {
         $response->requireLogin($request, $response);
 
         $response->post = new Post();
+        $response->alltags = Tag::findAll();
         $response->render('tpl/postform.html');
     });
 
@@ -138,6 +140,7 @@ with($namespace, function () {
         $response->requireLogin($request, $response);
 
         $response->post = Post::findById($request->param('id'), false);
+        $response->alltags = Tag::findAll();
         $response->render('tpl/postform.html');
     });
 
@@ -150,7 +153,7 @@ with($namespace, function () {
             stripslashes($request->param('content')),
             stripslashes($request->param('extended')),
             strtotime($request->param('date')),
-            explode(' ', stripslashes($request->param('tags'))),
+            preg_split('@ @', stripslashes($request->param('tags')), NULL, PREG_SPLIT_NO_EMPTY),
             ($request->param('published') != ''),
             $request->param('id')
         );
@@ -199,6 +202,7 @@ with($namespace, function () {
         $response->requireLogin($request, $response);
 
         Post::install();
+        Tag::install();
         $response->redirect($response->baseurl);
     });
 

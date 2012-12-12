@@ -43,7 +43,7 @@ class Post {
 
         $post = new Post($title, $content, $extended, $date, array(), $published, $id);
         $statement->close();
-        $post->setTags(self::loadTags($post->getId()));
+        $post->setTags(Tag::findByPost($post->getId()));
         return $post;
     }
 
@@ -70,7 +70,7 @@ class Post {
         }
 
         foreach ($result as $post) {
-            $post->setTags(self::loadTags($post->getId()));
+            $post->setTags(Tag::findByPost($post->getId()));
         }
 
         return $result;
@@ -99,7 +99,7 @@ class Post {
         }
 
         foreach ($result as $post) {
-            $post->setTags(self::loadTags($post->getId()));
+            $post->setTags(Tag::findByPost($post->getId()));
         }
 
         return $result;
@@ -128,7 +128,7 @@ class Post {
         }
 
         foreach ($result as $post) {
-            $post->setTags(self::loadTags($post->getId()));
+            $post->setTags(Tag::findByPost($post->getId()));
         }
 
         return $result;
@@ -172,7 +172,7 @@ class Post {
 
         $this->id = $db->insert_id;
 
-        self::updateTags($this->id, $this->tags);
+        Tag::update($this->id, $this->tags);
 
         return $this;
     }
@@ -194,7 +194,7 @@ class Post {
             throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
 
-        self::updateTags($this->id, $this->tags);
+        Tag::update($this->id, $this->tags);
 
         return $this;
     }
@@ -212,61 +212,7 @@ class Post {
             throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
 
-        self::deleteTags($id);
-    }
-
-    private static function updateTags($id, array $tags) {
-        $db = Database::getConnection();
-
-        foreach ($tags as &$tag) {
-            $tag = "(" . (int) $id . ", '" . $db->real_escape_string($tag) . "')";
-        }
-        $tagString = implode(', ', $tags);
-
-        self::deleteTags($id);
-
-        if (!$db->query('INSERT INTO ' . CONFIG::GET('db_prefix') . 'tags (post, tag) VALUES ' . $tagString)) {
-            throw new Exception("Execute failed: (" . $db->errno . ") " . $db->error);
-        }
-    }
-
-    private static function loadTags($id) {
-        $db = Database::getConnection();
-
-        if (!($statement = $db->prepare('SELECT tag FROM ' . CONFIG::GET('db_prefix') . 'tags WHERE post=? ORDER BY tag ASC'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
-        }
-        if (!$statement->bind_param("i", $id)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
-        }
-        if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
-        }
-        if (!$statement->bind_result($tag)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
-        }
-
-        $result = array();
-
-        while ($statement->fetch()) {
-            $result[] = $tag;
-        }
-
-        return $result;
-    }
-
-    private static function deleteTags($id) {
-        $db = Database::getConnection();
-
-        if (!($statement = $db->prepare('DELETE FROM ' . CONFIG::GET('db_prefix') . 'tags WHERE post=?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
-        }
-        if (!$statement->bind_param("i", $id)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
-        }
-        if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
-        }
+        Tag::delete($id);
     }
 
     public static function install() {
@@ -274,9 +220,6 @@ class Post {
 
         if (!$db->query('CREATE TABLE IF NOT EXISTS ' . CONFIG::GET('db_prefix') . 'posts (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title VARCHAR(100) NOT NULL, content TEXT NOT NULL, extended TEXT NOT NULL, date INT UNSIGNED NOT NULL, published BOOLEAN NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
             throw new Exception("Could not create table" . CONFIG::GET('db_prefix') . "_posts: (" . $db->errno . ") " . $db->error);
-        }
-        if (!$db->query('CREATE TABLE IF NOT EXISTS ' . CONFIG::GET('db_prefix') . 'tags (post INT NOT NULL, tag VARCHAR(100) NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
-            throw new Exception("Could not create table" . CONFIG::GET('db_prefix') . "_tags: (" . $db->errno . ") " . $db->error);
         }
     }
 

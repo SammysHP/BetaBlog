@@ -2,6 +2,7 @@
 /*
     $this->htmlescape()
     $this->post
+    $this->alltags
 */
 ?>
 <script>
@@ -67,6 +68,16 @@
         var val = el.value;
         el.value = val.slice(0, sel.start) + text + val.slice(sel.end);
     }
+    
+    function insertTag(tag) {
+        var el = document.getElementById('taginput');
+        
+        if (el.value.length == 0) {
+            el.value += tag;
+        } else {
+            el.value += ' ' + tag;
+        }
+    }
 </script>
 <form action="#" method="POST">
     <table id="postform" border="0" cellspacing="20" cellpadding="0">
@@ -114,7 +125,17 @@
             <td><textarea rows="30" tabindex="5" name="extended" class="inputfield" id="extendedtextarea"><?php echo $this->htmlescape($this->post->getExtended()); ?></textarea></td>
         </tr>
         <tr>
-            <td class="left">Tags:</td><td><input type="text" tabindex="6" name="tags" class="inputfield" value="<?php echo $this->htmlescape(implode(' ', $this->post->getTags())); ?>" /></td>
+            <td class="left">Tags:</td>
+            <td>
+                <input type="text" tabindex="6" name="tags" id="taginput" class="inputfield" value="<?php echo $this->htmlescape(implode(' ', $this->post->getTags())); ?>" />
+                <div class="tags"><?php
+                    $tags = array();
+                    foreach ($this->alltags as $tag) {
+                        $tags[] = '<a href="#" onClick="insertTag(\'' . $this->htmlescape($tag[0]) . '\'); return false;">' . $this->htmlescape($tag[0]) . '</a>';
+                    }
+                    echo implode(', ', $tags);
+                ?></div>
+            </td>
         </tr>
         <tr>
             <td class="left"></td><td><input type="submit" tabindex="7" value="Speichern" name="save" /> <input type="submit" tabindex="8" value="Absenden" name="submit" /></td>
