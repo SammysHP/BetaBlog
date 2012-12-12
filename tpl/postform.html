@@ -83,15 +83,15 @@
             <td class="left">
                 Inhalt:
                 <div style="color: #aaaaaa; padding-top: 1em;">
-                    <a href="" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<b>', '</b>'); return false;"><b>B</b></a>
-                    <a href="" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<i>', '</i>'); return false;"><i>I</i></a>
-                    <a href="" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<u>', '</u>'); return false;"><u>U</u></a><br />
-                    <a href="" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '', '<br />'); return false;">br</a>
-                    <a href="" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<p>\n', '\n</p>'); return false;">p</a>
-                    <a href="" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<a href=&quot;&quot;>', '</a>'); return false;">a</a>
-                    <a href="" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<img src=&quot;&quot;>', '</img>'); return false;">img</a><br />
-                    <a href="" onClick="escapeSelectedText(document.getElementById('contenttextarea')); return false;">escape</a> <br />
-                    <a href="" onClick="unescapeSelectedText(document.getElementById('contenttextarea')); return false;">unescape</a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<b>', '</b>'); return false;"><b>B</b></a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<i>', '</i>'); return false;"><i>I</i></a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<u>', '</u>'); return false;"><u>U</u></a><br />
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '', '<br />'); return false;">br</a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<p>\n', '\n</p>'); return false;">p</a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<a href=&quot;&quot;>', '</a>'); return false;">a</a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('contenttextarea'), '<img src=&quot;&quot;>', '</img>'); return false;">img</a><br />
+                    <a href="#" onClick="escapeSelectedText(document.getElementById('contenttextarea')); return false;">escape</a> <br />
+                    <a href="#" onClick="unescapeSelectedText(document.getElementById('contenttextarea')); return false;">unescape</a>
                 </div>
             </td>
             <td><textarea rows="15" tabindex="4" name="content" class="inputfield" id="contenttextarea"><?php echo $this->htmlescape($this->post->getContent()); ?></textarea></td>
@@ -100,15 +100,15 @@
             <td class="left">
                 Erweitert:
                 <div style="color: #aaaaaa; padding-top: 1em;">
-                    <a href="" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<b>', '</b>'); return false;"><b>B</b></a>
-                    <a href="" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<i>', '</i>'); return false;"><i>I</i></a>
-                    <a href="" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<u>', '</u>'); return false;"><u>U</u></a><br />
-                    <a href="" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '', '<br />'); return false;">br</a>
-                    <a href="" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<p>\n', '\n</p>'); return false;">p</a>
-                    <a href="" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<a href=&quot;&quot;>', '</a>'); return false;">a</a>
-                    <a href="" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<img src=&quot;&quot;>', '</img>'); return false;">img</a><br />
-                    <a href="" onClick="escapeSelectedText(document.getElementById('extendedtextarea')); return false;">escape</a> <br />
-                    <a href="" onClick="unescapeSelectedText(document.getElementById('extendedtextarea')); return false;">unescape</a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<b>', '</b>'); return false;"><b>B</b></a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<i>', '</i>'); return false;"><i>I</i></a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<u>', '</u>'); return false;"><u>U</u></a><br />
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '', '<br />'); return false;">br</a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<p>\n', '\n</p>'); return false;">p</a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<a href=&quot;&quot;>', '</a>'); return false;">a</a>
+                    <a href="#" onClick="surroundSelectedText(document.getElementById('extendedtextarea'), '<img src=&quot;&quot;>', '</img>'); return false;">img</a><br />
+                    <a href="#" onClick="escapeSelectedText(document.getElementById('extendedtextarea')); return false;">escape</a> <br />
+                    <a href="#" onClick="unescapeSelectedText(document.getElementById('extendedtextarea')); return false;">unescape</a>
                 </div>
             </td>
             <td><textarea rows="30" tabindex="5" name="extended" class="inputfield" id="extendedtextarea"><?php echo $this->htmlescape($this->post->getExtended()); ?></textarea></td>

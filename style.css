@@ -206,9 +206,10 @@ h2 {
 }
 
 pre {
-    margin: 0 1em 1.4em 1em;
+    /*margin: 0 1em 1.4em 1em;*/
+    margin-bottom: 1.4em;
     background: url('img/code.png') top right no-repeat #f3f3f3;
-    padding: 0.5em;
+    padding: 1em 0.5em;
     font-family: 'Courier New', Courier, monospace;
     line-height: 1.2em;
     font-size: 0.8em;
