@@ -188,6 +188,7 @@ with($namespace, function () {
 
     // Search (view)
     respond('GET', '/search', function ($request, $response) {
+        $response->alltags = Tag::findAll();
         $response->render('tpl/search.html');
     });
 

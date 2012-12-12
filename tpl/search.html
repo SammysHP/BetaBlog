@@ -1,3 +1,8 @@
+<?php
+/*
+    $this->alltags
+*/
+?>
 <div id="popup">
     <form action="#" method="POST">
         <h2>Suche</h2>
@@ -5,3 +10,21 @@
         <div><input type="submit" value="Abschicken" /></div>
     </form>
 </div>
+
+
+<div style="text-align: center; padding: 0 2em;"><?php
+    $max = 1;
+    foreach ($this->alltags as $tag) {
+        if ($tag[1] > $max) {
+            $max = $tag[1];
+        }
+    }
+    
+    $tags = array();
+    foreach ($this->alltags as $tag) {
+        $size = round(1 + 2.5 * ($tag[1] - 1) / $max, 3);
+        $tags[] = '<a href="' . $this->baseurl . 'tag/' . rawurlencode($tag[0]) . '" style="font-size: ' . $size . 'em;">' . $this->htmlescape($tag[0]) . '</a>';
+    }
+    
+    echo implode('&nbsp;&nbsp;&nbsp;', $tags);
+?></div>

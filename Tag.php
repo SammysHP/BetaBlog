@@ -61,6 +61,8 @@ class Tag {
 
         $db = Database::getConnection();
 
+        $tags = array_unique($tags);
+
         foreach ($tags as &$tag) {
             $tag = "(" . (int) $post . ", '" . $db->real_escape_string($tag) . "')";
         }
