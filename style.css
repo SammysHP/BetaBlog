@@ -253,3 +253,18 @@ pre {
     display: block;
     width: 100%;
 }
+
+.imagebox {
+    display: block;
+    margin: auto;
+    margin-bottom: 1em;
+    text-align: center;
+    font-style: italic;
+}
+
+.imagebox img {
+    display: block;
+    margin: auto;
+    margin-bottom: 1em;
+    max-width: 26em;
+}
