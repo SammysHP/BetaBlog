@@ -132,13 +132,13 @@ a:hover {
 }
 
 h1 {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #cccccc;
     font-size: 3em;
     font-weight: bold;
     padding-left: 1em;
     padding-bottom: 0.3em;
     font-family: Arial, sans-serif;
-    text-shadow: 2px 1px 5px #ccc;
+    text-shadow: 2px 1px 5px #cccccc;
 }
 
 h1 a:hover {
@@ -268,4 +268,5 @@ pre {
     margin: auto;
     margin-bottom: 1em;
     max-width: 26em;
+    box-shadow: 0 0 5px #cccccc;
 }
