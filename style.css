@@ -138,6 +138,7 @@ h1 {
     padding-left: 1em;
     padding-bottom: 0.3em;
     font-family: Arial, sans-serif;
+    text-shadow: 2px 1px 5px #ccc;
 }
 
 h1 a:hover {
