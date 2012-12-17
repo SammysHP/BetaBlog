@@ -2,14 +2,29 @@
 /*
     $this->posts
     $this->baseurl
+    $this->loggedin
 */
 
 echo '<table id="postform" border="0" cellspacing="20" cellpadding="0" style="width: 100%;">';
 
 foreach ($this->posts as $post) {
     echo '<tr>';
-        echo '<td class="left">' . date("d.m.Y H:i", $post->getDate()) . '</td>';
-        echo '<td><a href="' . $this->baseurl . 'post/' . $post->getId() . '">' . $post->getTitle() . '</a>';
+        echo '<td class="left">' . date("d.m.Y H:i", $post->getDate()) . '</td><td>';
+        
+        if ($this->loggedin) { ?>
+        <div class="adminbox" style="margin-right: 0; margin-top: 0;">
+            <a href="<?php echo $this->baseurl . 'edit/'   . $post->getId(); ?>">bearbeiten</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="<?php echo $this->baseurl . 'delete/' . $post->getId(); ?>">löschen</a>
+            <?php
+            if (!$post->isPublished()) {
+                echo '<br /><span style="color: red;">nicht veröffentlicht</span>';
+            }
+            ?>
+        </div>
+        <?php }
+        
+        echo '<a href="' . $this->baseurl . 'post/' . $post->getId() . '">' . $post->getTitle() . '</a>';
         echo '<div class="tags" style="text-align: left;">';
         $tags = array();
         foreach ($post->getTags() as $tag) {
