@@ -51,7 +51,7 @@
     <div class="tags"><?php
         $tags = array();
         foreach ($this->post->getTags() as $tag) {
-            $tags[] = '<a href="' . $this->baseurl . 'tag/' . rawurlencode($tag) . '">' . $this->htmlescape($tag) . '</a>';
+            $tags[] = '<a href="' . $this->baseurl . 'tag/' . str_replace('%2F', '/', rawurlencode($tag)) . '">' . $this->htmlescape($tag) . '</a>';
         }
         echo implode(', ', $tags);
     ?></div>

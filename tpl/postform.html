@@ -159,7 +159,7 @@
         if (el.value.length == 0) {
             el.value += tag;
         } else {
-            el.value += ' ' + tag;
+            el.value += ', ' + tag;
         }
         return false;
     }
@@ -214,11 +214,11 @@
         <tr>
             <td class="left">Tags:</td>
             <td>
-                <input type="text" tabindex="6" name="tags" id="taginput" class="inputfield" value="<?php echo $this->htmlescape(implode(' ', $this->post->getTags())); ?>" />
+                <input type="text" tabindex="6" name="tags" id="taginput" class="inputfield" value="<?php echo $this->htmlescape(implode(', ', $this->post->getTags())); ?>" />
                 <div class="tags"><?php
                     $tags = array();
                     foreach ($this->alltags as $tag) {
-                        $tags[] = '<a href="#" onClick="insertTag(\'' . $this->htmlescape($tag[0]) . '\');">' . $this->htmlescape($tag[0]) . '</a>';
+                        $tags[] = '<a href="#" onClick="return insertTag(\'' . $this->htmlescape($tag[0]) . '\');">' . $this->htmlescape($tag[0]) . '</a>';
                     }
                     echo implode(', ', $tags);
                 ?></div>

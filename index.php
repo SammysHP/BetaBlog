@@ -75,7 +75,8 @@ with($namespace, function () {
     // Tag-search
     respond('GET', '/tag/[*:tag]', function ($request, $response) {
         $response->session('backurl', $request->uri());
-        $response->posts = Post::findByTag(array($request->param('tag')), !$response->loggedin);
+        $tag = rawurldecode(str_replace('/', '%2F', $request->param('tag')));
+        $response->posts = Post::findByTag(array($tag), !$response->loggedin);
         $response->render('tpl/archive.html');
     });
 
@@ -123,7 +124,7 @@ with($namespace, function () {
             stripslashes($request->param('content')),
             stripslashes($request->param('extended')),
             strtotime($request->param('date')),
-            preg_split('@ @', stripslashes($request->param('tags')), NULL, PREG_SPLIT_NO_EMPTY),
+            preg_split('@,\s?@', stripslashes($request->param('tags')), NULL, PREG_SPLIT_NO_EMPTY),
             ($request->param('published') != '')
         );
         $post->create();
@@ -153,7 +154,7 @@ with($namespace, function () {
             stripslashes($request->param('content')),
             stripslashes($request->param('extended')),
             strtotime($request->param('date')),
-            preg_split('@ @', stripslashes($request->param('tags')), NULL, PREG_SPLIT_NO_EMPTY),
+            preg_split('@,\s?@', stripslashes($request->param('tags')), NULL, PREG_SPLIT_NO_EMPTY),
             ($request->param('published') != ''),
             $request->param('id')
         );

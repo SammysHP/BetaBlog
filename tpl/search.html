@@ -23,8 +23,8 @@
     $tags = array();
     foreach ($this->alltags as $tag) {
         $size = str_replace(',', '.', round(1 + 2.5 * ($tag[1] - 1) / $max, 3));
-        $tags[] = '<a href="' . $this->baseurl . 'tag/' . rawurlencode($tag[0]) . '" style="font-size: ' . $size . 'em;">' . $this->htmlescape($tag[0]) . '</a>';
+        $tags[] = '<a href="' . $this->baseurl . 'tag/' . str_replace('%2F', '/', rawurlencode($tag[0])) . '" style="font-size: ' . $size . 'em;">' . $this->htmlescape($tag[0]) . '</a>';
     }
     
-    echo implode('&nbsp; &nbsp;', $tags);
+    echo implode('&nbsp; &nbsp; &nbsp;', $tags);
 ?></div>
