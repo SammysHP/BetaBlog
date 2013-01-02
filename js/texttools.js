@@ -145,12 +145,12 @@ function makeHeading(el) {
 }
 
 function makeCode(el) {
-    surroundSelectedText(el, '<code class="">', '</code>');
+    surroundSelectedText(el, '<code class="no-highlight">', '</code>');
     return false;
 }
 
 function makeCodeBlock(el) {
-    surroundSelectedText(el, '<pre><code class="">', '</code></pre>');
+    surroundSelectedText(el, '<pre><code class="no-highlight">', '</code></pre>');
     return false;
 }
 
