@@ -1,41 +1,40 @@
 <?php
 
-abstract class CONFIG {
-    private static $configdata = array(
-        // Database configuration
-        'db_host'         => '',
-        'db_database'     => '',
-        'db_user'         => '',
-        'db_pass'         => '',
-        'db_prefix'       => '',
+final class Config {
+    // Database configuration
+    const DB_HOST       = '';
+    const DB_DATABASE   = '';
+    const DB_USER       = '';
+    const DB_PASSWORD   = '';
+    const DB_PREFIX     = 'blog_';
 
-        // Login password
-        // 'admin_pw_hash' = md5('salt' . 'password')
-        'admin_pw_hash'   => '',
-        'salt'            => '',
+    // Login password
+    // 'admin_pw_hash' = md5('salt' . 'password')
+    const LOGIN_PW_HASH = '';
+    const SALT          = '';
 
-        // Base URL after domain (with trailing slash)
-        // 'base_url' = http://example.com/blog/
-        //                                ^^^^^^ <-- only this
-        'base_url'        => '/',
+    // Base URL after domain (with trailing slash)
+    // 'base_url' = http://example.com/blog/
+    //                                ^^^^^^ <-- only this
+    const BASE_URL      = '/';
 
-        // URL to "info" page
-        'info_url'        => '',
+    // URL to "info" page
+    const INFO_URL      = '';
 
-        // URL to "about us" page
-        'about_url'       => '',
+    // URL to "about us" page
+    const ABOUT_URL     = '';
 
-        // Posts per page
-        'pagesize'        => 10,
+    // Posts per page
+    const PAGESIZE      = 5;
 
-        // Text in header
-        'header_title'    => ''
-    );
-    
-    public static function GET($name) {
-        if(isset(self::$configdata[$name])) {
-            return self::$configdata[$name];
-        }
-        return null;
+    // HTML title
+    const PAGE_TITLE    = 'BetaBlog';
+
+    // Text in header
+    const HEADER_TITLE  = 'BetaBlog';
+
+
+
+    private function __construct() {
     }
 }

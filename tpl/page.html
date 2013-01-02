@@ -15,10 +15,14 @@
 <html>
     <head>
         <meta charset="utf-8" />
+
         <title><?php echo $this->htmlescape($this->title); ?></title>
+
         <meta name="keywords" content="<?php echo $this->htmlkeywords; ?>" />
+
         <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php echo $this->baseurl; ?>rss" />
-        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>style.css" />
+
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>css/style.css" />
         <!--[if lt IE 7]>
         <style type="text/css">
         #wrapper {
@@ -26,6 +30,18 @@
         }
         </style>
         <![endif]-->
+
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>css/github.css" />
+        <script src="<?php echo $this->baseurl; ?>js/highlight.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        <script src="<?php echo $this->baseurl; ?>js/jquery.js"></script>
+
+        <script src="<?php echo $this->baseurl; ?>js/fancybox.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>css/fancybox.css" />
+        <script type="text/javascript">
+            $(".imagebox").fancybox();
+        </script>
     </head>
     <body>
         <div id="wrapper">
@@ -40,7 +56,17 @@
                     </div>
                     <h1><a href="<?php echo $this->baseurl; ?>"><?php echo $this->headertitle; ?></a></h1>
                 </div>
-    
+
+                <?php
+                    foreach ($this->flashes('error') as $msg) {
+                        echo '<p class="msg-error">' . $msg . '<p>';
+                    }
+
+                    foreach ($this->flashes('success') as $msg) {
+                        echo '<p class="msg-success">' . $msg . '<p>';
+                    }
+                ?>
+
                 <?php $this->yield(); ?>
     
             </div>

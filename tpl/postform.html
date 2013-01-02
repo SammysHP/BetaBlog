@@ -5,167 +5,10 @@
     $this->alltags
 */
 ?>
-<script>
-    // from http://stackoverflow.com/questions/3964710/replacing-selected-text-in-the-textarea
-    function getInputSelection(el) {
-        if (el == null) {
-            return {
-                start: 0,
-                end: 0
-            };
-        }
-        var start = 0, end = 0, normalizedValue, range,
-            textInputRange, len, endRange;
-        if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
-            start = el.selectionStart;
-            end = el.selectionEnd;
-        } else {
-            range = document.selection.createRange();
-            if (range && range.parentElement() == el) {
-                len = el.value.length;
-                normalizedValue = el.value.replace(/\r\n/g, "\n");
-                textInputRange = el.createTextRange();
-                textInputRange.moveToBookmark(range.getBookmark());
-                endRange = el.createTextRange();
-                endRange.collapse(false);
-    
-                if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
-                    start = end = len;
-                } else {
-                    start = -textInputRange.moveStart("character", -len);
-                    start += normalizedValue.slice(0, start).split("\n").length - 1;
-    
-                    if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
-                        end = len;
-                    } else {
-                        end = -textInputRange.moveEnd("character", -len);
-                        end += normalizedValue.slice(0, end).split("\n").length - 1;
-                    }
-                }
-            }
-        }
-        return {
-            start: start,
-            end: end
-        };
-    }
-    
-    // from http://stackoverflow.com/questions/512528/set-cursor-position-in-html-textbox
-    function setCaretPosition(el, pos) {
-        if (el == null) {
-            return false;
-        }
-        if (el.createTextRange) {
-            var range = el.createTextRange();
-            range.move('character', pos);
-            range.select();
-        } else {
-            if (el.selectionStart) {
-                el.focus();
-                el.setSelectionRange(pos, pos);
-            } else {
-                el.focus();
-            }
-        }
-    }
-    
-    function surroundSelectedText(el, before, after) {
-        var sel = getInputSelection(el)
-        var val = el.value;
-        var text = val.slice(sel.start, sel.end);
-        el.value = val.slice(0, sel.start) + before + text + after + val.slice(sel.end);
-        setCaretPosition(el, sel.start + before.length + text.length + after.length);
-        return false;
-    }
-    
-    function escapeSelectedText(el) {
-        var sel = getInputSelection(el)
-        var val = el.value;
-        var text = String(val.slice(sel.start, sel.end)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        el.value = val.slice(0, sel.start) + text + val.slice(sel.end);
-        setCaretPosition(el, sel.start + text.length);
-        return false;
-    }
-    
-    function unescapeSelectedText(el) {
-        var sel = getInputSelection(el)
-        var val = el.value;
-        var text = String(val.slice(sel.start, sel.end)).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-        el.value = val.slice(0, sel.start) + text + val.slice(sel.end);
-        setCaretPosition(el, sel.start + text.length);
-        return false;
-    }
-    
-    function replaceSelectedText(el, text) {
-        var sel = getInputSelection(el);
-        var val = el.value;
-        el.value = val.slice(0, sel.start) + text + val.slice(sel.end);
-        setCaretPosition(el, sel.start + text.length);
-        return false;
-    }
-    
-    function makeBold(el) {
-        surroundSelectedText(el, '<b>', '</b>');
-        return false;
-    }
-    
-    function makeItalic(el) {
-        surroundSelectedText(el, '<i>', '</i>');
-        return false;
-    }
-    
-    function makeUnderline(el) {
-        surroundSelectedText(el, '<u>', '</u>');
-        return false;
-    }
-    
-    function insertBreak(el) {
-        surroundSelectedText(el, '<br />', '');
-        return false;
-    }
-    
-    function insertParagraph(el) {
-        surroundSelectedText(el, '<p>\n', '\n</p>');
-        return false;
-    }
-    
-    function makeAnchor(el) {
-        surroundSelectedText(el, '<a href="">', '</a>');
-        return false;
-    }
-    
-    function makeImage(el) {
-        surroundSelectedText(el, '<img src="', '" />');
-        return false;
-    }
-    
-    function makeImageBox(el) {
-        var sel = getInputSelection(el)
-        var val = el.value;
-        var text = val.slice(sel.start, sel.end);
-        var newtext = '<a href="' + text + '" class="imagebox">\n<img src="' + text + '" />\n</a>';
-        el.value = val.slice(0, sel.start) + newtext + val.slice(sel.end);
-        setCaretPosition(el, sel.start + newtext.length);
-        return false;
-    }
-    
-    function $(id) {
-        return document.getElementById(id);
-    }
-    
-    function insertTag(tag) {
-        var el = document.getElementById('taginput');
-        
-        if (el.value.length == 0) {
-            el.value += tag;
-        } else {
-            el.value += ', ' + tag;
-        }
-        return false;
-    }
-</script>
+<script src="<?php echo $this->baseurl; ?>js/texttools.js"></script>
+
 <form action="#" method="POST">
-    <table id="postform" border="0" cellspacing="20" cellpadding="0">
+    <table id="postform">
         <tr>
             <td class="left">Titel:</td><td><input type="text" tabindex="1" name="title" id="title" class="inputfield" value="<?php echo $this->htmlescape($this->post->getTitle()); ?>" /></td>
         </tr>
@@ -179,16 +22,23 @@
             <td class="left">
                 Inhalt:
                 <div style="color: #aaaaaa; padding-top: 1em;">
-                    <a href="#" onClick="return makeBold($('contenttextarea'));"><b>B</b></a>
-                    <a href="#" onClick="return makeItalic($('contenttextarea'));"><i>I</i></a>
-                    <a href="#" onClick="return makeUnderline($('contenttextarea'));"><u>U</u></a><br />
-                    <a href="#" onClick="return insertBreak($('contenttextarea'));">br</a>
-                    <a href="#" onClick="return insertParagraph($('contenttextarea'));">p</a>
-                    <a href="#" onClick="return makeAnchor($('contenttextarea'));">a</a>
-                    <a href="#" onClick="return makeImage($('contenttextarea'));">img</a><br />
-                    <a href="#" onClick="return makeImageBox($('contenttextarea'));">img-box</a><br />
-                    <a href="#" onClick="return escapeSelectedText($('contenttextarea'));">escape</a> <br />
-                    <a href="#" onClick="return unescapeSelectedText($('contenttextarea'));">unescape</a>
+                    <a href="#" onClick="return makeBold($$$('contenttextarea'));"><b>B</b></a>
+                    <a href="#" onClick="return makeItalic($$$('contenttextarea'));"><i>I</i></a>
+                    <a href="#" onClick="return makeUnderline($$$('contenttextarea'));"><u>U</u></a>
+                    <br />
+                    <a href="#" onClick="return insertBreak($$$('contenttextarea'));">br</a>
+                    <a href="#" onClick="return insertParagraph($$$('contenttextarea'));">p</a>
+                    <a href="#" onClick="return makeHeading($$$('contenttextarea'));">h</a>
+                    <a href="#" onClick="return makeAnchor($$$('contenttextarea'));">a</a>
+                    <a href="#" onClick="return makeImage($$$('contenttextarea'));">img</a>
+                    <br />
+                    <a href="#" onClick="return makeImageBox($$$('contenttextarea'));">img-box</a>
+                    <br />
+                    <a href="#" onClick="return makeCode($$$('contenttextarea'));">code</a>
+                    <br />
+                    <a href="#" onClick="return escapeSelectedText($$$('contenttextarea'));">escape</a>
+                    <br />
+                    <a href="#" onClick="return unescapeSelectedText($$$('contenttextarea'));">unescape</a>
                 </div>
             </td>
             <td><textarea rows="15" tabindex="4" name="content" class="inputfield" id="contenttextarea"><?php echo $this->htmlescape($this->post->getContent()); ?></textarea></td>
@@ -197,16 +47,23 @@
             <td class="left">
                 Erweitert:
                 <div style="color: #aaaaaa; padding-top: 1em;">
-                    <a href="#" onClick="return makeBold($('extendedtextarea'));"><b>B</b></a>
-                    <a href="#" onClick="return makeItalic($('extendedtextarea'));"><i>I</i></a>
-                    <a href="#" onClick="return makeUnderline($('extendedtextarea'));"><u>U</u></a><br />
-                    <a href="#" onClick="return insertBreak($('extendedtextarea'));">br</a>
-                    <a href="#" onClick="return insertParagraph($('extendedtextarea'));">p</a>
-                    <a href="#" onClick="return makeAnchor($('extendedtextarea'));">a</a>
-                    <a href="#" onClick="return makeImage($('extendedtextarea'));">img</a><br />
-                    <a href="#" onClick="return makeImageBox($('extendedtextarea'));">img-box</a><br />
-                    <a href="#" onClick="return escapeSelectedText($('extendedtextarea'));">escape</a> <br />
-                    <a href="#" onClick="return unescapeSelectedText($('extendedtextarea'));">unescape</a>
+                    <a href="#" onClick="return makeBold($$$('extendedtextarea'));"><b>B</b></a>
+                    <a href="#" onClick="return makeItalic($$$('extendedtextarea'));"><i>I</i></a>
+                    <a href="#" onClick="return makeUnderline($$$('extendedtextarea'));"><u>U</u></a>
+                    <br />
+                    <a href="#" onClick="return insertBreak($$$('extendedtextarea'));">br</a>
+                    <a href="#" onClick="return insertParagraph($$$('extendedtextarea'));">p</a>
+                    <a href="#" onClick="return makeHeading($$$('extendedtextarea'));">h</a>
+                    <a href="#" onClick="return makeAnchor($$$('extendedtextarea'));">a</a>
+                    <a href="#" onClick="return makeImage($$$('extendedtextarea'));">img</a>
+                    <br />
+                    <a href="#" onClick="return makeImageBox($$$('extendedtextarea'));">img-box</a>
+                    <br />
+                    <a href="#" onClick="return makeCode($$$('extendedtextarea'));">code</a>
+                    <br />
+                    <a href="#" onClick="return escapeSelectedText($$$('extendedtextarea'));">escape</a>
+                    <br />
+                    <a href="#" onClick="return unescapeSelectedText($$$('extendedtextarea'));">unescape</a>
                 </div>
             </td>
             <td><textarea rows="30" tabindex="5" name="extended" class="inputfield" id="extendedtextarea"><?php echo $this->htmlescape($this->post->getExtended()); ?></textarea></td>
@@ -225,7 +82,7 @@
             </td>
         </tr>
         <tr>
-            <td class="left"></td><td><input type="submit" tabindex="7" value="Speichern" name="save" /> <input type="submit" tabindex="8" value="Absenden" name="submit" /></td>
+            <td class="left"></td><td><button type="submit" tabindex="7" name="save" value="save">Speichern</button> <button type="submit" tabindex="8" name="submit">Absenden</button></td>
         </tr>
     </table>
 </form>

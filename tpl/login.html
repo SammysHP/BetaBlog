@@ -1,20 +1,8 @@
-<?php
-/*
-    $this->flashes('wrongpw')
-*/
-?>
-<div id="popup">
-    <form action="#" method="POST">
-        <div>Passwort:</div>
-        <div><input type="password" name="password" id="password" /></div>
-        <?php
-        if (count($this->flashes('wrongpw')) > 0) {
-            echo '<p style="color: red;">Passwort falsch!</p>';
-        }
-        ?>
-        <div><input type="submit" value="Login" /></div>
-    </form>
-    <script>
-        document.getElementById('password').focus();
-    </script>
-</div>
+<form action="#" method="POST" class="popup">
+    <h2>Einloggen</h2>
+    <input type="password" name="password" id="password" placeholder="Passwort" />
+    <button type="submit">Login</button>
+</form>
+<script>
+    document.getElementById('password').focus();
+</script>

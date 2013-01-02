@@ -1,0 +1,411 @@
+/*--- RESET --------------------------------------------------*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit;}
+
+table {border-collapse: collapse; border-spacing: 0;}
+caption, th, td {text-align: left; font-weight: normal;}
+form legend {display: none;}
+blockquote:before, blockquote:after, q:before, q:after {content: "";}
+blockquote, q {quotes: "" "";}
+ol, ul {list-style: none;}
+hr {display: none; visibility: hidden;}
+
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/*--- GLOBAL STYLES & ABSOLUTE REFERENCE ---------------------*/
+html, body {
+    background: #ffffff;
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    color: #222222;
+    height: 100%;
+}
+
+a:hover {
+    color: #9a2e2e;
+}
+
+input, textarea {
+    padding: 0.2em;
+    width: 100%;
+    display: block;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,.15);
+    box-shadow: 0 0 3px rgba(0,0,0,.15) inset;
+    border-radius: 3px;
+}
+
+input:focus, textarea:focus {
+    border: 1px solid rgba(0,0,0,.2);
+    box-shadow: 0 0 3px rgba(0,0,0,.2) inset,
+        0 0 5px rgba(0,0,0,.2);
+}
+
+button {
+    color: #000000;
+    padding: 2px 5px;
+    border-radius: 3px;
+    border: 1px solid #cccccc;
+    background: #eeeeee;
+    box-shadow: 0 0 2px rgba(0,0,0,.2),
+        inset 0 1px 2px rgba(255,255,255,.3),
+        inset 0 -1px 1px rgba(0,0,0,.3);
+    text-shadow: 0 0 1px rgba(0,0,0,.3);
+    cursor: pointer;
+}
+
+button:hover, button:focus {
+    background: #e5e5e5;
+}
+
+.tags {
+    text-align: right;
+    font-size: 0.7em;
+    color: #aaaaaa;
+}
+
+/*--- TOP BAR ------------------------------------------------*/
+#topbar {
+    background: #000000;
+    width: 100%;
+    height: 0.8em;
+}
+
+/*--- BOTTOM BAR ---------------------------------------------*/
+#bottombar {
+    background: #000000;
+    width: 100%;
+    height: 3em;
+    color: #cccccc;
+    letter-spacing: 0.1em;
+    position: absolute;
+    bottom: 0;
+}
+
+#bottombar div {
+    margin: 1em 2em;
+    font-size: 0.8em;
+}
+
+#bottombar a {
+    padding: 0 0.3em;
+    margin: 0 0.5em;
+}
+
+#bottombar a:hover {
+    border-bottom: 1px dashed #ffffff;
+    color: #ffffff;
+    padding-bottom: 2px;
+}
+
+/*--- KEEP BOTTOM BAR AT BOTTOM ------------------------------*/
+#wrapper {
+    min-height: 100%;
+    position: relative;
+}
+
+/*--- CONTAINER FOR ALL CONTENT ------------------------------*/
+#container {
+    width: 50em;
+    margin: auto;
+    margin-top: 3em;
+    padding-bottom: 3em;
+}
+
+/*--- ENTRY --------------------------------------------------*/
+.entry {
+    margin: 0 8em 4em 12em;
+    min-height: 8em;
+}
+
+.entry h2 {
+    font-size: 1.5em;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin-bottom: 0.7em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.2);
+}
+
+.entry .morelink {
+    margin-top: -0.5em;
+    color: #aaaaaa;
+}
+
+.entry .backlink {
+    float: left;
+    margin-top: -2em;
+    color: #aaaaaa;
+}
+
+.entry .date {
+    font-variant: small-caps;
+    float: left;
+    margin-left: -12em;
+    width: 10em;
+    text-align: right;
+    margin-top: 1em;
+    letter-spacing: 0.1em;
+    /*color: #666666;*/
+}
+
+.entry .day {
+    font-size: 2.5em;
+    line-height: 0.8em;
+    padding-right: 0.1em;
+    letter-spacing: 0em;
+}
+
+.entry .adminbox {
+    float: right;
+    width: 11em;
+    font-size: 0.7em;
+    margin-right: -12em;
+    margin-top: 2em;
+}
+
+/*--- ENTRY ELEMENTS -----------------------------------------*/
+.entry p {
+    margin-bottom: 1em;
+    text-align: justify;
+}
+
+.entry p a {
+    text-decoration: underline;
+    color: #748300;
+}
+
+.entry p a:hover {
+    color: #9a2e2e;
+}
+
+.entry h3 {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.2);
+}
+
+.entry ul {
+    margin-bottom: 1.2em;
+    margin-left: 3em;
+    list-style-type: disc;
+}
+
+.entry pre {
+    margin-bottom: 1.4em;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1.2em;
+    font-size: 0.8em;
+    letter-spacing: -0.05em;
+    overflow: hidden;
+    width: 100%;
+}
+
+.entry pre code {
+    background: #f3f3f3;
+    color: #000000;
+    padding: 1em 0.5em;
+    display: block;
+}
+
+.entry pre:hover {
+    width: auto;
+    min-width: 100%;
+    overflow: visible;
+    float: left;
+}
+
+.entry .imagebox {
+    display: block;
+    margin: auto;
+    margin-bottom: 1em;
+    text-align: center;
+    font-style: italic;
+}
+
+.entry .imagebox img {
+    display: block;
+    margin: auto;
+    margin-bottom: 1em;
+    max-width: 26em;
+    box-shadow: 0 0 5px rgba(0,0,0,.2);
+    border: none;
+}
+
+/*--- PAGE HEADER --------------------------------------------*/
+#header {
+    margin-bottom: 5em;
+}
+
+#header h1 {
+    border-bottom: 1px solid #cccccc;
+    font-size: 3em;
+    font-weight: bold;
+    padding-left: 1em;
+    padding-bottom: 0.3em;
+    font-family: Arial, sans-serif;
+    text-shadow: 2px 1px 5px rgba(0,0,0,.2);
+}
+
+#header h1 a:hover {
+    color: inherit;
+}
+
+#header #navigation {
+    float: right;
+    margin-top: 1.7em;
+    margin-right: 3em;
+}
+
+#header #navigation a {
+    margin-left: 1.7em;
+    padding: 0 0.5em;
+    color: #aaaaaa;
+    font-variant: small-caps;
+    font-size: 0.9em;
+    letter-spacing: 0.1em;
+}
+
+#header #navigation a:hover {
+    color: #222222;
+    border-bottom: 1px dashed #aaaaaa;
+}
+
+/*--- PAGINATION ---------------------------------------------*/
+#pagination {
+    text-align: center;
+    margin-bottom: 5em;
+}
+
+#pagination a {
+    background: url('../img/paging.png') no-repeat scroll 0% 100%;
+    color: #ffffff;
+    padding: 10px;
+    padding-top: 0;
+}
+
+#pagination a:hover {
+    background: url('../img/paging.png') no-repeat scroll 50% 100%;
+    color: #222222;
+}
+
+#pagination .current {
+    background: url('../img/paging.png') no-repeat scroll 50% 100%;
+    color: #222222;
+}
+
+#pagination .skip {
+    background: none;
+    color: #222222;
+    padding: 10px;
+    padding-top: 0px;
+}
+
+#pagination .skip:hover {
+    background: none;
+    font-weight: bold;
+}
+
+/*--- POPUP --------------------------------------------------*/
+.popup {
+    display: block;
+    width: 15em;
+    margin: 3em auto 4em;
+    padding: 1em 2em;
+    background: #fafafa;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.3);
+    text-align: center;
+}
+
+.popup h2 {
+    font-size: 1.5em;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    text-align: center;
+    text-shadow: 2px 1px 5px rgba(0,0,0,.2);
+}
+
+.popup input {
+    margin-bottom: 1em;
+}
+
+/*--- FORM FOR EDIT POSTS ------------------------------------*/
+#postform {
+    width: 90%;
+    margin: auto;
+}
+
+#postform td {
+    padding: 0.5em;
+}
+
+#postform .left {
+    width: 10em;
+    text-align: right;
+    vertical-align: top;
+}
+
+#postform .inputfield {
+    display: block;
+    width: 100%;
+}
+
+#postform .adminbox {
+    float: right;
+    width: 11em;
+    font-size: 0.7em;
+}
+
+/*--- NOTIFICATIONS ------------------------------------------*/
+p.msg-error, p.msg-success {
+    color: #fff;
+    margin: -2em 5em 3em;
+    padding: 0.2em 1em;
+    border-radius: 3px;
+    text-align: center;
+    box-shadow: 0 0 5px #aaaaaa;
+    text-shadow: -1px -1px 0 rgba(0,0,0,.3);
+}
+
+p.msg-error {
+    background: #c00;
+}
+
+p.msg-success {
+    background: #83BD41;
+}
+
+/*--- COMMENTS -----------------------------------------------*/
+.comment {
+    width: 30em;
+    margin: auto;
+    margin-bottom: 2em;
+}
+
+.comment h2 {
+    font-size: 1.5em;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin-top: 5em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.2);
+}
+
+.comment .title {
+    font-family: Arial, sans-serif;
+    margin-bottom: 0.3em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.2);
+}
+
+.comment .content {
+    margin-left: 2em;
+    text-align: justify;
+}

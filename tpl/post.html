@@ -6,6 +6,10 @@
     $this->post
     $this->fullentry
     $this->backurl
+    $this->commentformauthor
+    $this->commentformmessage
+    ----
+    include(comment.php)
 */
 ?>
 <div class="entry">
@@ -24,9 +28,9 @@
 
     <?php if ($this->loggedin) { ?>
     <div class="adminbox">
-        <a href="<?php echo $this->baseurl . 'edit/'   . $this->post->getId(); ?>">bearbeiten</a>
+        <a href="<?php echo $this->baseurl . 'post/' . $this->post->getId() . '/edit';   ?>">bearbeiten</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="<?php echo $this->baseurl . 'delete/' . $this->post->getId(); ?>">löschen</a>
+        <a href="<?php echo $this->baseurl . 'post/' . $this->post->getId() . '/delete'; ?>">löschen</a>
         <?php
         if (!$this->post->isPublished()) {
             echo '<br /><span style="color: red;">nicht veröffentlicht</span>';
@@ -57,3 +61,23 @@
     ?></div>
 
 </div>
+
+<?php
+if ($this->fullentry) {
+    echo '<div class="comment"><h2>Kommentare</h2></div>';
+
+    foreach ($this->comments as $comment) {
+        $this->comment = $comment;
+        $this->partial('tpl/comment.html');
+    }
+
+    ?>
+    <form action="<?php echo $this->baseurl; ?>post/<?php echo $this->post->getId(); ?>/comment" method="POST" class="comment">
+    <input type="text" name="author" placeholder="Name" value="<?php echo $this->commentformauthor; ?>"/>
+        <textarea name="message" placeholder="Kommentar" rows="8"><?php echo $this->commentformmessage; ?></textarea>
+        <input type="text" name="challenge" placeholder="Die letzten 4 Zeichen des Kommentars" />
+        <button type="submit">Kommentar abschicken</button>
+    </form>
+    <?php
+}
+?>

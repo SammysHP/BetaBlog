@@ -6,7 +6,7 @@ class Database {
     private $connection;
 
     private function __construct() {
-        $connection = new mysqli(CONFIG::GET('db_host'), CONFIG::GET('db_user'), CONFIG::GET('db_pass'), CONFIG::GET('db_database'));
+        $connection = new mysqli(Config::DB_HOST, Config::DB_USER, Config::DB_PASSWORD, Config::DB_DATABASE);
         if($connection->connect_errno) {
             throw new Exception('Failed to connect to database: (' . $connection->connect_errno . ') ' . $connection->connect_error);
         }

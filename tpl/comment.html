@@ -1,0 +1,22 @@
+<?php
+/*
+    $this->baseurl
+    $this->comment
+    $this->loggedin
+    $this->htmlescape()
+*/
+?>
+<div class="comment">
+    <div class="title">
+        <?php
+        echo '<span style="font-weight: bold;">' . $this->htmlescape($this->comment->getAuthor()) . '</span>';
+        echo ', ' . date("d.m.Y H:i", $this->comment->getDate());
+        if ($this->loggedin) {
+            echo '&nbsp;&nbsp;&nbsp;<a href="' . $this->baseurl . 'comment/' . $this->comment->getId() . '/delete" style="font-size: 0.7em;">löschen</a>';
+        }
+        ?>
+    </div>
+    <div class="content"><?php
+        echo str_replace("\n", "<br />", $this->htmlescape($this->comment->getComment()));
+    ?></div>
+</div>

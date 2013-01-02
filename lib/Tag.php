@@ -1,30 +1,31 @@
 <?php
 
 class Tag {
-    // TODO: Make statements static
+    private static $STMT_FIND_BY_POST;
 
     private function __construct() {
     }
 
     public static function findByPost($post) {
-        $db = Database::getConnection();
-
-        if (!($statement = $db->prepare('SELECT tag FROM ' . CONFIG::GET('db_prefix') . 'tags WHERE post=? ORDER BY tag ASC'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+        if (!isset(self::$STMT_FIND_BY_POST)) {
+            $db = Database::getConnection();
+            if (!(self::$STMT_FIND_BY_POST = $db->prepare('SELECT tag FROM ' . Config::DB_PREFIX . 'tags WHERE post=? ORDER BY tag ASC'))) {
+                throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            }
         }
-        if (!$statement->bind_param("i", $post)) {
+        if (!self::$STMT_FIND_BY_POST->bind_param("i", $post)) {
             throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
-        if (!$statement->execute()) {
+        if (!self::$STMT_FIND_BY_POST->execute()) {
             throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
-        if (!$statement->bind_result($tag)) {
+        if (!self::$STMT_FIND_BY_POST->bind_result($tag)) {
             throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $result = array();
 
-        while ($statement->fetch()) {
+        while (self::$STMT_FIND_BY_POST->fetch()) {
             $result[] = $tag;
         }
 
@@ -34,7 +35,7 @@ class Tag {
     public static function findAll() {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('SELECT tag, count(tag) FROM ' . CONFIG::GET('db_prefix') . 'tags GROUP BY tag ORDER BY tag ASC'))) {
+        if (!($statement = $db->prepare('SELECT tag, count(tag) FROM ' . Config::DB_PREFIX . 'tags GROUP BY tag ORDER BY tag ASC'))) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->execute()) {
@@ -70,7 +71,7 @@ class Tag {
 
         self::delete($post);
 
-        if (!$db->query('INSERT INTO ' . CONFIG::GET('db_prefix') . 'tags (post, tag) VALUES ' . $tagString)) {
+        if (!$db->query('INSERT INTO ' . Config::DB_PREFIX . 'tags (post, tag) VALUES ' . $tagString)) {
             throw new Exception("Execute failed: (" . $db->errno . ") " . $db->error);
         }
     }
@@ -78,7 +79,7 @@ class Tag {
     public static function delete($post) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('DELETE FROM ' . CONFIG::GET('db_prefix') . 'tags WHERE post=?'))) {
+        if (!($statement = $db->prepare('DELETE FROM ' . Config::DB_PREFIX . 'tags WHERE post=?'))) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $post)) {
@@ -92,8 +93,8 @@ class Tag {
     public static function install() {
         $db = Database::getConnection();
 
-        if (!$db->query('CREATE TABLE IF NOT EXISTS ' . CONFIG::GET('db_prefix') . 'tags (post INT NOT NULL, tag VARCHAR(100) NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
-            throw new Exception("Could not create table" . CONFIG::GET('db_prefix') . "_tags: (" . $db->errno . ") " . $db->error);
+        if (!$db->query('CREATE TABLE IF NOT EXISTS ' . Config::DB_PREFIX . 'tags (post INT NOT NULL, tag VARCHAR(100) NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
+            throw new Exception("Could not create table" . Config::DB_PREFIX . "tags: (" . $db->errno . ") " . $db->error);
         }
     }
 }

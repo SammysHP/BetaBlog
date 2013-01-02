@@ -24,7 +24,7 @@ class Post {
     public static function findById($id, $publishedIn = true) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('SELECT title, content, extended, date, published FROM ' . CONFIG::GET('db_prefix') . 'posts WHERE id=? AND published>=?'))) {
+        if (!($statement = $db->prepare('SELECT title, content, extended, date, published FROM ' . Config::DB_PREFIX . 'posts WHERE id=? AND published>=?'))) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("ii", $id, $publishedIn)) {
@@ -50,7 +50,7 @@ class Post {
     public static function findByTag(array $tags, $publishedIn = true) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('SELECT DISTINCT id, title, content, extended, date, published FROM ' . CONFIG::GET('db_prefix') . 'posts JOIN ' . CONFIG::GET('db_prefix') . 'tags ON (post=id) WHERE published>=? AND tag=? ORDER BY date DESC'))) {
+        if (!($statement = $db->prepare('SELECT DISTINCT id, title, content, extended, date, published FROM ' . Config::DB_PREFIX . 'posts JOIN ' . Config::DB_PREFIX . 'tags ON (post=id) WHERE published>=? AND tag=? ORDER BY date DESC'))) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("is", $publishedIn, $tags[0])) { // TODO
@@ -79,7 +79,7 @@ class Post {
     public static function findByPage($pageNo, $pageSize, $publishedIn = true) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . CONFIG::GET('db_prefix') . 'posts WHERE published>=? ORDER BY date DESC LIMIT ?, ?'))) {
+        if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . Config::DB_PREFIX . 'posts WHERE published>=? ORDER BY date DESC LIMIT ?, ?'))) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("iii", $publishedIn, ($page = ($pageNo - 1) * $pageSize), $pageSize)) {
@@ -108,7 +108,7 @@ class Post {
     public static function findAll($publishedIn = true) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . CONFIG::GET('db_prefix') . 'posts WHERE published>=? ORDER BY date DESC'))) {
+        if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . Config::DB_PREFIX . 'posts WHERE published>=? ORDER BY date DESC'))) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $publishedIn)) {
@@ -137,7 +137,7 @@ class Post {
     public static function getPostCount($published = true) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('SELECT count(*) FROM ' . CONFIG::GET('db_prefix') . 'posts WHERE published>=?'))) {
+        if (!($statement = $db->prepare('SELECT count(*) FROM ' . Config::DB_PREFIX . 'posts WHERE published>=?'))) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $published)) {
@@ -160,7 +160,7 @@ class Post {
     public function create() {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('INSERT INTO ' . CONFIG::GET('db_prefix') . 'posts (title, content, extended, date, published) VALUES (?, ?, ?, ?, ?)'))) {
+        if (!($statement = $db->prepare('INSERT INTO ' . Config::DB_PREFIX . 'posts (title, content, extended, date, published) VALUES (?, ?, ?, ?, ?)'))) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("sssii", $this->title, $this->content, $this->extended, $this->date, $this->published)) {
@@ -184,7 +184,7 @@ class Post {
 
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('UPDATE ' . CONFIG::GET('db_prefix') . 'posts SET title=?, content=?, extended=?, date=?, published=? WHERE id=?'))) {
+        if (!($statement = $db->prepare('UPDATE ' . Config::DB_PREFIX . 'posts SET title=?, content=?, extended=?, date=?, published=? WHERE id=?'))) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("sssiii", $this->title, $this->content, $this->extended, $this->date, $this->published, $this->id)) {
@@ -202,7 +202,7 @@ class Post {
     public static function delete($id) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('DELETE FROM ' . CONFIG::GET('db_prefix') . 'posts WHERE id=?'))) {
+        if (!($statement = $db->prepare('DELETE FROM ' . Config::DB_PREFIX . 'posts WHERE id=?'))) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $id)) {
@@ -213,13 +213,14 @@ class Post {
         }
 
         Tag::delete($id);
+        Comment::deleteAll($id);
     }
 
     public static function install() {
         $db = Database::getConnection();
 
-        if (!$db->query('CREATE TABLE IF NOT EXISTS ' . CONFIG::GET('db_prefix') . 'posts (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title VARCHAR(100) NOT NULL, content TEXT NOT NULL, extended TEXT NOT NULL, date INT UNSIGNED NOT NULL, published BOOLEAN NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
-            throw new Exception("Could not create table" . CONFIG::GET('db_prefix') . "_posts: (" . $db->errno . ") " . $db->error);
+        if (!$db->query('CREATE TABLE IF NOT EXISTS ' . Config::DB_PREFIX . 'posts (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title VARCHAR(100) NOT NULL, content TEXT NOT NULL, extended TEXT NOT NULL, date INT UNSIGNED NOT NULL, published BOOLEAN NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
+            throw new Exception("Could not create table" . Config::DB_PREFIX . "posts: (" . $db->errno . ") " . $db->error);
         }
     }
 
