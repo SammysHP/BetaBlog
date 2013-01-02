@@ -89,7 +89,7 @@ button:hover, button:focus {
 }
 
 #bottombar div {
-    margin: 1em 2em;
+    margin: 1.1em 2em;
     font-size: 0.8em;
 }
 
@@ -99,9 +99,7 @@ button:hover, button:focus {
 }
 
 #bottombar a:hover {
-    border-bottom: 1px dashed #ffffff;
     color: #ffffff;
-    padding-bottom: 2px;
 }
 
 /*--- KEEP BOTTOM BAR AT BOTTOM ------------------------------*/
@@ -285,7 +283,7 @@ button:hover, button:focus {
 
 #header #navigation a:hover {
     color: #222222;
-    border-bottom: 1px dashed #aaaaaa;
+    text-shadow: 0 0 2px rgba(0,0,0,.3);
 }
 
 /*--- PAGINATION ---------------------------------------------*/
