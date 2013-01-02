@@ -20,6 +20,7 @@ with($namespace, function () {
         };
         $response->requireLogin = function ($request, $response) {
             if (!$request->session('loggedin', false)) {
+                $response->session('backurl', $request->uri());
                 $response->redirect(Config::BASE_URL . 'login');
             }
         };
@@ -122,12 +123,12 @@ with($namespace, function () {
 
     // Logout
     respond('GET', '/logout', function ($request, $response) {
-        $response->flash('Erfolgreich abgemeldet.', 'success');
+        $response->flash('Erfolgreich abgemeldet', 'success');
         $response->session('loggedin', false);
         $response->redirect($response->baseurl);
     });
 
-    // Create (view)
+    // Create post (view)
     respond('GET', '/create', function ($request, $response) {
         $response->requireLogin($request, $response);
 
@@ -136,7 +137,7 @@ with($namespace, function () {
         $response->render('tpl/postform.html');
     });
 
-    // Create (handler)
+    // Create post (handler)
     respond('POST', '/create', function ($request, $response) {
         $response->requireLogin($request, $response);
 
@@ -150,7 +151,7 @@ with($namespace, function () {
         );
         $post->create();
 
-        $response->flash('Beitrag gespeichert.', 'success');
+        $response->flash('Beitrag gespeichert', 'success');
 
         if ($request->param('save', false)) {
             $response->redirect($response->baseurl . 'post/' . $post->getId() . '/edit');
@@ -159,7 +160,7 @@ with($namespace, function () {
         }
     });
 
-    // Edit (view)
+    // Edit post (view)
     respond('GET', '/post/[i:id]/edit', function ($request, $response) {
         $response->requireLogin($request, $response);
 
@@ -168,7 +169,7 @@ with($namespace, function () {
         $response->render('tpl/postform.html');
     });
 
-    // Edit (handler)
+    // Edit post (handler)
     respond('POST', '/post/[i:id]/edit', function ($request, $response) {
         $response->requireLogin($request, $response);
 
@@ -183,7 +184,7 @@ with($namespace, function () {
         );
         $post->save();
 
-        $response->flash('Beitrag gespeichert.', 'success');
+        $response->flash('Beitrag gespeichert', 'success');
 
         if ($request->param('save', false)) {
             $response->redirect($response->baseurl . 'post/' . $post->getId() . '/edit');
@@ -192,21 +193,19 @@ with($namespace, function () {
         }
     });
 
-    // Delete (view)
+    // Delete post (view)
     respond('GET', '/post/[i:id]/delete', function ($request, $response) {
         $response->requireLogin($request, $response);
-
-        $response->post = Post::findById($request->param('id'), false);
         $response->render('tpl/delete.html');
     });
 
-    // Delete (handler)
+    // Delete post (handler)
     respond('POST', '/post/[i:id]/delete', function ($request, $response) {
         $response->requireLogin($request, $response);
 
         if ($request->param('delete') != '') {
             POST::delete($request->param('id'));
-            $response->flash('Beitrag gelöscht.', 'success');
+            $response->flash('Beitrag gelöscht', 'success');
             $response->redirect($response->baseurl);
         } else {
             $response->redirect($response->baseurl . 'post/' . $request->param('id'));
@@ -225,10 +224,10 @@ with($namespace, function () {
         $response->redirect('http://www.google.com/search?hl=de&q=' . rawurlencode($searchstring));
     });
 
-    // Create Comment
+    // Create comment
     respond('POST', '/post/[i:id]/comment', function ($request, $response) {
         // Check if post exists
-        Post::findById($request->param('id'));
+        Post::findById($request->param('id'), false);
 
         $author = stripslashes($request->param('author'));
         $message = stripslashes($request->param('message'));
@@ -259,18 +258,139 @@ with($namespace, function () {
         );
         $comment->create();
 
-        $response->flash('Kommentar gespeichert.', 'success');
+        $response->flash('Kommentar gespeichert', 'success');
         $response->redirect($response->baseurl . 'post/' . $request->param('id'));
     });
 
-    // Delete Comment
+    // Delete comment (view)
     respond('GET', '/comment/[i:id]/delete', function ($request, $response) {
         $response->requireLogin($request, $response);
+        $response->render('tpl/delete.html');
+    });
 
-        Comment::delete($request->param('id'));
+    // Delete comment (handler)
+    respond('POST', '/comment/[i:id]/delete', function ($request, $response) {
+        $response->requireLogin($request, $response);
 
-        $response->flash('Kommentar gelöscht.', 'success');
+        if ($request->param('delete') != '') {
+            Comment::delete($request->param('id'));
+            $response->flash('Kommentar gelöscht', 'success');
+        }
+
         $response->redirect($response->backurl);
+    });
+
+    // List files
+    respond('GET', '/files', function ($request, $response) {
+        $response->requireLogin($request, $response);
+
+        $response->sorting = $request->session('filesorting', 'name');
+
+        $directory = Config::UPLOAD_DIR;
+        $files = array();
+        $content = scandir($directory);
+        
+        foreach ($content as $file) {
+            if (substr($file, 0, 1) == '.') {
+                continue;
+            }
+            
+            $entry['name'] = utf8_encode($file);
+            $entry['time'] = filemtime($directory . '/' . $file);
+            
+            $files[] = $entry;
+        }
+
+        switch ($response->sorting) {
+            case 'name':
+                usort($files, function ($a, $b) {
+                    return strcmp($a['name'], $b['name']);
+                });
+                break;
+            case 'nameup':
+                usort($files, function ($a, $b) {
+                    return strcmp($b['name'], $a['name']);
+                });
+                break;
+            case 'date':
+                usort($files, function ($a, $b) {
+                    return $a['time'] - $b['time'];
+                });
+                break;
+            case 'dateup':
+                usort($files, function ($a, $b) {
+                    return $b['time'] - $a['time'];
+                });
+                break;
+        }
+
+        $response->files = $files;
+        $response->render('tpl/files.html');
+    });
+
+    // Upload file
+    respond('POST', '/files/upload', function ($request, $response) {
+        $response->requireLogin($request, $response);
+
+        $file = $_FILES['upload'];
+
+        $filename = utf8_decode(basename($request->param('filename', '')));
+        if (empty($filename)) {
+            $filename = basename($file['name']);
+        }
+
+        if (substr($filename, -4) == '.php') {
+            $response->flash('Dateityp nicht erlaubt', 'error');
+            $response->redirect($response->baseurl . 'files');
+        }
+
+        $targetpath = Config::UPLOAD_DIR . '/' . $filename;
+
+        if ($request->param('overwrite') == null && file_exists($targetpath)) {
+            $response->flash('Datei existiert bereits', 'error');
+            $response->redirect($response->baseurl . 'files');
+        }
+
+        if (move_uploaded_file($file['tmp_name'], $targetpath)) {
+            $response->flash('Datei hochgeladen', 'success');
+        } else {
+            $response->flash('Fehler beim Hochladen', 'error');
+        }
+
+        $response->redirect($response->baseurl . 'files');
+    });
+
+    // Delete file (view)
+    respond('GET', '/files/delete/[:name]', function ($request, $response) {
+        $response->requireLogin($request, $response);
+        $response->render('tpl/delete.html');
+    });
+
+    // Delete file (handler)
+    respond('POST', '/files/delete/[:name]', function ($request, $response) {
+        $response->requireLogin($request, $response);
+
+        if ($request->param('delete') != '') {
+            $filename = utf8_decode(basename(rawurldecode($request->param('name'))));
+            $filepath = Config::UPLOAD_DIR . '/' . $filename;
+
+            if (substr($filename, 0, 1) == '.' || !file_exists($filepath)) {
+                $response->flash('Datei nicht gefunden', 'error');
+                $response->redirect($response->baseurl . 'files');
+            }
+
+            unlink($filepath);
+            $response->flash('Datei gelöscht', 'success');
+        }
+
+        $response->redirect($response->baseurl . 'files');
+    });
+
+    // Sort file (view)
+    respond('GET', '/files/sort/[:column]', function ($request, $response) {
+        $response->requireLogin($request, $response);
+        $response->session('filesorting', $request->param('column'));
+        $response->redirect($response->baseurl . 'files');
     });
 
     // Installation
@@ -280,7 +400,7 @@ with($namespace, function () {
         Post::install();
         Tag::install();
         Comment::install();
-        $response->flash('System erfolgreich installiert.', 'success');
+        $response->flash('System erfolgreich installiert', 'success');
         $response->redirect($response->baseurl);
     });
 

@@ -1,11 +1,6 @@
-<?php
-/*
-    $this->htmlescape()
-    $this->post
-*/
-?>
-<form action="#" method="POST" class="popup">
-    <h2><?php echo $this->htmlescape($this->post->getTitle()); ?></h2>
-    <div><input type="checkbox" name="delete" style="width: 2em; display: inline;" /> Wirklich löschen?</div>
-    <button type="submit">Abschicken</button>
+<form action="" method="POST" class="popup">
+    <h2>Wirklich löschen?</h2>
+    <button type="submit">Abbrechen</button>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button type="submit" name="delete" value="delete">Löschen</button>
 </form>

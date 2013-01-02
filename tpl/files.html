@@ -1,0 +1,51 @@
+<?php
+/*
+    $this->htmlescape()
+    $this->baseurl
+    $this->files
+    $this->sorting
+*/
+?>
+<div class="files">
+    <form enctype="multipart/form-data" action="<?php echo $this->baseurl ?>files/upload" method="POST" class="popup">
+        <h2>Datei hochladen</h2>
+        <input type="file" name="upload" />
+        <input type="text" name="filename" placeholder="Dateiname (optional)" />
+        <input type="checkbox" name="overwrite" style="display: inline; width: auto;" /> Datei überschreiben<br />
+        <button type="submit">Hochladen</button>
+    </form>
+    
+    <div class="file" style="font-weight: bold; background: #f0f0f0;">
+    <?php
+        if ($this->sorting == 'name') {
+            echo '<a href="' . $this->baseurl . 'files/sort/nameup">Name ▼</a>';
+        } elseif ($this->sorting == 'nameup') {
+            echo '<a href="' . $this->baseurl . 'files/sort/name">Name ▲</a>';
+        } else {
+            echo '<a href="' . $this->baseurl . 'files/sort/name">Name ▽</a>';
+        }
+    ?>
+        <div style="float: right;">
+            <?php
+                if ($this->sorting == 'date') {
+                    echo '<a href="' . $this->baseurl . 'files/sort/dateup">Date ▼</a>';
+                } elseif ($this->sorting == 'dateup') {
+                    echo '<a href="' . $this->baseurl . 'files/sort/date">Date ▲</a>';
+                } else {
+                    echo '<a href="' . $this->baseurl . 'files/sort/date">Date ▽</a>';
+                }
+            ?>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    
+    <?php
+    foreach ($this->files as $file) {
+        $path = $this->baseurl . Config::UPLOAD_DIR . '/' . rawurlencode($file['name']);
+        $name = $this->htmlescape($file['name']);
+        $date = date("d.m.Y, H:i", $file['time']);
+        $deleteurl = $this->baseurl . 'files/delete/' . rawurlencode($file['name']);
+        echo '<div class="file"><a href="' . $path . '">' . $name . '</a><div style="float: right;">' . $date . '<a href="' . $deleteurl . '" class="delete">X</a></div></div>';
+    }
+    ?>
+</div>

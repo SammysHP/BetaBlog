@@ -24,6 +24,9 @@ final class Config {
     // URL to "about us" page
     const ABOUT_URL     = '';
 
+    // Directory for uploads
+    const UPLOAD_DIR    = 'uploads';
+
     // Posts per page
     const PAGESIZE      = 5;
 

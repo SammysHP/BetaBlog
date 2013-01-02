@@ -369,6 +369,32 @@ button:hover, button:focus {
     font-size: 0.7em;
 }
 
+/*--- FILES --------------------------------------------------*/
+.files {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 4em;
+}
+
+.files .file {
+    display: block;
+    border-radius: 3px;
+    padding: 3px 5px;
+    margin-bottom: 0.2em;
+    font-size: 0.9em;
+}
+
+.files .file:hover {
+    background: #f0f0f0;
+}
+
+.files .file .delete {
+    color: #c00;
+    text-shadow: 0 0 3px rgba(0,0,0,.3);
+    margin-left: 1em;
+    font-weight: bold;
+}
+
 /*--- NOTIFICATIONS ------------------------------------------*/
 p.msg-error, p.msg-success {
     color: #fff;
