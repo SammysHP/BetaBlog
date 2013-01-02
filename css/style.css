@@ -338,28 +338,23 @@ button:hover, button:focus {
     margin-bottom: 1em;
 }
 
-/*--- FORM FOR EDIT POSTS ------------------------------------*/
-#postform {
+/*--- TABLE USED IN POSTFORM AND ARCHIVE ---------------------*/
+.table {
     width: 90%;
     margin: auto;
 }
 
-#postform td {
+.table td {
     padding: 0.5em;
 }
 
-#postform .left {
+.table .left {
     width: 10em;
     text-align: right;
     vertical-align: top;
 }
 
-#postform .inputfield {
-    display: block;
-    width: 100%;
-}
-
-#postform .adminbox {
+.table .adminbox {
     float: right;
     width: 11em;
     font-size: 0.7em;

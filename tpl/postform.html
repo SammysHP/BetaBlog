@@ -8,15 +8,15 @@
 <script src="<?php echo $this->baseurl; ?>js/texttools.js"></script>
 
 <form action="#" method="POST">
-    <table id="postform">
+    <table class="table">
         <tr>
-            <td class="left">Titel:</td><td><input type="text" tabindex="1" name="title" id="title" class="inputfield" value="<?php echo $this->htmlescape($this->post->getTitle()); ?>" /></td>
+            <td class="left">Titel:</td><td><input type="text" tabindex="1" name="title" id="title" value="<?php echo $this->htmlescape($this->post->getTitle()); ?>" /></td>
         </tr>
         <tr>
-            <td class="left">Datum:</td><td><input type="text" tabindex="2" name="date" class="inputfield" value="<?php echo date("Y-m-d H:i:s", $this->post->getDate()); ?>" /></td>
+            <td class="left">Datum:</td><td><input type="text" tabindex="2" name="date" value="<?php echo date("Y-m-d H:i:s", $this->post->getDate()); ?>" /></td>
         </tr>
         <tr>
-            <td class="left">Veröffentlicht:</td><td><input type="checkbox" tabindex="3" name="published" <?php if ($this->post->isPublished()) echo 'checked="checked" '; ?>/></td>
+            <td class="left">Veröffentlicht:</td><td><input type="checkbox" tabindex="3" style="width: auto;" name="published" <?php if ($this->post->isPublished()) echo 'checked="checked" '; ?>/></td>
         </tr>
         <tr>
             <td class="left">
@@ -41,7 +41,7 @@
                     <a href="#" onClick="return unescapeSelectedText($$$('contenttextarea'));">unescape</a>
                 </div>
             </td>
-            <td><textarea rows="15" tabindex="4" name="content" class="inputfield" id="contenttextarea"><?php echo $this->htmlescape($this->post->getContent()); ?></textarea></td>
+            <td><textarea rows="15" tabindex="4" name="content" id="contenttextarea"><?php echo $this->htmlescape($this->post->getContent()); ?></textarea></td>
         </tr>
         <tr>
             <td class="left">
@@ -66,12 +66,12 @@
                     <a href="#" onClick="return unescapeSelectedText($$$('extendedtextarea'));">unescape</a>
                 </div>
             </td>
-            <td><textarea rows="30" tabindex="5" name="extended" class="inputfield" id="extendedtextarea"><?php echo $this->htmlescape($this->post->getExtended()); ?></textarea></td>
+            <td><textarea rows="30" tabindex="5" name="extended" id="extendedtextarea"><?php echo $this->htmlescape($this->post->getExtended()); ?></textarea></td>
         </tr>
         <tr>
             <td class="left">Tags:</td>
             <td>
-                <input type="text" tabindex="6" name="tags" id="taginput" class="inputfield" value="<?php echo $this->htmlescape(implode(', ', $this->post->getTags())); ?>" />
+                <input type="text" tabindex="6" name="tags" id="taginput" value="<?php echo $this->htmlescape(implode(', ', $this->post->getTags())); ?>" />
                 <div class="tags"><?php
                     $tags = array();
                     foreach ($this->alltags as $tag) {
