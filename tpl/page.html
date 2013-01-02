@@ -34,13 +34,20 @@
         <!-- Syntax highlighting -->
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>css/github.css" />
         <script src="<?php echo $this->baseurl; ?>js/highlight.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script>
+        <script>
+            hljs.tabReplace = '    ';
+            $(document).ready(function() {
+                $('code').each(function(i, e) {hljs.highlightBlock(e)});
+            });
+        </script>
 
         <!-- Imagebox -->
         <script src="<?php echo $this->baseurl; ?>js/fancybox.js"></script>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>css/fancybox.css" />
-        <script type="text/javascript">
-            $(".imagebox").fancybox();
+        <script>
+            $(document).ready(function() {
+                $(".imagebox").fancybox();
+            });
         </script>
     </head>
     <body>

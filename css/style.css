@@ -209,6 +209,7 @@ button:hover, button:focus {
 }
 
 .entry pre code {
+    font-size: 1em;
     background: #f3f3f3;
     color: #000000;
     padding: 1em 0.5em;
@@ -220,6 +221,15 @@ button:hover, button:focus {
     min-width: 100%;
     overflow: visible;
     float: left;
+}
+
+.entry code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8em;
+    letter-spacing: -0.05em;
+    padding: 0.2em 0.5em;
+    background: #f3f3f3;
+    color: #000000;
 }
 
 .entry .imagebox {

@@ -145,6 +145,11 @@ function makeHeading(el) {
 }
 
 function makeCode(el) {
+    surroundSelectedText(el, '<code class="">', '</code>');
+    return false;
+}
+
+function makeCodeBlock(el) {
     surroundSelectedText(el, '<pre><code class="">', '</code></pre>');
     return false;
 }
