@@ -352,6 +352,7 @@ button:hover, button:focus {
 .table {
     width: 90%;
     margin: auto;
+    margin-bottom: 4em;
 }
 
 .table td {
