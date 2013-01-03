@@ -388,10 +388,17 @@ button:hover, button:focus {
     background: #f0f0f0;
 }
 
+.files .file .rename {
+    color: #83BD41;
+    text-shadow: 0 0 1px rgba(0,0,0,.5);
+    margin-left: 1em;
+    font-weight: bold;
+}
+
 .files .file .delete {
     color: #c00;
-    text-shadow: 0 0 3px rgba(0,0,0,.3);
-    margin-left: 1em;
+    text-shadow: 0 0 1px rgba(0,0,0,.5);
+    margin-left: 0.5em;
     font-weight: bold;
 }
 

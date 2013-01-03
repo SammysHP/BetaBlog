@@ -348,8 +348,8 @@ with($namespace, function () {
             $filename = basename($file['name']);
         }
 
-        if (substr($filename, -4) == '.php') {
-            $response->flash('Dateityp nicht erlaubt', 'error');
+        if (substr($filename, 0, 1) == '.' || substr($filename, -4) == '.php') {
+            $response->flash('Dateiname nicht erlaubt', 'error');
             $response->redirect($response->baseurl . 'files');
         }
 
@@ -400,6 +400,46 @@ with($namespace, function () {
     respond('GET', '/files/sort/[:column]', function ($request, $response) {
         $response->requireLogin($request, $response);
         $response->session('filesorting', $request->param('column'));
+        $response->redirect($response->baseurl . 'files');
+    });
+
+    // Rename file (view)
+    respond('GET', '/files/rename/[:name]', function ($request, $response) {
+        $response->requireLogin($request, $response);
+        $response->filename = rawurldecode($request->param('name'));
+        $response->render('tpl/rename.html');
+    });
+
+    // Rename file (handler)
+    respond('POST', '/files/rename/[:name]', function ($request, $response) {
+        $response->requireLogin($request, $response);
+
+        $oldname = utf8_decode(basename(rawurldecode($request->param('name'))));
+        $newname = utf8_decode(basename($request->param('newname')));
+        $oldfile = Config::UPLOAD_DIR . '/' . $oldname;
+        $newfile = Config::UPLOAD_DIR . '/' . $newname;
+
+        if (substr($oldname, 0, 1) == '.' || !file_exists($oldfile)) {
+            $response->flash('Datei nicht gefunden', 'error');
+            $response->redirect($response->baseurl . 'files');
+        }
+
+        if (empty($newname) || substr($newname, 0, 1) == '.' || substr($newname, -4) == '.php') {
+            $response->flash('Dateiname nicht erlaubt', 'error');
+            $response->redirect($response->baseurl . 'files');
+        }
+
+        if (file_exists($newfile)) {
+            $response->flash('Datei existiert bereits', 'error');
+            $response->redirect($response->baseurl . 'files');
+        }
+
+        if (rename($oldfile, $newfile)) {
+            $response->flash('Datei umbenannt', 'success');
+        } else {
+            $response->flash('Fehler beim Umbenennen', 'error');
+        }
+
         $response->redirect($response->baseurl . 'files');
     });
 

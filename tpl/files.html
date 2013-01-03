@@ -35,7 +35,7 @@
                     echo '<a href="' . $this->baseurl . 'files/sort/date">Date ▽</a>';
                 }
             ?>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     </div>
     
@@ -45,7 +45,8 @@
         $name = $this->htmlescape($file['name']);
         $date = date("d.m.Y, H:i", $file['time']);
         $deleteurl = $this->baseurl . 'files/delete/' . rawurlencode($file['name']);
-        echo '<div class="file"><a href="' . $path . '">' . $name . '</a><div style="float: right;">' . $date . '<a href="' . $deleteurl . '" class="delete">X</a></div></div>';
+        $renameurl = $this->baseurl . 'files/rename/' . rawurlencode($file['name']);
+        echo '<div class="file"><a href="' . $path . '">' . $name . '</a><div style="float: right;">' . $date . '<a href="' . $renameurl . '" class="rename">R</a><a href="' . $deleteurl . '" class="delete">X</a></div></div>';
     }
     ?>
 </div>
