@@ -196,6 +196,8 @@ with($namespace, function () {
     // Delete post (view)
     respond('GET', '/post/[i:id]/delete', function ($request, $response) {
         $response->requireLogin($request, $response);
+        $post = Post::findById($request->param('id'));
+        $response->message = 'Beitrag "' . $post->getTitle() . '"';
         $response->render('tpl/delete.html');
     });
 
@@ -265,6 +267,8 @@ with($namespace, function () {
     // Delete comment (view)
     respond('GET', '/comment/[i:id]/delete', function ($request, $response) {
         $response->requireLogin($request, $response);
+        $comment = Comment::findById($request->param('id'));
+        $response->message = 'Kommentar von "' . $comment->getAuthor() . '" vom ' . date('d.m.Y \u\m H:i', $comment->getDate());
         $response->render('tpl/delete.html');
     });
 
@@ -368,6 +372,7 @@ with($namespace, function () {
     // Delete file (view)
     respond('GET', '/files/delete/[:name]', function ($request, $response) {
         $response->requireLogin($request, $response);
+        $response->message = 'Datei "' . rawurldecode($request->param('name')) . '"';
         $response->render('tpl/delete.html');
     });
 

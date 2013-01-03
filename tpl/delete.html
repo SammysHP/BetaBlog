@@ -1,5 +1,12 @@
+<?php
+/*
+    $this->htmlescape()
+    $this->message
+*/
+?>
 <form action="" method="POST" class="popup">
     <h2>Wirklich löschen?</h2>
+    <p style="margin-bottom: 1em;"><?php echo $this->htmlescape($this->message); ?></p>
     <button type="submit">Abbrechen</button>
     &nbsp;&nbsp;&nbsp;&nbsp;
     <button type="submit" name="delete" value="delete">Löschen</button>
