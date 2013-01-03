@@ -334,6 +334,11 @@ with($namespace, function () {
 
         $file = $_FILES['upload'];
 
+        if (!file_exists($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+            $response->flash('Keine Datei angegeben', 'error');
+            $response->redirect($response->baseurl . 'files');
+        }
+
         $filename = utf8_decode(basename($request->param('filename', '')));
         if (empty($filename)) {
             $filename = basename($file['name']);
