@@ -5,9 +5,21 @@
     $this->loggedin
 */
 
+echo '<div class="archive">';
+
+$year = (int) date("Y", time());
+
+echo '<h2>' . $year . '</h2>';
 echo '<table class="table" style="width: 100%;">';
 
 foreach ($this->posts as $post) {
+    if (((int) date("Y", $post->getDate())) < $year) {
+        $year = (int) date("Y", $post->getDate());
+        echo '</table>';
+        echo '<h2>' . $year . '</h2>';
+        echo '<table class="table" style="width: 100%;">';
+    }
+    
     echo '<tr>';
         echo '<td class="left">' . date("d.m.Y H:i", $post->getDate()) . '</td><td>';
         
@@ -37,3 +49,5 @@ foreach ($this->posts as $post) {
 }
 
 echo '</table>';
+
+echo '</div>';

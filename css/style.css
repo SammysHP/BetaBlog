@@ -186,7 +186,7 @@ button:hover, button:focus {
     font-family: Arial, sans-serif;
     font-weight: bold;
     margin-top: 1.5em;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.7em;
     text-shadow: 1px 1px 2px rgba(0,0,0,.2);
 }
 
@@ -360,7 +360,7 @@ button:hover, button:focus {
 .table {
     width: 90%;
     margin: auto;
-    margin-bottom: 4em;
+    margin-bottom: 2em;
 }
 
 .table td {
@@ -373,10 +373,23 @@ button:hover, button:focus {
     vertical-align: top;
 }
 
-.table .adminbox {
+/*--- ARCHIVE ------------------------------------------------*/
+.archive {
+    margin-bottom: 4em;
+}
+
+.archive .adminbox {
     float: right;
     width: 11em;
     font-size: 0.7em;
+}
+
+.archive h2 {
+    font-size: 1.5em;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin-bottom: 0.2em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.2);
 }
 
 /*--- FILES --------------------------------------------------*/
