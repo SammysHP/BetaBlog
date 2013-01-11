@@ -192,8 +192,18 @@ button:hover, button:focus {
 
 .entry ul {
     margin-bottom: 1.2em;
-    margin-left: 3em;
+    margin-left: 2.5em;
     list-style-type: disc;
+}
+
+.entry ol {
+    margin-bottom: 1.2em;
+    margin-left: 2.5em;
+    list-style-type: decimal;
+}
+
+.entry li {
+    margin-bottom: 0.3em;
 }
 
 .entry pre {
