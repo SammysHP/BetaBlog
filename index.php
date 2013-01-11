@@ -42,6 +42,9 @@ with($namespace, function () {
         $response->session('backurl', $request->uri());
         $response->posts = Post::findByPage($request->param('page', 1), Config::PAGESIZE, !$response->loggedin);
         $response->paginationCurrent = $request->param('page', 1);
+        if ($request->param('page', 1) != 1) {
+            $response->title .= ' – Seite ' . $request->param('page', 1);
+        }
         $response->paginationCount = ceil(Post::getPostCount(!$response->loggedin) / Config::PAGESIZE);
         $response->render('tpl/posts.html');
     });
@@ -76,6 +79,7 @@ with($namespace, function () {
     respond('GET', '/archive', function ($request, $response) {
         $response->session('backurl', $request->uri());
         $response->posts = Post::findAll(!$response->loggedin);
+        $response->title .= ' – Archiv';
         $response->render('tpl/archive.html');
     });
 
@@ -97,6 +101,7 @@ with($namespace, function () {
     respond('GET', '/tag/[*:tag]', function ($request, $response) {
         $response->session('backurl', $request->uri());
         $tag = rawurldecode(str_replace('/', '%2F', $request->param('tag')));
+        $response->title .= ' – ' . $response->htmlescape($tag);
         $response->posts = Post::findByTag(array($tag), !$response->loggedin);
         $response->render('tpl/archive.html');
     });
@@ -106,6 +111,8 @@ with($namespace, function () {
         if ($request->session('loggedin', false)) {
             $response->redirect($response->baseurl);
         }
+
+        $response->title .= ' – Login';
 
         $response->render('tpl/login.html');
     });
@@ -134,6 +141,7 @@ with($namespace, function () {
 
         $response->post = new Post();
         $response->alltags = Tag::findAll();
+        $response->title .= ' – Beitrag erstellen';
         $response->render('tpl/postform.html');
     });
 
@@ -166,6 +174,7 @@ with($namespace, function () {
 
         $response->post = Post::findById($request->param('id'), false);
         $response->alltags = Tag::findAll();
+        $response->title .= ' – Beitrag bearbeiten';
         $response->render('tpl/postform.html');
     });
 
@@ -217,6 +226,7 @@ with($namespace, function () {
     // Search (view)
     respond('GET', '/search', function ($request, $response) {
         $response->alltags = Tag::findAll();
+        $response->title .= ' – Suche';
         $response->render('tpl/search.html');
     });
 
@@ -287,6 +297,8 @@ with($namespace, function () {
     // List files
     respond('GET', '/files', function ($request, $response) {
         $response->requireLogin($request, $response);
+
+        $response->title .= ' – Dateien';
 
         $response->sorting = $request->session('filesorting', 'name');
 
