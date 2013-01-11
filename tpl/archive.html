@@ -7,17 +7,18 @@
 
 echo '<div class="archive">';
 
-$year = (int) date("Y", time());
-
-echo '<h2>' . $year . '</h2>';
-echo '<table class="table" style="width: 100%;">';
+$year = 0;
+$close = false;
 
 foreach ($this->posts as $post) {
-    if (((int) date("Y", $post->getDate())) < $year) {
+    if ($year == 0 || ((int) date("Y", $post->getDate())) < $year) {
+        if ($year != 0) {
+            echo '</table>';
+        }
         $year = (int) date("Y", $post->getDate());
-        echo '</table>';
         echo '<h2>' . $year . '</h2>';
         echo '<table class="table" style="width: 100%;">';
+        $close = true;
     }
     
     echo '<tr>';
@@ -48,6 +49,8 @@ foreach ($this->posts as $post) {
     echo '</tr>';
 }
 
-echo '</table>';
+if ($close) {
+    echo '</table>';
+}
 
 echo '</div>';
