@@ -22,7 +22,7 @@ a {
 /*--- GLOBAL STYLES & ABSOLUTE REFERENCE ---------------------*/
 html, body {
     background: #ffffff;
-    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    font-family: 'Palatino Linotype', Palatino, 'URW Palladio L', 'Book Antiqua', serif;
     color: #222222;
     height: 100%;
 }
