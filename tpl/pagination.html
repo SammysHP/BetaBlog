@@ -16,7 +16,7 @@ if ($prev > 0) {
 
 if ($this->paginationCount > 1) {
     for ($i = 1; $i <= $this->paginationCount; $i++) {
-        $current = ($this->paginationCurrent == $i ? ' class="current"' : 'other');
+        $current = ($this->paginationCurrent == $i ? ' class="current"' : '');
         echo "<a href=\"{$this->baseurl}page/{$i}\"{$current}>{$i}</a>";
     }
 }
