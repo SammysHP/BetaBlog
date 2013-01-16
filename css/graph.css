@@ -1,4 +1,6 @@
 .graph {
+    float: left;
+    clear: left;
 }
 
 .graph * {
@@ -10,6 +12,7 @@
     text-align: center;
     font-weight: bold;
     font-size: 20px;
+    margin-bottom: 10px;
 }
 
 .graph .data {
@@ -41,6 +44,7 @@
 
 .graph .label {
     margin-top: 5px;
+    height: 1.5em;
     list-style-type: none;
 }
 

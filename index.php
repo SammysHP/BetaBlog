@@ -5,6 +5,7 @@ require_once("lib/Database.php");
 require_once("lib/Post.php");
 require_once("lib/Comment.php");
 require_once("lib/Tag.php");
+require_once("lib/Graph.php");
 require_once("lib/klein.php");
 
 setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'de');
@@ -80,6 +81,34 @@ with($namespace, function () {
         $response->session('backurl', $request->uri());
         $response->posts = Post::findAll(!$response->loggedin);
         $response->title .= ' – Archiv';
+
+        $emptyYear = array(1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, 11 => 0, 12 => 0);
+        $graphData = array();
+        $graphMax = 0;
+        foreach ($response->posts as $post) {
+            $year = (int) date("Y", $post->getDate());
+            $month = (int) date("n", $post->getDate());
+            if (!array_key_exists($year, $graphData)) {
+                $graphData[$year] = $emptyYear;
+            }
+            $graphData[$year][$month]++;
+            if ($graphData[$year][$month] > $graphMax) {
+                $graphMax = $graphData[$year][$month];
+            }
+        }
+        $response->graphs = array();
+        foreach ($graphData as $year => $months) {
+            $graph = new Graph();
+            $graph->setData($months)
+                ->setTitle($year)
+                ->setBarWidth(15)
+                ->setBarMargin(5)
+                ->setGraphHeight(100)
+                ->setMaxValue($graphMax);
+            $response->graphs[$year] = $graph->render();
+        }
+        $response->graphs = array_reverse($response->graphs, true);
+
         $response->render('tpl/archive.html');
     });
 

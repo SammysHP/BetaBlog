@@ -392,6 +392,33 @@ button:hover, button:focus {
     text-shadow: 1px 1px 2px rgba(0,0,0,.2);
 }
 
+.archive .graphs {
+    height: 250px;
+    overflow: hidden;
+}
+
+.archive .graphs a {
+    display: block;
+    float: left;
+    clear: none;
+    width: 250px;
+    margin-left: 7px;
+    margin-right: 7px;
+    background: #fafafa;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+.archive .graphs a:hover {
+    color: inherit;
+    background: #f0f0f0;
+}
+
+.archive .graphs .graph {
+    clear: none;
+    width: 242px;
+}
+
 /*--- FILES --------------------------------------------------*/
 .files {
     width: 80%;

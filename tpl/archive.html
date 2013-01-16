@@ -4,9 +4,19 @@
     $this->baseurl
     $this->loggedin
 */
+?>
 
-echo '<div class="archive">';
+<div class="archive">
 
+    <div class="graphs">
+    <?php
+    foreach ($this->graphs as $year => $graph) {
+        echo '<a href="#idx-' . $year . '">' . $graph . '</a>';
+    }
+    ?>
+    </div>
+
+<?php
 $year = 0;
 $close = false;
 
@@ -16,7 +26,7 @@ foreach ($this->posts as $post) {
             echo '</table>';
         }
         $year = (int) date("Y", $post->getDate());
-        echo '<h2>' . $year . '</h2>';
+        echo '<h2 id="idx-' . $year . '">' . $year . '</h2>';
         echo '<table class="table">';
         $close = true;
     }

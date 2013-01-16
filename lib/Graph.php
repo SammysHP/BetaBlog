@@ -13,6 +13,7 @@ class Graph {
     private $showLabel = true;
     private $showTitle = false;
     private $showValue = true;
+    private $hideNullValue = true;
 
     private $barWidth = 30;
     private $barMargin = 15;
@@ -80,6 +81,11 @@ class Graph {
         return $this;
     }
 
+    public function hideNullValue($value) {
+        $this->hideNullValue = (boolean) $value;
+        return $this;
+    }
+
     public function render() {
         $html = '<div class="graph">';
 
@@ -90,6 +96,7 @@ class Graph {
         $values = array_values($this->data);
         $labels = array_keys($this->data);
         $maxValue = $this->autoMaxValue ? max($values) : $this->maxValue;
+        $maxValue = $maxValue < 1 ? 1 : $maxValue;
         $left = $this->barMargin;
 
         $graphHeight = $this->graphHeight + $this->barMargin;
@@ -100,7 +107,7 @@ class Graph {
             $height = floor($value / $maxValue * $this->graphHeight);
 
             $html .= '<li class="bar" style="left: ' . $left . 'px; height: ' . $height . 'px; width: ' . $this->barWidth . 'px;">';
-            if ($this->showValue) {
+            if ($this->showValue && ($this->showNullValue || $value > 0)) {
                 $html .= '<span class="value' . ($height < $this->outerMin ? " outer" : "") . '">' . round($value, $this->precision) . '</span>';
             }
             $html .= '</li>';
