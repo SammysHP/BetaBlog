@@ -5,7 +5,7 @@ require_once("lib/Database.php");
 require_once("lib/Post.php");
 require_once("lib/Comment.php");
 require_once("lib/Tag.php");
-require_once("lib/Graph.php");
+require_once("lib/SimpleBars.php");
 require_once("lib/klein.php");
 
 setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'de');
@@ -98,7 +98,7 @@ with($namespace, function () {
         }
         $response->graphs = array();
         foreach ($graphData as $year => $months) {
-            $graph = new Graph();
+            $graph = new SimpleBars();
             $graph->setData($months)
                 ->setTitle($year)
                 ->setBarWidth(15)
