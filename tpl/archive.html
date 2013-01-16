@@ -3,20 +3,19 @@
     $this->posts
     $this->baseurl
     $this->loggedin
+    ($this->graphs)
 */
-?>
 
-<div class="archive">
+echo '<div class="archive">';
 
-    <div class="graphs">
-    <?php
+if ($this->graphs) {
+    echo '<div class="graphs">';
     foreach ($this->graphs as $year => $graph) {
         echo '<a href="#idx-' . $year . '">' . $graph . '</a>';
     }
-    ?>
-    </div>
+    echo '</div>';
+}
 
-<?php
 $year = 0;
 $close = false;
 
