@@ -378,6 +378,29 @@ button:hover, button:focus {
     margin-bottom: 4em;
 }
 
+.archive .noposts {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.archive .timeline {
+    width: 32em;
+    margin: auto;
+    margin-bottom: 2em;
+    text-align: center;
+    font-size: 1.2em;
+    border-bottom: 1px solid #eee;
+}
+
+.archive .timeline a {
+    margin-right: 13px;
+    margin-left: 13px;
+}
+
+.archive .timeline a:hover {
+    color: #9a2e2e !important;
+}
+
 .archive .adminbox {
     float: right;
     width: 11em;
@@ -392,31 +415,46 @@ button:hover, button:focus {
     text-shadow: 1px 1px 2px rgba(0,0,0,.2);
 }
 
-.archive .graphs {
-    height: 250px;
-    overflow: hidden;
+/*--- STATISTICS ---------------------------------------------*/
+.statistics {
+    margin-bottom: 4em;
 }
 
-.archive .graphs a {
+.statistics .graphs {
+    margin-bottom: 3em;
+}
+
+.statistics .graphs a {
     display: block;
     float: left;
     clear: none;
     width: 250px;
-    margin-left: 7px;
-    margin-right: 7px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
     background: #fafafa;
     padding-top: 5px;
     padding-left: 5px;
 }
 
-.archive .graphs a:hover {
+.statistics .graphs a:hover {
     color: inherit;
     background: #f0f0f0;
 }
 
-.archive .graphs .graph {
+.statistics .graphs .graph {
     clear: none;
     width: 242px;
+}
+
+.statistics .postcount {
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.statistics .postcount .count {
+    font-size: 1.7em;
+    font-weight: bold;
 }
 
 /*--- FILES --------------------------------------------------*/

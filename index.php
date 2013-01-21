@@ -76,39 +76,43 @@ with($namespace, function () {
         $response->render('tpl/post.html');
     });
 
-    // Archive
+    // Statistics
     respond('GET', '/archive', function ($request, $response) {
         $response->session('backurl', $request->uri());
-        $response->posts = Post::findAll(!$response->loggedin);
         $response->title .= ' – Archiv';
 
-        $emptyYear = array(1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, 11 => 0, 12 => 0);
-        $graphData = array();
-        $graphMax = 0;
-        foreach ($response->posts as $post) {
-            $year = (int) date("Y", $post->getDate());
-            $month = (int) date("n", $post->getDate());
-            if (!array_key_exists($year, $graphData)) {
-                $graphData[$year] = $emptyYear;
-            }
-            $graphData[$year][$month]++;
-            if ($graphData[$year][$month] > $graphMax) {
-                $graphMax = $graphData[$year][$month];
-            }
-        }
+        $statistics = Post::getYearStatistics(!$response->loggedin);
+        $start = $statistics['first'] - 2 + (($statistics['last'] - $statistics['first']) % 3);
         $response->graphs = array();
-        foreach ($graphData as $year => $months) {
+        for ($year = $start; $year <= $statistics['last']; $year++) {
+            if (array_key_exists($year, $statistics['data'])) {
+                $data = $statistics['data'][$year];
+            } else {
+                $data = array(1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, 11 => 0, 12 => 0);
+            }
+
             $graph = new SimpleBars();
-            $graph->setData($months)
+            $graph->setData($data)
                 ->setTitle($year)
                 ->setBarWidth(15)
                 ->setBarMargin(5)
                 ->setGraphHeight(100)
-                ->setMaxValue($graphMax);
+                ->setMaxValue($statistics['max']);
+
             $response->graphs[$year] = $graph->render();
         }
-        $response->graphs = array_reverse($response->graphs, true);
 
+        $response->postcount = Post::getPostCount(!$response->loggedin);
+
+        $response->render('tpl/statistics.html');
+    });
+
+    // Archive
+    respond('GET', '/archive/[i:year]', function ($request, $response) {
+        $response->session('backurl', $request->uri());
+        $response->posts = Post::findByYear($request->param('year'), !$response->loggedin);
+        $response->title .= ' – Archiv (' . $request->param('year') . ')';
+        $response->year = $request->param('year');
         $response->render('tpl/archive.html');
     });
 
@@ -234,7 +238,7 @@ with($namespace, function () {
     // Delete post (view)
     respond('GET', '/post/[i:id]/delete', function ($request, $response) {
         $response->requireLogin($request, $response);
-        $post = Post::findById($request->param('id'));
+        $post = Post::findById($request->param('id'), false);
         $response->message = 'Beitrag "' . $post->getTitle() . '"';
         $response->render('tpl/delete.html');
     });

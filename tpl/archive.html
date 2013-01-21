@@ -3,63 +3,95 @@
     $this->posts
     $this->baseurl
     $this->loggedin
-    ($this->graphs)
+    ($this->year)
 */
 
 echo '<div class="archive">';
 
-if ($this->graphs) {
-    echo '<div class="graphs">';
-    foreach ($this->graphs as $year => $graph) {
-        echo '<a href="#idx-' . $year . '">' . $graph . '</a>';
+if (isset($this->year)) {
+    echo '<div class="timeline">';
+    
+    /*
+    $a = 0.43426627;
+    $b = 1.14723323;
+    $c = 1.57079632;
+    $d = 0.43050858;
+    $y = $a * sin($b * $x + $c) + $d;
+    */
+    
+    $parameters = array(
+        0 => array(2.2, '#000'),
+        1 => array(1.5, '#666'),
+        2 => array(1.2, '#999'),
+        3 => array(1.0, '#ccc'),
+    );
+    
+    for ($x = -3; $x <= 3; $x++) {
+        echo ' <a href="' . $this->baseurl . 'archive/' . ($this->year + $x) . '" style="font-size: ' . $parameters[abs($x)][0] . 'em; color: ' . $parameters[abs($x)][1] . ';">' . ($this->year + $x) . '</a> ';
     }
     echo '</div>';
 }
 
-$year = 0;
-$close = false;
-
-foreach ($this->posts as $post) {
-    if ($year == 0 || ((int) date("Y", $post->getDate())) < $year) {
-        if ($year != 0) {
-            echo '</table>';
+if (count($this->posts) == 0) {
+    echo '<div class="noposts">Keine Beiträge gefunden.</div>';
+} else {
+    $headervalue = 0;
+    $close = false;
+    
+    foreach ($this->posts as $post) {
+        if (isset($this->year)) {
+            if ($headervalue == 0 || ((int) date("n", $post->getDate())) != $headervalue) {
+                if ($headervalue != 0) {
+                    echo '</table>';
+                }
+                $headervalue = (int) date("n", $post->getDate());
+                echo '<h2>' . strftime("%B", $post->getDate()) . '</h2>';
+                echo '<table class="table">';
+                $close = true;
+            }
+        } else {
+            if ($headervalue == 0 || ((int) date("Y", $post->getDate())) < $headervalue) {
+                if ($headervalue != 0) {
+                    echo '</table>';
+                }
+                $headervalue = (int) date("Y", $post->getDate());
+                echo '<h2>' . $headervalue . '</h2>';
+                echo '<table class="table">';
+                $close = true;
+            }
         }
-        $year = (int) date("Y", $post->getDate());
-        echo '<h2 id="idx-' . $year . '">' . $year . '</h2>';
-        echo '<table class="table">';
-        $close = true;
+        
+        echo '<tr>';
+            echo '<td class="left">' . date("d.m.Y H:i", $post->getDate()) . '</td><td>';
+            
+            if ($this->loggedin) { ?>
+            <div class="adminbox">
+                <a href="<?php echo $this->baseurl . 'post/' . $post->getId() . '/edit';   ?>">bearbeiten</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="<?php echo $this->baseurl . 'post/' . $post->getId() . '/delete'; ?>">löschen</a>
+                <?php
+                if (!$post->isPublished()) {
+                    echo '<br /><span style="color: red;">nicht veröffentlicht</span>';
+                }
+                ?>
+            </div>
+            <?php }
+            
+            echo '<a href="' . $this->baseurl . 'post/' . $post->getId() . '">' . $post->getTitle() . '</a>';
+            echo '<div class="tags" style="text-align: left;">';
+            $tags = array();
+            foreach ($post->getTags() as $tag) {
+                $tags[] = '<a href="' . $this->baseurl . 'tag/' . str_replace('%2F', '/', rawurlencode($tag)) . '">' . $this->htmlescape($tag) . '</a>';
+            }
+            echo implode(', ', $tags);
+            echo '</div>';
+            echo '</td>';
+        echo '</tr>';
     }
     
-    echo '<tr>';
-        echo '<td class="left">' . date("d.m.Y H:i", $post->getDate()) . '</td><td>';
-        
-        if ($this->loggedin) { ?>
-        <div class="adminbox">
-            <a href="<?php echo $this->baseurl . 'post/' . $post->getId() . '/edit';   ?>">bearbeiten</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="<?php echo $this->baseurl . 'post/' . $post->getId() . '/delete'; ?>">löschen</a>
-            <?php
-            if (!$post->isPublished()) {
-                echo '<br /><span style="color: red;">nicht veröffentlicht</span>';
-            }
-            ?>
-        </div>
-        <?php }
-        
-        echo '<a href="' . $this->baseurl . 'post/' . $post->getId() . '">' . $post->getTitle() . '</a>';
-        echo '<div class="tags" style="text-align: left;">';
-        $tags = array();
-        foreach ($post->getTags() as $tag) {
-            $tags[] = '<a href="' . $this->baseurl . 'tag/' . str_replace('%2F', '/', rawurlencode($tag)) . '">' . $this->htmlescape($tag) . '</a>';
-        }
-        echo implode(', ', $tags);
-        echo '</div>';
-        echo '</td>';
-    echo '</tr>';
-}
-
-if ($close) {
-    echo '</table>';
+    if ($close) {
+        echo '</table>';
+    }
 }
 
 echo '</div>';

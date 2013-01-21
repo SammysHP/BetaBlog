@@ -1,0 +1,19 @@
+<?php
+/*
+    $this->baseurl
+    $this->graphs
+    $this->postcount
+*/
+
+?>
+<div class="statistics">
+    <div class="graphs">
+    <?php
+    foreach ($this->graphs as $year => $graph) {
+        echo '<a href="' . $this->baseurl . 'archive/' . $year . '">' . $graph . '</a>';
+    }
+    ?>
+    <div style="clear: both;"></div></div>
+    
+    <div class="postcount">Insgesamt<span class="count"> <?php echo $this->postcount; ?> </span>Beiträge.</div>
+</div>

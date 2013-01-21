@@ -105,6 +105,38 @@ class Post {
         return $result;
     }
 
+    public static function findByYear($year, $publishedIn = true) {
+        $db = Database::getConnection();
+
+        $start = strtotime((int) $year . '-01-01 0:00:00');
+        $end = strtotime('+1 year', $start);
+
+        if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . Config::DB_PREFIX . 'posts WHERE date >= ? AND date < ? AND published>=? ORDER BY date DESC'))) {
+            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+        }
+        if (!$statement->bind_param("iii", $start, $end, $publishedIn)) {
+            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+        }
+        if (!$statement->execute()) {
+            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+        }
+        if (!$statement->bind_result($id, $title, $content, $extended, $date, $published)) {
+            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+        }
+
+        $result = array();
+
+        while ($statement->fetch()) {
+            $result[] = new Post($title, $content, $extended, $date, array(), $published, $id);
+        }
+
+        foreach ($result as $post) {
+            $post->setTags(Tag::findByPost($post->getId()));
+        }
+
+        return $result;
+    }
+
     public static function findAll($publishedIn = true) {
         $db = Database::getConnection();
 
@@ -155,6 +187,49 @@ class Post {
         }
 
         return 0;
+    }
+
+    public static function getYearStatistics($published = true) {
+        $db = Database::getConnection();
+
+        if (!($statement = $db->prepare('SELECT date FROM ' . Config::DB_PREFIX . 'posts WHERE published>=? ORDER BY date DESC'))) {
+            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+        }
+        if (!$statement->bind_param("i", $published)) {
+            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+        }
+        if (!$statement->execute()) {
+            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+        }
+        if (!$statement->bind_result($date)) {
+            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+        }
+
+        $emptyYear = array(1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, 11 => 0, 12 => 0);
+        $result = array();
+        $maxMonthCount = 0;
+
+        while ($statement->fetch()) {
+            $year = (int) date("Y", $date);
+            $month = (int) date("n", $date);
+
+            if (!array_key_exists($year, $result)) {
+                $result[$year] = $emptyYear;
+            }
+
+            $result[$year][$month]++;
+
+            if ($result[$year][$month] > $maxMonthCount) {
+                $maxMonthCount = $result[$year][$month];
+            }
+        }
+
+        return array(
+            'max' => $maxMonthCount,
+            'data' => $result,
+            'first' => min(array_keys($result)),
+            'last' => max(array_keys($result))
+        );
     }
 
     public function create() {
