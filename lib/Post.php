@@ -1,8 +1,9 @@
 <?php
 
+/**
+ * Model of a post.
+ */
 class Post {
-    // TODO: Make statements static
-
     private $id;
     private $title;
     private $content;
@@ -11,6 +12,17 @@ class Post {
     private $tags;
     private $published;
 
+    /**
+     * Create a new post.
+     *
+     * @param strign $title
+     * @param string $content
+     * @param string $extended
+     * @param long $date
+     * @param string[] $tags
+     * @param boolean $published
+     * @param int $id
+     */
     public function __construct($title = "", $content = "<p>\n\n</p>", $extended = "", $date = -1, $tags = array(), $published = true, $id = -1) {
         $this->setTitle($title);
         $this->setContent($content);
@@ -21,6 +33,14 @@ class Post {
         $this->id = (int) $id;
     }
 
+    /**
+     * Find a post by its ID.
+     *
+     * @param int $id
+     * @param boolean $publishedIn Only published or all
+     * @return Post
+     * @throws Exception on any error
+     */
     public static function findById($id, $publishedIn = true) {
         $db = Database::getConnection();
 
@@ -47,13 +67,21 @@ class Post {
         return $post;
     }
 
+    /**
+     * Find a post by its tags.
+     *
+     * @param string[] $tags
+     * @param boolean $publishedIn Only published or all
+     * @return Post[]
+     * @throws Exception on any error
+     */
     public static function findByTag(array $tags, $publishedIn = true) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT DISTINCT id, title, content, extended, date, published FROM ' . Config::DB_PREFIX . 'posts JOIN ' . Config::DB_PREFIX . 'tags ON (post=id) WHERE published>=? AND tag=? ORDER BY date DESC'))) {
             throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
-        if (!$statement->bind_param("is", $publishedIn, $tags[0])) { // TODO
+        if (!$statement->bind_param("is", $publishedIn, $tags[0])) { // TODO support multiple tags
             throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
@@ -76,6 +104,15 @@ class Post {
         return $result;
     }
 
+    /**
+     * Find posts for a specific page.
+     *
+     * @param int $pageNo The page number, starting from 1
+     * @param int $pageSize The number of posts for each page
+     * @param boolean $publishedIn Only published or all
+     * @return Post[]
+     * @throws Exception on any error
+     */
     public static function findByPage($pageNo, $pageSize, $publishedIn = true) {
         $db = Database::getConnection();
 
@@ -105,6 +142,14 @@ class Post {
         return $result;
     }
 
+    /**
+     * Find posts for a specific year.
+     *
+     * @param int $year
+     * @param boolean $publishedIn Only published or all
+     * @return Post[]
+     * @throws Exception on any error
+     */
     public static function findByYear($year, $publishedIn = true) {
         $db = Database::getConnection();
 
@@ -137,6 +182,13 @@ class Post {
         return $result;
     }
 
+    /**
+     * Find all posts.
+     *
+     * @param boolean $publishedIn Only published or all
+     * @return Post[]
+     * @throws Exception on any error
+     */
     public static function findAll($publishedIn = true) {
         $db = Database::getConnection();
 
@@ -166,6 +218,13 @@ class Post {
         return $result;
     }
 
+    /**
+     * Counts all posts.
+     *
+     * @param boolean $publishedIn Only published or all
+     * @return int
+     * @throws Exception on any error
+     */
     public static function getPostCount($published = true) {
         $db = Database::getConnection();
 
@@ -189,6 +248,19 @@ class Post {
         return 0;
     }
 
+    /**
+     * Creates statistics for all posts.
+     * 
+     * The resulting array has the following keys:
+     *      max: (int) maximum number of posts in a month
+     *      data: (int[][])
+     *      first: (int) year of the first post
+     *      last: (int) year of the last post
+     *
+     * @param boolean $publishedIn Only published or all
+     * @return mixed[]
+     * @throws Exception on any error
+     */
     public static function getYearStatistics($published = true) {
         $db = Database::getConnection();
 
@@ -232,6 +304,14 @@ class Post {
         );
     }
 
+    /**
+     * Saves a new post.
+     *
+     * A new ID will be generated.
+     *
+     * @return Post this comment
+     * @throws Exception on any error
+     */
     public function create() {
         $db = Database::getConnection();
 
@@ -252,6 +332,12 @@ class Post {
         return $this;
     }
 
+    /**
+     * Saves a already present post.
+     *
+     * @return Post this comment
+     * @throws Exception on any error
+     */
     public function save() {
         if ($this->id < 0) {
             return $this->create();
@@ -274,6 +360,12 @@ class Post {
         return $this;
     }
 
+    /**
+     * Deletes a post.
+     *
+     * @param int $id The ID of the post
+     * @throws Exception on any error
+     */
     public static function delete($id) {
         $db = Database::getConnection();
 
@@ -291,6 +383,11 @@ class Post {
         Comment::deleteAll($id);
     }
 
+    /**
+     * Creates the database table.
+     *
+     * @throws Exception on any error
+     */
     public static function install() {
         $db = Database::getConnection();
 

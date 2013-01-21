@@ -1,11 +1,23 @@
 <?php
 
+/**
+ * Model of a tag.
+ *
+ * Tags will be returned as strings, so this class has only static methods.
+ */
 class Tag {
     private static $STMT_FIND_BY_POST;
 
     private function __construct() {
     }
 
+    /**
+     * Find tags of a post.
+     *
+     * @param int $post The ID of the post
+     * @return string[]
+     * @throws Exception on any error
+     */
     public static function findByPost($post) {
         if (!isset(self::$STMT_FIND_BY_POST)) {
             $db = Database::getConnection();
@@ -32,6 +44,12 @@ class Tag {
         return $result;
     }
 
+    /**
+     * Find all tags.
+     *
+     * @return string[]
+     * @throws Exception on any error
+     */
     public static function findAll() {
         $db = Database::getConnection();
 
@@ -54,6 +72,13 @@ class Tag {
         return $result;
     }
 
+    /**
+     * Update tags for a post.
+     *
+     * @param int $id The ID of the post
+     * @param string[] $tags
+     * @throws Exception on any error
+     */
     public static function update($post, array $tags) {
         if (count($tags) == 0) {
             self::delete($post);
@@ -76,6 +101,12 @@ class Tag {
         }
     }
 
+    /**
+     * Delete tags for a post.
+     *
+     * @param int $id The ID of the post
+     * @throws Exception on any error
+     */
     public static function delete($post) {
         $db = Database::getConnection();
 
@@ -90,6 +121,11 @@ class Tag {
         }
     }
 
+    /**
+     * Creates the database table.
+     *
+     * @throws Exception on any error
+     */
     public static function install() {
         $db = Database::getConnection();
 

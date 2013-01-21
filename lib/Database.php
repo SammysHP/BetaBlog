@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Helper to access the database.
+ */
 class Database {
     private static $instance;
 

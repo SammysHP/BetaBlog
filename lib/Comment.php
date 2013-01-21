@@ -1,14 +1,24 @@
 <?php
 
+/**
+ * Model of a comment.
+ */
 class Comment {
-    // TODO: Make statements static
-
     private $id;
     private $post;
     private $author;
     private $comment;
     private $date;
 
+    /**
+     * Create a new comment.
+     *
+     * @param int $post
+     * @param string $author
+     * @param string $comment
+     * @param long $date
+     * @param int $id
+     */
     public function __construct($post = -1, $author = "", $comment = "", $date = -1, $id = -1) {
         $this->setPost($post);
         $this->setAuthor($author);
@@ -17,6 +27,13 @@ class Comment {
         $this->id = (int) $id;
     }
 
+    /**
+     * Find a comment by its ID.
+     *
+     * @param int $id
+     * @return Comment
+     * @throws Exception on any error
+     */
     public static function findById($id) {
         $db = Database::getConnection();
 
@@ -40,6 +57,13 @@ class Comment {
         return new Comment($post, $author, $comment, $date, $id);
     }
 
+    /**
+     * Find all comments of a post post.
+     *
+     * @param int $post The ID of the post
+     * @return Comment[]
+     * @throws Exception on any error
+     */
     public static function findByPost($post) {
         $db = Database::getConnection();
 
@@ -65,6 +89,16 @@ class Comment {
         return $result;
     }
 
+    /**
+     * Find comments for a specific page.
+     *
+     * This includes comments of all posts.
+     *
+     * @param int $pageNo The page number, starting from 1
+     * @param int $pageSize The number of comments for each page
+     * @return Comment[]
+     * @throws Exception on any error
+     */
     public static function findByPage($pageNo, $pageSize) {
         $db = Database::getConnection();
 
@@ -90,6 +124,13 @@ class Comment {
         return $result;
     }
 
+    /**
+     * Counts all comments for a specific post.
+     *
+     * @param int $post The ID of the post
+     * @return int
+     * @throws Exception on any error
+     */
     public static function getCommentCount($post) {
         $db = Database::getConnection();
 
@@ -113,6 +154,14 @@ class Comment {
         return 0;
     }
 
+    /**
+     * Saves a new comment.
+     *
+     * A new ID will be generated.
+     *
+     * @return Comment this comment
+     * @throws Exception on any error
+     */
     public function create() {
         $db = Database::getConnection();
 
@@ -131,6 +180,12 @@ class Comment {
         return $this;
     }
 
+    /**
+     * Deletes a comment.
+     *
+     * @param int $id The ID of the comment
+     * @throws Exception on any error
+     */
     public static function delete($id) {
         $db = Database::getConnection();
 
@@ -145,6 +200,12 @@ class Comment {
         }
     }
 
+    /**
+     * Deletes all comment for a specific post.
+     *
+     * @param int $post The ID of the post
+     * @throws Exception on any error
+     */
     public static function deleteAll($post) {
         $db = Database::getConnection();
 
@@ -159,6 +220,11 @@ class Comment {
         }
     }
 
+    /**
+     * Creates the database table.
+     *
+     * @throws Exception on any error
+     */
     public static function install() {
         $db = Database::getConnection();
 
@@ -167,42 +233,91 @@ class Comment {
         }
     }
 
+    /**
+     * Get the id of this comment.
+     *
+     * @return int
+     */
     public function getId() {
         return $this->id;
     }
 
+    /**
+     * Get the author of this comment.
+     *
+     * @return string
+     */
     public function getAuthor() {
         return $this->author;
     }
 
+    /**
+     * Set the author of this comment.
+     *
+     * @param string $value If empty, "Anonym" will be used
+     * @return Comment this comment
+     */
     public function setAuthor($value) {
         $value = (string) $value;
         $this->author = empty($value) ? "Anonym" : $value;
         return $this;
     }
 
+    /**
+     * Get the content of this comment.
+     *
+     * @return string
+     */
     public function getComment() {
         return $this->comment;
     }
 
+    /**
+     * Set the content of this comment.
+     *
+     * @param string $value
+     * @return Comment this comment
+     */
     public function setComment($value) {
         $this->comment = (string) $value;
         return $this;
     }
 
+    /**
+     * Get the id of the post of this comment.
+     *
+     * @return int
+     */
     public function getPost() {
         return $this->post;
     }
 
+    /**
+     * Set the id of the post of this comment.
+     *
+     * @param int $value
+     * @return Comment this comment
+     */
     public function setPost($value) {
         $this->post = (int) $value;
         return $this;
     }
 
+    /**
+     * Get the date of this comment.
+     *
+     * @return long
+     */
     public function getDate() {
         return $this->date;
     }
 
+    /**
+     * Set the date of this comment.
+     *
+     * @param long $value If 0, the current time is used
+     * @return Comment this comment
+     */
     public function setDate($value) {
         $value = (int) $value;
         $this->date = $value < 0 ? time() : $value;

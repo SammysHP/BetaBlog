@@ -82,6 +82,8 @@ with($namespace, function () {
         $response->title .= ' – Archiv';
 
         $statistics = Post::getYearStatistics(!$response->loggedin);
+
+        // Fill up to 3*n matrix
         $start = $statistics['first'] - 2 + (($statistics['last'] - $statistics['first']) % 3);
         $response->graphs = array();
         for ($year = $start; $year <= $statistics['last']; $year++) {
