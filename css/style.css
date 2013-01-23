@@ -432,7 +432,11 @@ button:hover, button:focus {
     margin-left: 5px;
     margin-right: 5px;
     margin-bottom: 10px;
-    background: #fafafa;
+    background:
+        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAALCAYAAABLcGxfAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFRJREFUeNpi/P//PwMMtLW1ITjYgQATA4mABV2gqqqKEZtCoO0fwBqIcAYKADnpI8htuEzGpoGBVBso8zQhP7HgCyFoyMgDxT9S7KQPQNOI0gAQYABBlBoyuWKGWgAAAABJRU5ErkJggg==")
+        no-repeat
+        235px 9px
+        #fafafa;
     padding-top: 5px;
     padding-left: 5px;
     border: 1px solid #e5e5e5;
@@ -440,7 +444,7 @@ button:hover, button:focus {
 
 .statistics .graphs a:hover {
     color: inherit;
-    background: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
 .statistics .graphs .graph {
