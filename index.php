@@ -34,6 +34,7 @@ with($namespace, function () {
         $response->infourl = Config::INFO_URL;
         $response->headertitle = Config::HEADER_TITLE;
         $response->onError(function ($response, $err_msg) {
+            $response->code(404);
             $response->render('tpl/error.html');
         });
     });
