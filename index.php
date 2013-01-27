@@ -47,6 +47,11 @@ with($namespace, function () {
             $response->title .= ' – Seite ' . $request->param('page', 1);
         }
         $response->paginationCount = ceil(Post::getPostCount(!$response->loggedin) / Config::PAGESIZE);
+
+        if (count($response->posts) == 0) {
+            $response->code(404);
+        }
+
         $response->render('tpl/posts.html');
     });
 
@@ -115,6 +120,11 @@ with($namespace, function () {
         $response->posts = Post::findByYear($request->param('year'), !$response->loggedin);
         $response->title .= ' – Archiv (' . $request->param('year') . ')';
         $response->year = $request->param('year');
+
+        if (count($response->posts) == 0) {
+            $response->code(404);
+        }
+
         $response->render('tpl/archive.html');
     });
 
@@ -138,6 +148,11 @@ with($namespace, function () {
         $tag = rawurldecode(str_replace('/', '%2F', $request->param('tag')));
         $response->title .= ' – ' . $response->htmlescape($tag);
         $response->posts = Post::findByTag(array($tag), !$response->loggedin);
+
+        if (count($response->posts) == 0) {
+            $response->code(404);
+        }
+
         $response->render('tpl/archive.html');
     });
 
