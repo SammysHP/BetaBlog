@@ -11,7 +11,7 @@ echo '<' . '?xml version="1.0" encoding="utf-8"?' . '>' ?>
     <channel>
         <title><?php echo $this->title; ?></title>
         <link>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl; ?></link>
-        <pubDate><?php echo date("D, d M Y H:i:s T", time()); ?></pubDate>
+        <pubDate><?php echo date("r", time()); ?></pubDate>
         
         <?php
         foreach ($this->posts as $post) { ?>
@@ -23,7 +23,7 @@ echo '<' . '?xml version="1.0" encoding="utf-8"?' . '>' ?>
             </content:encoded>
             <link>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl . 'post/' . $post->getId(); ?></link>
             <guid>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl . 'post/' . $post->getId(); ?></guid>
-            <pubDate><?php echo date("D, d M Y H:i:s T", $post->getDate()); ?></pubDate>
+            <pubDate><?php echo date("r", $post->getDate()); ?></pubDate>
         </item>
         <?php } ?>
     </channel>

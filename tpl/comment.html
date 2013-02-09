@@ -6,7 +6,7 @@
     $this->htmlescape()
 */
 ?>
-<div class="comment">
+<div class="comment" id="comment-<?php echo $this->comment->getId(); ?>">
     <div class="title">
         <?php
         echo '<span style="font-weight: bold;">' . $this->htmlescape($this->comment->getAuthor()) . '</span>';

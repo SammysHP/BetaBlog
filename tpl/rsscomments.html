@@ -11,18 +11,18 @@ echo '<' . '?xml version="1.0" encoding="utf-8"?' . '>' ?>
     <channel>
         <title><?php echo $this->title; ?> (Kommentare)</title>
         <link>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl; ?></link>
-        <pubDate><?php echo date("D, d M Y H:i:s T", time()); ?></pubDate>
+        <pubDate><?php echo date("r", time()); ?></pubDate>
         
         <?php
         foreach ($this->comments as $comment) { ?>
         <item>
             <title><?php echo $this->htmlescape($comment->getAuthor()); ?></title>
             <content:encoded>
-                <?php echo str_replace("\n", "<br />", $this->htmlescape($comment->getComment())); ?>
+                <?php echo $this->htmlescape(str_replace("\n", "<br />", $comment->getComment())); ?>
             </content:encoded>
-            <link>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl . 'post/' . $comment->getPost(); ?></link>
-            <guid>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl . 'post/' . $comment->getPost(); ?></guid>
-            <pubDate><?php echo date("D, d M Y H:i:s T", $comment->getDate()); ?></pubDate>
+            <link>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl . 'post/' . $comment->getPost() . '#comment-' . $comment->getId(); ?></link>
+            <guid>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl . 'post/' . $comment->getPost() . '#comment-' . $comment->getId(); ?></guid>
+            <pubDate><?php echo date("r", $comment->getDate()); ?></pubDate>
         </item>
         <?php } ?>
     </channel>
