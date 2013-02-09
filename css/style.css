@@ -304,19 +304,18 @@ button:hover, button:focus {
 }
 
 #pagination a {
-    background: url('../img/paging.png') no-repeat scroll 0% 100%;
+    background:
+        url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAAFCAMAAACEse6wAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAxQTFRF////dHR0REREx8fHXWkUAAAAAC1JREFUeNpiYBipgJmJmWEUjLQ4Zxq5sc44QgETCIxQv4/m9FEwWqePBAAQYAB0vQIiJPzMvgAAAABJRU5ErkJggg==")
+        no-repeat
+        scroll
+        0% 100%;
     color: #ffffff;
     padding: 10px;
     padding-top: 0;
 }
 
-#pagination a:hover {
-    background: url('../img/paging.png') no-repeat scroll 50% 100%;
-    color: #222222;
-}
-
-#pagination .current {
-    background: url('../img/paging.png') no-repeat scroll 50% 100%;
+#pagination a:hover, #pagination .current {
+    background-position: 50% 100%;
     color: #222222;
 }
 
