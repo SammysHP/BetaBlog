@@ -18,7 +18,7 @@ echo '<' . '?xml version="1.0" encoding="utf-8"?' . '>' ?>
         <item>
             <title><?php echo $this->htmlescape($comment->getAuthor()); ?></title>
             <content:encoded>
-                <?php echo $this->htmlescape(str_replace("\n", "<br />", $comment->getComment())); ?>
+                <?php echo $this->htmlescape(str_replace("\n", "<br />", $this->htmlescape($comment->getComment()))); ?>
             </content:encoded>
             <link>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl . 'post/' . $comment->getPost() . '#comment-' . $comment->getId(); ?></link>
             <guid>http://<?php echo rtrim($_SERVER['HTTP_HOST'], '/') . $this->baseurl . 'post/' . $comment->getPost() . '#comment-' . $comment->getId(); ?></guid>
