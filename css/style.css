@@ -252,8 +252,8 @@ button:hover, button:focus {
     display: block;
     margin: auto;
     margin-bottom: 1em;
-    max-width: 26em;
-    max-height: 26em;
+    max-width: 400px;
+    max-height: 400px;
     box-shadow: 0 0 5px rgba(0,0,0,.2);
     border: none;
 }
