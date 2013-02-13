@@ -319,16 +319,8 @@ button:hover, button:focus {
     color: #222222;
 }
 
-#pagination .skip {
-    background: none;
-    color: #222222;
-    padding: 10px;
-    padding-top: 0px;
-}
-
-#pagination .skip:hover {
-    background: none;
-    font-weight: bold;
+#pagination .end {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAAFCAMAAACEse6wAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAxQTFRF////dHR0REREx8fHXWkUAAAAAC9JREFUeNpiYBipgJmJmWEUjLQ4Zxq5sc7IyDgiSSYQGKF+H83po2C0Th8JACDAAMFaASwfYht8AAAAAElFTkSuQmCC");
 }
 
 /*--- POPUP --------------------------------------------------*/

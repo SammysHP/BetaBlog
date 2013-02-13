@@ -30,6 +30,11 @@ final class Config {
     // Posts per page
     const PAGESIZE      = 5;
 
+    // Number of entries in pagination
+    // n = 2 * PAGINATION_C + 1
+    // (minimum = 2)
+    const PAGINATION_C  = 4;
+
     // HTML title
     const PAGE_TITLE    = 'BetaBlog';
 

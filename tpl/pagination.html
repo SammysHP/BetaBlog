@@ -7,25 +7,36 @@
 
 echo '<div id="pagination">';
 
-/*
-$prev = $this->paginationCurrent - 1;
-if ($prev > 0) {
-    echo "<a href=\"{$this->baseurl}page/{$prev}\" class=\"skip\">«</a>";
-}
-*/
-
 if ($this->paginationCount > 1) {
-    for ($i = 1; $i <= $this->paginationCount; $i++) {
+    $windowStart = max($this->paginationCurrent - Config::PAGINATION_C, 1);
+    $windowEnd = min($this->paginationCurrent + Config::PAGINATION_C, $this->paginationCount);
+    
+    // ensure that window has maximum size
+    if ($this->paginationCurrent - $windowStart < Config::PAGINATION_C) {
+        $windowEnd = min($windowEnd + Config::PAGINATION_C - $this->paginationCurrent + $windowStart, $this->paginationCount);
+    } elseif ($windowEnd - $this->paginationCurrent < Config::PAGINATION_C) {
+        $windowStart = max($windowStart - Config::PAGINATION_C + $windowEnd - $this->paginationCurrent, 1);
+    }
+    
+    if ($windowStart > 1) {
+        // first element of window is used for first-page-link
+        $windowStart++;
+        echo "<a href=\"{$this->baseurl}page/1\" class=\"end\">1</a>";
+    }
+    
+    if ($this->paginationCount > $windowEnd) {
+        // last element of window is used for last-page-link
+        $windowEnd--;
+    }
+    
+    for ($i = $windowStart; $i <= $windowEnd; $i++) {
         $current = ($this->paginationCurrent == $i ? ' class="current"' : '');
         echo "<a href=\"{$this->baseurl}page/{$i}\"{$current}>{$i}</a>";
     }
+    
+    if ($this->paginationCount > $windowEnd) {
+        echo "<a href=\"{$this->baseurl}page/{$this->paginationCount}\" class=\"end\">{$this->paginationCount}</a>";
+    }
 }
-
-/*
-$next = $this->paginationCurrent + 1;
-if ($next <= $this->paginationCount) {
-    echo "<a href=\"{$this->baseurl}page/{$next}\" class=\"skip\">»</a>";
-}
-*/
 
 echo '</div>';
