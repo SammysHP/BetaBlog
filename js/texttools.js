@@ -70,12 +70,12 @@ function simpleUnescape(text) {
 }
 
 function surroundSelectedText(el, before, after) {
-var sel = getInputSelection(el)
-var val = el.value;
-var text = val.slice(sel.start, sel.end);
-el.value = val.slice(0, sel.start) + before + text + after + val.slice(sel.end);
-setCaretPosition(el, sel.start + before.length + text.length + after.length);
-return false;
+    var sel = getInputSelection(el)
+    var val = el.value;
+    var text = val.slice(sel.start, sel.end);
+    el.value = val.slice(0, sel.start) + before + text + after + val.slice(sel.end);
+    setCaretPosition(el, sel.start + before.length + text.length);
+    return false;
 }
 
 function escapeSelectedText(el) {
