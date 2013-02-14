@@ -6,17 +6,17 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 
 code .comment,
 code .template_comment,
-code .diff .header,
+code.diff .header,
 code .javadoc {
   color: #998;
   font-style: italic
 }
 
 code .keyword,
-code .css .rule .keyword,
+code.css .rule .keyword,
 code .winutils,
-code .javascript .title,
-code .nginx .title,
+code.javascript .title,
+code.nginx .title,
 code .subst,
 code .request,
 code .status {
@@ -26,14 +26,14 @@ code .status {
 
 code .number,
 code .hexcolor,
-code .ruby .constant {
+code.ruby .constant {
   color: #099;
 }
 
 code .string,
 code .tag .value,
 code .phpdoc,
-code .tex .formula {
+code.tex .formula {
   color: #d14
 }
 
@@ -43,17 +43,17 @@ code .id {
   font-weight: bold
 }
 
-code .javascript .title,
-code .lisp .title,
-code .clojure .title,
+code.javascript .title,
+code.lisp .title,
+code.clojure .title,
 code .subst {
   font-weight: normal
 }
 
 code .class .title,
-code .haskell .type,
-code .vhdl .literal,
-code .tex .command {
+code.haskell .type,
+code.vhdl .literal,
+code.tex .command {
   color: #458;
   font-weight: bold
 }
@@ -61,14 +61,14 @@ code .tex .command {
 code .tag,
 code .tag .title,
 code .rules .property,
-code .django .tag .keyword {
+code.django .tag .keyword {
   color: #000080;
   font-weight: normal
 }
 
 code .attribute,
 code .variable,
-code .lisp .body {
+code.lisp .body {
   color: #008080
 }
 
@@ -82,16 +82,16 @@ code .class {
 }
 
 code .symbol,
-code .ruby .symbol .string,
-code .lisp .keyword,
-code .tex .special,
+code.ruby .symbol .string,
+code.lisp .keyword,
+code.tex .special,
 code .prompt {
   color: #990073
 }
 
 code .built_in,
-code .lisp .title,
-code .clojure .built_in {
+code.lisp .title,
+code.clojure .built_in {
   color: #0086b3
 }
 
@@ -112,7 +112,7 @@ code .addition {
   background: #dfd
 }
 
-code .diff .change {
+code.diff .change {
   background: #0086b3
 }
 
