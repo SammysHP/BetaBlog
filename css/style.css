@@ -391,6 +391,13 @@ button:hover, button:focus {
     background: #f0f0f0;
 }
 
+/*--- PREVIEW ------------------------------------------------*/
+.preview {
+    border-top: 3px solid #eeeeee;
+    padding-top: 1em;
+    margin-top: 4em;
+}
+
 /*--- ARCHIVE ------------------------------------------------*/
 .archive {
     margin-bottom: 4em;

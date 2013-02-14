@@ -178,3 +178,17 @@ function insertTag(tag) {
     }
     return false;
 }
+
+function updatePreview() {
+    var container = $$$('preview');
+    container.innerHTML = '<div class="adminbox"><a href="#" onClick="return hidePreview();">ausblenden</a></div><h2>' + $$$('title').value + '</h2>' + $$$('contenttextarea').value + $$$('extendedtextarea').value;
+    $('code').each(function(i, e) {hljs.highlightBlock(e)});
+    container.style.display = 'block';
+}
+
+function hidePreview() {
+    var container = $$$('preview');
+    container.innerHTML = '';
+    container.style.display = 'none';
+    return false;
+}

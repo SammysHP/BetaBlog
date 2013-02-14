@@ -28,6 +28,7 @@ function renderTextTools($element) {
     </div>
 EOT;
 }
+
 ?>
 <script src="<?php echo $this->baseurl; ?>js/texttools.js"></script>
 
@@ -70,9 +71,16 @@ EOT;
             </td>
         </tr>
         <tr>
-            <td class="left"></td><td><button type="submit" tabindex="7" name="save" value="save">Speichern</button> <button type="submit" tabindex="8" name="submit">Absenden</button></td>
+            <td class="left"></td>
+            <td style="padding-top: 1em;">
+                <button type="submit" tabindex="7" name="save" value="save" style="margin-right: 0.5em;">Speichern</button>
+                <button type="submit" tabindex="8" name="submit" style="margin-right: 2.5em;">Absenden</button>
+                <button type="button" tabindex="9" onClick="updatePreview();">Vorschau</button>
+            </td>
         </tr>
     </table>
+    
+    <div id="preview" class="entry preview" style="display: none;"></div>
 </form>
 <script>
     document.getElementById('title').focus();
