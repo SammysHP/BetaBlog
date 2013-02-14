@@ -4,6 +4,30 @@
     $this->post
     $this->alltags
 */
+
+function renderTextTools($element) {
+    echo <<<EOT
+    <div class="texttools">
+        <a href="#" onClick="return makeBold(\$\$\$('$element'));"><b>B</b></a>
+        <a href="#" onClick="return makeItalic(\$\$\$('$element'));"><i>I</i></a>
+        <a href="#" onClick="return makeUnderline(\$\$\$('$element'));"><u>U</u></a>
+        <br />
+        <a href="#" onClick="return insertBreak(\$\$\$('$element'));">br</a>
+        <a href="#" onClick="return insertParagraph(\$\$\$('$element'));">p</a>
+        <a href="#" onClick="return makeHeading(\$\$\$('$element'));">h</a>
+        <a href="#" onClick="return makeAnchor(\$\$\$('$element'));">a</a>
+        <br />
+        <a href="#" onClick="return makeImage(\$\$\$('$element'));">img</a>
+        <a href="#" onClick="return makeImageBox(\$\$\$('$element'));">img-box</a>
+        <br />
+        <a href="#" onClick="return makeCode(\$\$\$('$element'));">code</a>
+        <a href="#" onClick="return makeCodeBlock(\$\$\$('$element'));">code-b</a>
+        <br />
+        <a href="#" onClick="return escapeSelectedText(\$\$\$('$element'));">esc</a>
+        <a href="#" onClick="return unescapeSelectedText(\$\$\$('$element'));">un-esc</a>
+    </div>
+EOT;
+}
 ?>
 <script src="<?php echo $this->baseurl; ?>js/texttools.js"></script>
 
@@ -21,54 +45,14 @@
         <tr>
             <td class="left">
                 Inhalt:
-                <div style="color: #aaaaaa; padding-top: 1em;">
-                    <a href="#" onClick="return makeBold($$$('contenttextarea'));"><b>B</b></a>
-                    <a href="#" onClick="return makeItalic($$$('contenttextarea'));"><i>I</i></a>
-                    <a href="#" onClick="return makeUnderline($$$('contenttextarea'));"><u>U</u></a>
-                    <br />
-                    <a href="#" onClick="return insertBreak($$$('contenttextarea'));">br</a>
-                    <a href="#" onClick="return insertParagraph($$$('contenttextarea'));">p</a>
-                    <a href="#" onClick="return makeHeading($$$('contenttextarea'));">h</a>
-                    <a href="#" onClick="return makeAnchor($$$('contenttextarea'));">a</a>
-                    <a href="#" onClick="return makeImage($$$('contenttextarea'));">img</a>
-                    <br />
-                    <a href="#" onClick="return makeImageBox($$$('contenttextarea'));">img-box</a>
-                    <br />
-                    <a href="#" onClick="return makeCode($$$('contenttextarea'));">code</a>
-                    <br />
-                    <a href="#" onClick="return makeCodeBlock($$$('contenttextarea'));">code-block</a>
-                    <br />
-                    <a href="#" onClick="return escapeSelectedText($$$('contenttextarea'));">escape</a>
-                    <br />
-                    <a href="#" onClick="return unescapeSelectedText($$$('contenttextarea'));">unescape</a>
-                </div>
+                <?php renderTextTools('contenttextarea'); ?>
             </td>
             <td><textarea rows="15" tabindex="4" name="content" id="contenttextarea"><?php echo $this->htmlescape($this->post->getContent()); ?></textarea></td>
         </tr>
         <tr>
             <td class="left">
                 Erweitert:
-                <div style="color: #aaaaaa; padding-top: 1em;">
-                    <a href="#" onClick="return makeBold($$$('extendedtextarea'));"><b>B</b></a>
-                    <a href="#" onClick="return makeItalic($$$('extendedtextarea'));"><i>I</i></a>
-                    <a href="#" onClick="return makeUnderline($$$('extendedtextarea'));"><u>U</u></a>
-                    <br />
-                    <a href="#" onClick="return insertBreak($$$('extendedtextarea'));">br</a>
-                    <a href="#" onClick="return insertParagraph($$$('extendedtextarea'));">p</a>
-                    <a href="#" onClick="return makeHeading($$$('extendedtextarea'));">h</a>
-                    <a href="#" onClick="return makeAnchor($$$('extendedtextarea'));">a</a>
-                    <a href="#" onClick="return makeImage($$$('extendedtextarea'));">img</a>
-                    <br />
-                    <a href="#" onClick="return makeImageBox($$$('extendedtextarea'));">img-box</a>
-                    <br />
-                    <a href="#" onClick="return makeCode($$$('extendedtextarea'));">code</a>
-                    <br />
-                    <a href="#" onClick="return makeCodeBlock($$$('extendedtextarea'));">code-block</a>
-                    <br />
-                    <a href="#" onClick="return escapeSelectedText($$$('extendedtextarea'));">escape</a>
-                    <br />
-                    <a href="#" onClick="return unescapeSelectedText($$$('extendedtextarea'));">unescape</a>
-                </div>
+                <?php renderTextTools('extendedtextarea'); ?>
             </td>
             <td><textarea rows="30" tabindex="5" name="extended" id="extendedtextarea"><?php echo $this->htmlescape($this->post->getExtended()); ?></textarea></td>
         </tr>
