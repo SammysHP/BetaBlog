@@ -181,7 +181,7 @@ function insertTag(tag) {
 
 function updatePreview() {
     var container = $$$('preview');
-    container.innerHTML = '<div class="adminbox"><a href="#" onClick="return hidePreview();">ausblenden</a></div><h2>' + $$$('title').value + '</h2>' + $$$('contenttextarea').value + $$$('extendedtextarea').value;
+    container.innerHTML = '<div class="adminbox"><a href="#" onClick="return hidePreview();">ausblenden</a></div><h2>' + $$$('title').value + '</h2>' + $$$('contenttextarea').value + $$$('extendedtextarea').value + '<div style="clear: both;">&nbsp;</div>';
     $('code').each(function(i, e) {hljs.highlightBlock(e)});
     container.style.display = 'block';
 }
