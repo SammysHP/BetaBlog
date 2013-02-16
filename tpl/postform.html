@@ -8,23 +8,28 @@
 function renderTextTools($element) {
     echo <<<EOT
     <div class="texttools">
-        <a href="#" onClick="return makeBold(\$\$\$('$element'));"><b>B</b></a>
-        <a href="#" onClick="return makeItalic(\$\$\$('$element'));"><i>I</i></a>
-        <a href="#" onClick="return makeUnderline(\$\$\$('$element'));"><u>U</u></a>
+        <a href="#" onClick="makeBold(\$('$element')[0]); return false;"><b>B</b></a>
+        <a href="#" onClick="makeItalic(\$('$element')[0]); return false;"><i>I</i></a>
+        <a href="#" onClick="makeUnderline(\$('$element')[0]); return false;"><u>U</u></a>
         <br />
-        <a href="#" onClick="return insertBreak(\$\$\$('$element'));">br</a>
-        <a href="#" onClick="return insertParagraph(\$\$\$('$element'));">p</a>
-        <a href="#" onClick="return makeHeading(\$\$\$('$element'));">h</a>
-        <a href="#" onClick="return makeAnchor(\$\$\$('$element'));">a</a>
+        <a href="#" onClick="makeLink(\$('$element')[0]); return false;">a</a>
+        <a href="#" onClick="makeHeading(\$('$element')[0]); return false;">h</a>
+        <a href="#" onClick="makeParagraph(\$('$element')[0]); return false;">p</a>
+        <a href="#" onClick="makeDel(\$('$element')[0]); return false;"><del>S</del></a>
         <br />
-        <a href="#" onClick="return makeImage(\$\$\$('$element'));">img</a>
-        <a href="#" onClick="return makeImageBox(\$\$\$('$element'));">img-box</a>
+        <a href="#" onClick="makeUnorderedList(\$('$element')[0]); return false;">ul</a>
+        <a href="#" onClick="makeOrderedList(\$('$element')[0]); return false;">ol</a>
+        <a href="#" onClick="makeListItem(\$('$element')[0]); return false;">li</a>
+        <a href="#" onClick="makeBreak(\$('$element')[0]); return false;">br</a>
         <br />
-        <a href="#" onClick="return makeCode(\$\$\$('$element'));">code</a>
-        <a href="#" onClick="return makeCodeBlock(\$\$\$('$element'));">code-b</a>
+        <a href="#" onClick="makeImage(\$('$element')[0]); return false;">img</a>
+        <a href="#" onClick="makeImageBox(\$('$element')[0]); return false;">img-box</a>
         <br />
-        <a href="#" onClick="return escapeSelectedText(\$\$\$('$element'));">esc</a>
-        <a href="#" onClick="return unescapeSelectedText(\$\$\$('$element'));">un-esc</a>
+        <a href="#" onClick="makeCode(\$('$element')[0]); return false;">code</a>
+        <a href="#" onClick="makeCodeBlock(\$('$element'));">code-b</a>
+        <br />
+        <a href="#" onClick="escapeSelectedText(\$('$element')[0]); return false;">esc</a>
+        <a href="#" onClick="unescapeSelectedText(\$('$element')[0]); return false;">un-esc</a>
     </div>
 EOT;
 }
@@ -46,16 +51,16 @@ EOT;
         <tr>
             <td class="left">
                 Inhalt:
-                <?php renderTextTools('contenttextarea'); ?>
+                <?php renderTextTools('#content'); ?>
             </td>
-            <td><textarea rows="15" tabindex="4" name="content" id="contenttextarea"><?php echo $this->htmlescape($this->post->getContent()); ?></textarea></td>
+            <td><textarea rows="15" tabindex="4" name="content" id="content"><?php echo $this->htmlescape($this->post->getContent()); ?></textarea></td>
         </tr>
         <tr>
             <td class="left">
                 Erweitert:
-                <?php renderTextTools('extendedtextarea'); ?>
+                <?php renderTextTools('#extended'); ?>
             </td>
-            <td><textarea rows="30" tabindex="5" name="extended" id="extendedtextarea"><?php echo $this->htmlescape($this->post->getExtended()); ?></textarea></td>
+            <td><textarea rows="30" tabindex="5" name="extended" id="extended"><?php echo $this->htmlescape($this->post->getExtended()); ?></textarea></td>
         </tr>
         <tr>
             <td class="left">Tags:</td>
@@ -64,7 +69,7 @@ EOT;
                 <div class="tags"><?php
                     $tags = array();
                     foreach ($this->alltags as $tag) {
-                        $tags[] = '<a href="#" onClick="return insertTag(\'' . $this->htmlescape($tag[0]) . '\');">' . $this->htmlescape($tag[0]) . '</a>';
+                        $tags[] = '<a href="#" onClick="insertTag(\'' . $this->htmlescape($tag[0]) . '\'); return false;">' . $this->htmlescape($tag[0]) . '</a>';
                     }
                     echo implode(', ', $tags);
                 ?></div>
@@ -84,5 +89,5 @@ EOT;
 <div id="preview" class="entry preview" style="display: none;"></div>
 
 <script>
-    document.getElementById('title').focus();
+    $('#title').focus();
 </script>
