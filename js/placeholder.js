@@ -1,0 +1,31 @@
+jQuery.support.placeholder = false;
+if ('placeholder' in document.createElement('input')) {
+    jQuery.support.placeholder = true;
+}
+
+$(document).ready(function() {
+    if (!jQuery.support.placeholder) {
+        $('[placeholder]').focus(function() {
+            var input = $(this);
+            if (input.val() == input.attr('placeholder') && input.hasClass('placeholder')) {
+                input.val('');
+                input.removeClass('placeholder');
+            }
+        }).blur(function() {
+            var input = $(this);
+            if (input.val() == '') {
+                input.addClass('placeholder');
+                input.val(input.attr('placeholder'));
+            }
+        }).blur();
+        
+        $('[placeholder]').parents('form').submit(function() {
+            $(this).find('[placeholder]').each(function() {
+                var input = $(this);
+                if (input.val() == input.attr('placeholder') && input.hasClass('placeholder')) {
+                    input.val('');
+                }
+            })
+        });
+    }
+});
