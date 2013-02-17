@@ -108,7 +108,7 @@ button:hover, button:focus {
     width: 50em;
     margin: auto;
     margin-top: 3em;
-    padding-bottom: 3em;
+    padding-bottom: 7em;
 }
 
 /*--- ENTRY --------------------------------------------------*/
@@ -296,7 +296,7 @@ button:hover, button:focus {
 /*--- PAGINATION ---------------------------------------------*/
 #pagination {
     text-align: center;
-    margin-bottom: 5em;
+    margin-bottom: 2em;
 }
 
 #pagination a {
@@ -437,10 +437,6 @@ button:hover, button:focus {
 }
 
 /*--- STATISTICS ---------------------------------------------*/
-.statistics {
-    margin-bottom: 4em;
-}
-
 .statistics .graphs {
     margin-bottom: 3em;
 }
@@ -487,7 +483,6 @@ button:hover, button:focus {
 .files {
     width: 80%;
     margin: auto;
-    margin-bottom: 4em;
 }
 
 .files .file {
