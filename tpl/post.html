@@ -45,9 +45,10 @@
     echo $this->post->getContent();
     if ($this->post->getExtended()) {
         if ($this->fullentry) {
+            echo '<div id="more"></div>';
             echo $this->post->getExtended();
         } else {
-            echo '<div class="morelink"><a href="' . $this->baseurl . 'post/' . $this->post->getId() . '">weiter »</a></div>';
+            echo '<div class="morelink"><a href="' . $this->baseurl . 'post/' . $this->post->getId() . '#more">weiter »</a></div>';
         }
     }
     ?>
