@@ -76,6 +76,10 @@ class Tag {
      * @throws Exception on any error
      */
     public static function loadTags(array $posts) {
+        if (count($posts) == 0) {
+            return $posts;
+        }
+
         $ids = array();
         foreach ($posts as $post) {
             $ids[] = (int) $post->getId();

@@ -155,6 +155,45 @@ class Comment {
     }
 
     /**
+     * Load comment count for a list of posts.
+     *
+     * @param Post[] $posts A list of posts
+     * @return Post[]
+     * @throws Exception on any error
+     */
+    public static function loadCommentCount(array $posts) {
+        if (count($posts) == 0) {
+            return $posts;
+        }
+
+        $ids = array();
+        foreach ($posts as $post) {
+            $ids[] = (int) $post->getId();
+        }
+        $ids = array_unique($ids);
+
+        $db = Database::getConnection();
+
+        if (!$dbResult = $db->query("SELECT post, count(*) AS count FROM " . Config::DB_PREFIX . 'comments WHERE post IN (' . implode(', ', $ids) . ') GROUP BY post')) {
+            throw new Exception("Execute failed: (" . $db->errno . ") " . $db->error);
+        }
+
+        $count = array();
+        while ($row = $dbResult->fetch_assoc()) {
+            $count[$row['post']] = $row['count'];
+        }
+        $dbResult->free();
+
+        foreach ($posts as $post) {
+            if (array_key_exists($post->getId(), $count)) {
+                $post->setCommentCount($count[$post->getId()]);
+            }
+        }
+
+        return $posts;
+    }
+
+    /**
      * Saves a new comment.
      *
      * A new ID will be generated.

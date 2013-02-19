@@ -11,6 +11,7 @@ class Post {
     private $date;
     private $tags;
     private $published;
+    private $commentCount;
 
     /**
      * Create a new post.
@@ -23,7 +24,7 @@ class Post {
      * @param boolean $published
      * @param int $id
      */
-    public function __construct($title = "", $content = "<p>\n\n</p>", $extended = "", $date = -1, $tags = array(), $published = true, $id = -1) {
+    public function __construct($title = "", $content = "<p>\n\n</p>", $extended = "", $date = -1, $tags = array(), $published = true, $id = -1, $commentCount = 0) {
         $this->setTitle($title);
         $this->setContent($content);
         $this->setExtended($extended);
@@ -31,6 +32,7 @@ class Post {
         $this->setTags($tags);
         $this->setPublished($published);
         $this->id = (int) $id;
+        $this->commentCount = (int) $commentCount;
     }
 
     /**
@@ -64,6 +66,7 @@ class Post {
         $post = new Post($title, $content, $extended, $date, array(), $published, $id);
         $statement->close();
         $post->setTags(Tag::findByPost($post->getId()));
+        $post->setCommentCount(Comment::getCommentCount($post->getId()));
         return $post;
     }
 
@@ -97,7 +100,8 @@ class Post {
             $posts[] = new Post($title, $content, $extended, $date, array(), $published, $id);
         }
 
-        $posts = Tag::loadTags($posts);
+        Tag::loadTags($posts);
+        Comment::loadCommentCount($posts);
 
         return $posts;
     }
@@ -133,7 +137,8 @@ class Post {
             $posts[] = new Post($title, $content, $extended, $date, array(), $published, $id);
         }
 
-        $posts = Tag::loadTags($posts);
+        Tag::loadTags($posts);
+        Comment::loadCommentCount($posts);
 
         return $posts;
     }
@@ -168,10 +173,11 @@ class Post {
         $posts = array();
 
         while ($statement->fetch()) {
-            $result[] = new Post($title, $content, $extended, $date, array(), $published, $id);
+            $posts[] = new Post($title, $content, $extended, $date, array(), $published, $id);
         }
 
-        $posts = Tag::loadTags($posts);
+        Tag::loadTags($posts);
+        Comment::loadCommentCount($posts);
 
         return $posts;
     }
@@ -205,7 +211,8 @@ class Post {
             $posts[] = new Post($title, $content, $extended, $date, array(), $published, $id);
         }
 
-        $posts = Tag::loadTags($posts);
+        Tag::loadTags($posts);
+        Comment::loadCommentCount($posts);
 
         return $posts;
     }
@@ -444,6 +451,15 @@ class Post {
 
     public function setPublished($value) {
         $this->published = (boolean) $value;
+        return $this;
+    }
+
+    public function getCommentCount() {
+        return $this->commentCount;
+    }
+
+    public function setCommentCount($value) {
+        $this->commentCount = (int) $value;
         return $this;
     }
 }
