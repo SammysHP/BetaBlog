@@ -6,8 +6,6 @@
  * Tags will be returned as strings, so this class has only static methods.
  */
 class Tag {
-    private static $STMT_FIND_BY_POST;
-
     private function __construct() {
     }
 
@@ -19,25 +17,23 @@ class Tag {
      * @throws Exception on any error
      */
     public static function findByPost($post) {
-        if (!isset(self::$STMT_FIND_BY_POST)) {
-            $db = Database::getConnection();
-            if (!(self::$STMT_FIND_BY_POST = $db->prepare('SELECT tag FROM ' . Config::DB_PREFIX . 'tags WHERE post=? ORDER BY tag ASC'))) {
-                throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
-            }
+        $db = Database::getConnection();
+        if (!($statement = $db->prepare('SELECT tag FROM ' . Config::DB_PREFIX . 'tags WHERE post=? ORDER BY tag ASC'))) {
+            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
-        if (!self::$STMT_FIND_BY_POST->bind_param("i", $post)) {
+        if (!$statement->bind_param("i", $post)) {
             throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
-        if (!self::$STMT_FIND_BY_POST->execute()) {
+        if (!$statement->execute()) {
             throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
-        if (!self::$STMT_FIND_BY_POST->bind_result($tag)) {
+        if (!$statement->bind_result($tag)) {
             throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $result = array();
 
-        while (self::$STMT_FIND_BY_POST->fetch()) {
+        while ($statement->fetch()) {
             $result[] = $tag;
         }
 
@@ -70,6 +66,41 @@ class Tag {
         }
 
         return $result;
+    }
+
+    /**
+     * Load tags for a list of posts.
+     *
+     * @param Post[] $posts A list of posts
+     * @return Post[]
+     * @throws Exception on any error
+     */
+    public static function loadTags(array $posts) {
+        $ids = array();
+        foreach ($posts as $post) {
+            $ids[] = (int) $post->getId();
+        }
+        $ids = array_unique($ids);
+
+        $db = Database::getConnection();
+
+        if (!$dbResult = $db->query("SELECT post, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags FROM " . Config::DB_PREFIX . 'tags WHERE post IN (' . implode(', ', $ids) . ') GROUP BY post')) {
+            throw new Exception("Execute failed: (" . $db->errno . ") " . $db->error);
+        }
+
+        $allTags = array();
+        while ($tags = $dbResult->fetch_assoc()) {
+            $allTags[$tags['post']] = explode(',', $tags['tags']);
+        }
+        $dbResult->free();
+
+        foreach ($posts as $post) {
+            if (array_key_exists($post->getId(), $allTags)) {
+                $post->setTags($allTags[$post->getId()]);
+            }
+        }
+
+        return $posts;
     }
 
     /**

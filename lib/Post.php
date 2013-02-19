@@ -91,17 +91,15 @@ class Post {
             throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
-        $result = array();
+        $posts = array();
 
         while ($statement->fetch()) {
-            $result[] = new Post($title, $content, $extended, $date, array(), $published, $id);
+            $posts[] = new Post($title, $content, $extended, $date, array(), $published, $id);
         }
 
-        foreach ($result as $post) {
-            $post->setTags(Tag::findByPost($post->getId()));
-        }
+        $posts = Tag::loadTags($posts);
 
-        return $result;
+        return $posts;
     }
 
     /**
@@ -129,17 +127,15 @@ class Post {
             throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
-        $result = array();
+        $posts = array();
 
         while ($statement->fetch()) {
-            $result[] = new Post($title, $content, $extended, $date, array(), $published, $id);
+            $posts[] = new Post($title, $content, $extended, $date, array(), $published, $id);
         }
 
-        foreach ($result as $post) {
-            $post->setTags(Tag::findByPost($post->getId()));
-        }
+        $posts = Tag::loadTags($posts);
 
-        return $result;
+        return $posts;
     }
 
     /**
@@ -169,17 +165,15 @@ class Post {
             throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
-        $result = array();
+        $posts = array();
 
         while ($statement->fetch()) {
             $result[] = new Post($title, $content, $extended, $date, array(), $published, $id);
         }
 
-        foreach ($result as $post) {
-            $post->setTags(Tag::findByPost($post->getId()));
-        }
+        $posts = Tag::loadTags($posts);
 
-        return $result;
+        return $posts;
     }
 
     /**
@@ -205,17 +199,15 @@ class Post {
             throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
-        $result = array();
+        $posts = array();
 
         while ($statement->fetch()) {
-            $result[] = new Post($title, $content, $extended, $date, array(), $published, $id);
+            $posts[] = new Post($title, $content, $extended, $date, array(), $published, $id);
         }
 
-        foreach ($result as $post) {
-            $post->setTags(Tag::findByPost($post->getId()));
-        }
+        $posts = Tag::loadTags($posts);
 
-        return $result;
+        return $posts;
     }
 
     /**
