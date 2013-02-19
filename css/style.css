@@ -40,13 +40,13 @@ input:focus, textarea:focus {
 
 button {
     color: #000000;
-    padding: 2px 5px;
+    padding: 2px 8px;
     border-radius: 3px;
     border: 1px solid #cccccc;
     background: #eeeeee;
     box-shadow: 0 0 2px rgba(0,0,0,.2),
-        inset 0 1px 2px rgba(255,255,255,.3),
-        inset 0 -1px 1px rgba(0,0,0,.3);
+        inset 0 1px 2px rgba(255,255,255,.4),
+        inset 0 -1px 1px rgba(0,0,0,.2);
     text-shadow: 0 0 1px rgba(0,0,0,.3);
     cursor: pointer;
 }
@@ -218,6 +218,7 @@ button:hover, button:focus {
     color: #000000;
     padding: 1em 0.5em;
     display: block;
+    border-radius: 3px;
 }
 
 .entry pre:hover {
@@ -234,6 +235,7 @@ button:hover, button:focus {
     padding: 0.2em 0.5em;
     background: #f3f3f3;
     color: #000000;
+    border-radius: 3px;
 }
 
 .entry .imagebox {
@@ -248,10 +250,11 @@ button:hover, button:focus {
     display: block;
     margin: auto;
     margin-bottom: 1em;
-    max-width: 400px;
-    max-height: 400px;
+    max-width: 450px;
+    max-height: 450px;
     box-shadow: 0 0 5px rgba(0,0,0,.2);
     border: none;
+    border-radius: 3px;
 }
 
 /*--- PAGE HEADER --------------------------------------------*/
