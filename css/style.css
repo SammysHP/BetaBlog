@@ -55,6 +55,17 @@ button:hover, button:focus {
     background: #e5e5e5;
 }
 
+button.red {
+    color: #fff;
+    text-shadow: 0 0 1px rgba(150,150,150,.2);
+    border-color: #a73a2b;
+    background: #d65a4a;
+}
+
+button.red:hover, button.red:focus {
+    background: #d14836;
+}
+
 .tags {
     text-align: right;
     font-size: 0.7em;
