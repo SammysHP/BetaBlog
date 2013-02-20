@@ -32,26 +32,27 @@ class Comment {
      *
      * @param int $id
      * @return Comment
-     * @throws Exception on any error
+     * @throws CommentNotFoundException if comment with given id does not exist
+     * @throws DatabaseException
      */
     public static function findById($id) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT post, author, comment, date FROM ' . Config::DB_PREFIX . 'comments WHERE id=?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $id)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($post, $author, $comment, $date)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         if (!$statement->fetch()) {
-            throw new Exception("Post with id=" . $id . " not found.");
+            throw new CommentNotFoundException($id);
         }
 
         return new Comment($post, $author, $comment, $date, $id);
@@ -62,22 +63,22 @@ class Comment {
      *
      * @param int $post The ID of the post
      * @return Comment[]
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function findByPost($post) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT id, author, comment, date FROM ' . Config::DB_PREFIX . 'comments WHERE post=? ORDER BY date ASC'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $post)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($id, $author, $comment, $date)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $result = array();
@@ -97,22 +98,22 @@ class Comment {
      * @param int $pageNo The page number, starting from 1
      * @param int $pageSize The number of comments for each page
      * @return Comment[]
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function findByPage($pageNo, $pageSize) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT id, post, author, comment, date FROM ' . Config::DB_PREFIX . 'comments ORDER BY date DESC LIMIT ?, ?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("ii", ($page = ($pageNo - 1) * $pageSize), $pageSize)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($id, $post, $author, $comment, $date)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $result = array();
@@ -129,22 +130,22 @@ class Comment {
      *
      * @param int $post The ID of the post
      * @return int
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function getCommentCount($post) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT count(*) FROM ' . Config::DB_PREFIX . 'comments WHERE post=?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $post)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($count)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         if ($statement->fetch()) {
@@ -159,7 +160,7 @@ class Comment {
      *
      * @param Post[] $posts A list of posts
      * @return Post[]
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function loadCommentCount(array $posts) {
         if (count($posts) == 0) {
@@ -175,7 +176,7 @@ class Comment {
         $db = Database::getConnection();
 
         if (!$dbResult = $db->query("SELECT post, count(*) AS count FROM " . Config::DB_PREFIX . 'comments WHERE post IN (' . implode(', ', $ids) . ') GROUP BY post')) {
-            throw new Exception("Execute failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Execute failed: (" . $db->errno . ") " . $db->error);
         }
 
         $count = array();
@@ -199,19 +200,19 @@ class Comment {
      * A new ID will be generated.
      *
      * @return Comment this comment
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public function create() {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('INSERT INTO ' . Config::DB_PREFIX . 'comments (post, author, comment, date) VALUES (?, ?, ?, ?)'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("issi", $this->post, $this->author, $this->comment, $this->date)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $this->id = $db->insert_id;
@@ -223,19 +224,23 @@ class Comment {
      * Deletes a comment.
      *
      * @param int $id The ID of the comment
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function delete($id) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('DELETE FROM ' . Config::DB_PREFIX . 'comments WHERE id=?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $id)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
+        }
+
+        if ($statement->affected_rows == 0) {
+            throw new CommentNotFoundException($id);
         }
     }
 
@@ -243,19 +248,19 @@ class Comment {
      * Deletes all comment for a specific post.
      *
      * @param int $post The ID of the post
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function deleteAll($post) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('DELETE FROM ' . Config::DB_PREFIX . 'comments WHERE post=?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $post)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
     }
 
@@ -268,7 +273,7 @@ class Comment {
         $db = Database::getConnection();
 
         if (!$db->query('CREATE TABLE IF NOT EXISTS ' . Config::DB_PREFIX . 'comments (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, post INT NOT NULL, author VARCHAR(100) NOT NULL, comment TEXT NOT NULL, date INT UNSIGNED NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
-            throw new Exception("Could not create table" . Config::DB_PREFIX . "comments: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Could not create table" . Config::DB_PREFIX . "comments: (" . $db->errno . ") " . $db->error);
         }
     }
 

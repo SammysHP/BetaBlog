@@ -1,11 +1,19 @@
 <?php
 /*
     $this->baseurl
+    $this->htmlescape()
+    $this->message
+    $this->status
 */
 ?>
 <div class="entry">
-    <div class="date"><span class="day">404</span></div>
+    <div class="date"><span class="day"><?php echo $this->status ? $this->status : '500'; ?></span></div>
     <h2>Ein Fehler ist aufgetreten</h2>
     <p>Du kannst nichts daran ändern.</p>
+    <?php
+    if ($this->message) {
+        echo '<pre><code class="no-highlight">' . $this->htmlescape($this->message) . '</code></pre>';
+    }
+    ?>
     <p><a href="<?php echo $this->baseurl; ?>">Zurück zur Startseite »</a></p>
 </div>

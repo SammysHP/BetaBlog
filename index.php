@@ -1,11 +1,12 @@
 <?php
 
 require_once("config.php");
-require_once("lib/Database.php");
-require_once("lib/Post.php");
 require_once("lib/Comment.php");
-require_once("lib/Tag.php");
+require_once("lib/Database.php");
+require_once("lib/Exceptions.php");
+require_once("lib/Post.php");
 require_once("lib/SimpleBars.php");
+require_once("lib/Tag.php");
 require_once("lib/klein.php");
 
 setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'de');
@@ -33,8 +34,9 @@ with($namespace, function () {
         $response->abouturl = Config::ABOUT_URL;
         $response->infourl = Config::INFO_URL;
         $response->headertitle = Config::HEADER_TITLE;
-        $response->onError(function ($response, $err_msg) {
-            $response->code(404);
+        $response->onError(function ($response, $errormessage) {
+            $response->code(500);
+            $response->message = $errormessage;
             $response->render('tpl/error.html');
         });
     });
@@ -50,7 +52,10 @@ with($namespace, function () {
         $response->paginationCount = ceil(Post::getPostCount(!$response->loggedin) / Config::PAGESIZE);
 
         if (count($response->posts) == 0) {
+            $response->flash('Diese Seitenzahl existiert nicht', 'error');
             $response->code(404);
+            $response->render('tpl/plain.html');
+            exit;
         }
 
         $response->render('tpl/posts.html');
@@ -58,28 +63,34 @@ with($namespace, function () {
 
     // Single post
     respond('GET', '/post/[i:id]', function ($request, $response) {
-        $response->session('backurl', $request->uri());
+        try {
+            $response->session('backurl', $request->uri());
 
-        $response->post = Post::findById($request->param('id'), !$response->loggedin);
-        $response->title .= ' – ' . $response->post->getTitle();
-        $response->comments = Comment::findByPost($request->param('id'));
-        $response->fullentry = true;
+            $response->post = Post::findById($request->param('id'), !$response->loggedin);
+            $response->title .= ' – ' . $response->post->getTitle();
+            $response->comments = Comment::findByPost($request->param('id'));
+            $response->fullentry = true;
 
-        // Comment form content from old request
-        foreach ($response->flashes('commentformauthor') as $author) {
-            $response->commentformauthor = $author;
+            // Comment form content from old request
+            foreach ($response->flashes('commentformauthor') as $author) {
+                $response->commentformauthor = $author;
+            }
+            foreach ($response->flashes('commentformmessage') as $message) {
+                $response->commentformmessage = $message;
+            }
+
+            $tags = array();
+            foreach ($response->post->getTags() as $tag) {
+                $tags[] = $response->htmlescape($tag);
+            }
+            $response->htmlkeywords = implode(', ', $tags);
+
+            $response->render('tpl/post.html');
+        } catch (PostNotFoundException $e) {
+            $response->flash('Beitrag nicht gefunden', 'error');
+            $response->code(404);
+            $response->render('tpl/plain.html');
         }
-        foreach ($response->flashes('commentformmessage') as $message) {
-            $response->commentformmessage = $message;
-        }
-
-        $tags = array();
-        foreach ($response->post->getTags() as $tag) {
-            $tags[] = $response->htmlescape($tag);
-        }
-        $response->htmlkeywords = implode(', ', $tags);
-
-        $response->render('tpl/post.html');
     });
 
     // Statistics
@@ -208,7 +219,15 @@ with($namespace, function () {
             preg_split('@,\s?@', stripslashes($request->param('tags')), NULL, PREG_SPLIT_NO_EMPTY),
             ($request->param('published') != '')
         );
-        $post->create();
+
+        try {
+            $post->create();
+        } catch (BetablogException $e) {
+            $response->flash('Fehler beim Speichern', 'error');
+            $response->code(500);
+            $response->render('tpl/plain.html');
+            exit;
+        }
 
         $response->flash('Beitrag gespeichert', 'success');
 
@@ -223,7 +242,15 @@ with($namespace, function () {
     respond('GET', '/post/[i:id]/edit', function ($request, $response) {
         $response->requireLogin($request, $response);
 
-        $response->post = Post::findById($request->param('id'), false);
+        try {
+            $response->post = Post::findById($request->param('id'), false);
+        } catch (PostNotFoundException $e) {
+            $response->flash('Beitrag nicht gefunden', 'error');
+            $response->code(404);
+            $response->render('tpl/plain.html');
+            exit;
+        }
+
         $response->alltags = Tag::findAll();
         $response->title .= ' – Beitrag bearbeiten';
         $response->render('tpl/postform.html');
@@ -242,7 +269,20 @@ with($namespace, function () {
             ($request->param('published') != ''),
             $request->param('id')
         );
-        $post->save();
+
+        try {
+            $post->save();
+        } catch (PostNotFoundException $e) {
+            $response->flash('Beitrag nicht gefunden', 'error');
+            $response->code(404);
+            $response->render('tpl/plain.html');
+            exit;
+        } catch (BetablogException $e) {
+            $response->flash('Fehler beim Speichern', 'error');
+            $response->code(500);
+            $response->render('tpl/plain.html');
+            exit;
+        }
 
         $response->flash('Beitrag gespeichert', 'success');
 
@@ -256,9 +296,16 @@ with($namespace, function () {
     // Delete post (view)
     respond('GET', '/post/[i:id]/delete', function ($request, $response) {
         $response->requireLogin($request, $response);
-        $post = Post::findById($request->param('id'), false);
-        $response->message = 'Beitrag "' . $post->getTitle() . '"';
-        $response->render('tpl/delete.html');
+
+        try {
+            $post = Post::findById($request->param('id'), false);
+            $response->message = 'Beitrag "' . $post->getTitle() . '"';
+            $response->render('tpl/delete.html');
+        } catch (PostNotFoundException $e) {
+            $response->flash('Beitrag nicht gefunden', 'error');
+            $response->code(404);
+            $response->render('tpl/plain.html');
+        }
     });
 
     // Delete post (handler)
@@ -266,9 +313,16 @@ with($namespace, function () {
         $response->requireLogin($request, $response);
 
         if ($request->param('delete') != '') {
-            POST::delete($request->param('id'));
-            $response->flash('Beitrag gelöscht', 'success');
-            $response->redirect($response->baseurl);
+            try {
+                POST::delete($request->param('id'));
+                $response->flash('Beitrag gelöscht', 'success');
+                $response->redirect($response->baseurl);
+            } catch (PostNotFoundException $e) {
+                $response->flash('Beitrag nicht gefunden', 'error');
+                $response->code(404);
+                $response->render('tpl/plain.html');
+                exit;
+            }
         } else {
             $response->redirect($response->baseurl . 'post/' . $request->param('id'));
         }
@@ -290,7 +344,11 @@ with($namespace, function () {
     // Create comment
     respond('POST', '/post/[i:id]/comment', function ($request, $response) {
         // Check if post exists
-        Post::findById($request->param('id'), false);
+        try {
+            Post::findById($request->param('id'), false);
+        } catch (PostNotFoundException $e) {
+            $response->redirect($response->baseurl . 'post/' . $request->param('id'));
+        }
 
         $author = stripslashes($request->param('author'));
         $message = stripslashes($request->param('message'));
@@ -319,18 +377,30 @@ with($namespace, function () {
             $author,
             $message
         );
-        $comment->create();
 
-        $response->flash('Kommentar gespeichert', 'success');
+        try {
+            $comment->create();
+            $response->flash('Kommentar gespeichert', 'success');
+        } catch (DatabaseException $e) {
+            $response->flash('Fehler beim Speichern des Kommentars', 'error');
+        }
+
         $response->redirect($response->baseurl . 'post/' . $request->param('id'));
     });
 
     // Delete comment (view)
     respond('GET', '/comment/[i:id]/delete', function ($request, $response) {
         $response->requireLogin($request, $response);
-        $comment = Comment::findById($request->param('id'));
-        $response->message = 'Kommentar von "' . $comment->getAuthor() . '" vom ' . date('d.m.Y \u\m H:i', $comment->getDate());
-        $response->render('tpl/delete.html');
+
+        try {
+            $comment = Comment::findById($request->param('id'));
+            $response->message = 'Kommentar von "' . $comment->getAuthor() . '" vom ' . date('d.m.Y \u\m H:i', $comment->getDate());
+            $response->render('tpl/delete.html');
+        } catch (CommentNotFoundException $e) {
+            $response->flash('Kommentar nicht gefunden', 'error');
+            $response->code(404);
+            $response->render('tpl/plain.html');
+        }
     });
 
     // Delete comment (handler)
@@ -338,8 +408,15 @@ with($namespace, function () {
         $response->requireLogin($request, $response);
 
         if ($request->param('delete') != '') {
-            Comment::delete($request->param('id'));
-            $response->flash('Kommentar gelöscht', 'success');
+            try {
+                Comment::delete($request->param('id'));
+                $response->flash('Kommentar gelöscht', 'success');
+            } catch (CommentNotFoundException $e) {
+                $response->flash('Kommentar nicht gefunden', 'error');
+                $response->code(404);
+                $response->render('tpl/plain.html');
+                exit;
+            }
         }
 
         $response->redirect($response->backurl);
@@ -510,11 +587,17 @@ with($namespace, function () {
     respond('GET', '/install', function ($request, $response) {
         $response->requireLogin($request, $response);
 
-        Post::install();
-        Tag::install();
-        Comment::install();
-        $response->flash('System erfolgreich installiert', 'success');
-        $response->redirect($response->baseurl);
+        try {
+            Post::install();
+            Tag::install();
+            Comment::install();
+            $response->flash('System erfolgreich installiert', 'success');
+            $response->redirect($response->baseurl);
+        } catch (DatabaseException $e) {
+            $response->flash('Fehler bei der Installation', 'error');
+            $response->code(500);
+            $response->render('tpl/plain.html');
+        }
     });
 
 });

@@ -14,21 +14,21 @@ class Tag {
      *
      * @param int $post The ID of the post
      * @return string[]
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function findByPost($post) {
         $db = Database::getConnection();
         if (!($statement = $db->prepare('SELECT tag FROM ' . Config::DB_PREFIX . 'tags WHERE post=? ORDER BY tag ASC'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $post)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($tag)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $result = array();
@@ -44,19 +44,19 @@ class Tag {
      * Find all tags.
      *
      * @return string[]
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function findAll() {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT tag, count(tag) FROM ' . Config::DB_PREFIX . 'tags GROUP BY tag ORDER BY tag ASC'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($tag, $count)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $result = array();
@@ -73,7 +73,7 @@ class Tag {
      *
      * @param Post[] $posts A list of posts
      * @return Post[]
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function loadTags(array $posts) {
         if (count($posts) == 0) {
@@ -89,7 +89,7 @@ class Tag {
         $db = Database::getConnection();
 
         if (!$dbResult = $db->query("SELECT post, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags FROM " . Config::DB_PREFIX . 'tags WHERE post IN (' . implode(', ', $ids) . ') GROUP BY post')) {
-            throw new Exception("Execute failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Execute failed: (" . $db->errno . ") " . $db->error);
         }
 
         $allTags = array();
@@ -112,7 +112,7 @@ class Tag {
      *
      * @param int $id The ID of the post
      * @param string[] $tags
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function update($post, array $tags) {
         if (count($tags) == 0) {
@@ -132,7 +132,7 @@ class Tag {
         self::delete($post);
 
         if (!$db->query('INSERT INTO ' . Config::DB_PREFIX . 'tags (post, tag) VALUES ' . $tagString)) {
-            throw new Exception("Execute failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Execute failed: (" . $db->errno . ") " . $db->error);
         }
     }
 
@@ -140,32 +140,32 @@ class Tag {
      * Delete tags for a post.
      *
      * @param int $id The ID of the post
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function delete($post) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('DELETE FROM ' . Config::DB_PREFIX . 'tags WHERE post=?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $post)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
     }
 
     /**
      * Creates the database table.
      *
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function install() {
         $db = Database::getConnection();
 
         if (!$db->query('CREATE TABLE IF NOT EXISTS ' . Config::DB_PREFIX . 'tags (post INT NOT NULL, tag VARCHAR(100) NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
-            throw new Exception("Could not create table" . Config::DB_PREFIX . "tags: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Could not create table" . Config::DB_PREFIX . "tags: (" . $db->errno . ") " . $db->error);
         }
     }
 }

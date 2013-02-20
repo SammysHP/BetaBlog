@@ -32,7 +32,7 @@ class Post {
         $this->setTags($tags);
         $this->setPublished($published);
         $this->id = (int) $id;
-        $this->commentCount = (int) $commentCount;
+        $this->setCommentCount($commentCount);
     }
 
     /**
@@ -41,26 +41,27 @@ class Post {
      * @param int $id
      * @param boolean $publishedIn Only published or all
      * @return Post
-     * @throws Exception on any error
+     * @throws PostNotFoundException if post with given id does not exist
+     * @throws DatabaseException
      */
     public static function findById($id, $publishedIn = true) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT title, content, extended, date, published FROM ' . Config::DB_PREFIX . 'posts WHERE id=? AND published>=?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("ii", $id, $publishedIn)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($title, $content, $extended, $date, $published)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         if (!$statement->fetch()) {
-            throw new Exception("Post with id=" . $id . " not found.");
+            throw new PostNotFoundException($id);
         }
 
         $post = new Post($title, $content, $extended, $date, array(), $published, $id);
@@ -76,22 +77,22 @@ class Post {
      * @param string[] $tags
      * @param boolean $publishedIn Only published or all
      * @return Post[]
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function findByTag(array $tags, $publishedIn = true) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT DISTINCT id, title, content, extended, date, published FROM ' . Config::DB_PREFIX . 'posts JOIN ' . Config::DB_PREFIX . 'tags ON (post=id) WHERE published>=? AND tag=? ORDER BY date DESC'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("is", $publishedIn, $tags[0])) { // TODO support multiple tags
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($id, $title, $content, $extended, $date, $published)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $posts = array();
@@ -113,22 +114,22 @@ class Post {
      * @param int $pageSize The number of posts for each page
      * @param boolean $publishedIn Only published or all
      * @return Post[]
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function findByPage($pageNo, $pageSize, $publishedIn = true) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . Config::DB_PREFIX . 'posts WHERE published>=? ORDER BY date DESC LIMIT ?, ?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("iii", $publishedIn, ($page = ($pageNo - 1) * $pageSize), $pageSize)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($id, $title, $content, $extended, $date, $published)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $posts = array();
@@ -149,7 +150,7 @@ class Post {
      * @param int $year
      * @param boolean $publishedIn Only published or all
      * @return Post[]
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function findByYear($year, $publishedIn = true) {
         $db = Database::getConnection();
@@ -158,16 +159,16 @@ class Post {
         $end = strtotime('+1 year', $start);
 
         if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . Config::DB_PREFIX . 'posts WHERE date >= ? AND date < ? AND published>=? ORDER BY date DESC'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("iii", $start, $end, $publishedIn)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($id, $title, $content, $extended, $date, $published)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $posts = array();
@@ -187,22 +188,22 @@ class Post {
      *
      * @param boolean $publishedIn Only published or all
      * @return Post[]
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function findAll($publishedIn = true) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . Config::DB_PREFIX . 'posts WHERE published>=? ORDER BY date DESC'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $publishedIn)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($id, $title, $content, $extended, $date, $published)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $posts = array();
@@ -222,22 +223,22 @@ class Post {
      *
      * @param boolean $publishedIn Only published or all
      * @return int
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function getPostCount($published = true) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT count(*) FROM ' . Config::DB_PREFIX . 'posts WHERE published>=?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $published)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($count)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         if ($statement->fetch()) {
@@ -258,22 +259,22 @@ class Post {
      *
      * @param boolean $publishedIn Only published or all
      * @return mixed[]
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function getYearStatistics($published = true) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('SELECT date FROM ' . Config::DB_PREFIX . 'posts WHERE published>=? ORDER BY date DESC'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $published)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->bind_result($date)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $emptyYear = array(1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, 11 => 0, 12 => 0);
@@ -308,20 +309,20 @@ class Post {
      *
      * A new ID will be generated.
      *
-     * @return Post this comment
-     * @throws Exception on any error
+     * @return Post this post
+     * @throws DatabaseException
      */
     public function create() {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('INSERT INTO ' . Config::DB_PREFIX . 'posts (title, content, extended, date, published) VALUES (?, ?, ?, ?, ?)'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("sssii", $this->title, $this->content, $this->extended, $this->date, $this->published)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
         }
 
         $this->id = $db->insert_id;
@@ -334,8 +335,8 @@ class Post {
     /**
      * Saves a already present post.
      *
-     * @return Post this comment
-     * @throws Exception on any error
+     * @return Post this post
+     * @throws DatabaseException
      */
     public function save() {
         if ($this->id < 0) {
@@ -345,13 +346,19 @@ class Post {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('UPDATE ' . Config::DB_PREFIX . 'posts SET title=?, content=?, extended=?, date=?, published=? WHERE id=?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("sssiii", $this->title, $this->content, $this->extended, $this->date, $this->published, $this->id)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
+        }
+
+        if ($statement->affected_rows == 0) {
+            // Check if post does not exist or if there are no changes
+            // Following call will throw a PostNotFoundException if post does not exist
+            Post::findById($this->getId());
         }
 
         Tag::update($this->id, $this->tags);
@@ -363,19 +370,23 @@ class Post {
      * Deletes a post.
      *
      * @param int $id The ID of the post
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function delete($id) {
         $db = Database::getConnection();
 
         if (!($statement = $db->prepare('DELETE FROM ' . Config::DB_PREFIX . 'posts WHERE id=?'))) {
-            throw new Exception("Prepare failed: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $id)) {
-            throw new Exception("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
         }
         if (!$statement->execute()) {
-            throw new Exception("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
+        }
+
+        if ($statement->affected_rows == 0) {
+            throw new PostNotFoundException($id);
         }
 
         Tag::delete($id);
@@ -385,13 +396,13 @@ class Post {
     /**
      * Creates the database table.
      *
-     * @throws Exception on any error
+     * @throws DatabaseException
      */
     public static function install() {
         $db = Database::getConnection();
 
         if (!$db->query('CREATE TABLE IF NOT EXISTS ' . Config::DB_PREFIX . 'posts (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title VARCHAR(100) NOT NULL, content TEXT NOT NULL, extended TEXT NOT NULL, date INT UNSIGNED NOT NULL, published BOOLEAN NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
-            throw new Exception("Could not create table" . Config::DB_PREFIX . "posts: (" . $db->errno . ") " . $db->error);
+            throw new DatabaseException("Could not create table" . Config::DB_PREFIX . "posts: (" . $db->errno . ") " . $db->error);
         }
     }
 
