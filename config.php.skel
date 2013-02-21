@@ -38,10 +38,11 @@ final class Config {
     // HTML title
     const PAGE_TITLE    = 'BetaBlog';
 
+    // Separator between PAGE_TITLE and subpage title
+    const PAGE_TITLE_S  = ' › ';
+
     // Text in header
     const HEADER_TITLE  = 'BetaBlog';
-
-
 
     private function __construct() {
     }

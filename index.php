@@ -47,7 +47,7 @@ with($namespace, function () {
         $response->posts = Post::findByPage($request->param('page', 1), Config::PAGESIZE, !$response->loggedin);
         $response->paginationCurrent = $request->param('page', 1);
         if ($request->param('page', 1) != 1) {
-            $response->title .= ' – Seite ' . $request->param('page', 1);
+            $response->title .= Config::PAGE_TITLE_S . 'Seite ' . $request->param('page', 1);
         }
         $response->paginationCount = ceil(Post::getPostCount(!$response->loggedin) / Config::PAGESIZE);
 
@@ -67,7 +67,7 @@ with($namespace, function () {
             $response->session('backurl', $request->uri());
 
             $response->post = Post::findById($request->param('id'), !$response->loggedin);
-            $response->title .= ' – ' . $response->post->getTitle();
+            $response->title .= Config::PAGE_TITLE_S . $response->post->getTitle();
             $response->comments = Comment::findByPost($request->param('id'));
             $response->fullentry = true;
 
@@ -96,7 +96,7 @@ with($namespace, function () {
     // Statistics
     respond('GET', '/archive', function ($request, $response) {
         $response->session('backurl', $request->uri());
-        $response->title .= ' – Archiv';
+        $response->title .= Config::PAGE_TITLE_S . 'Archiv';
 
         $statistics = Post::getYearStatistics(!$response->loggedin);
 
@@ -130,7 +130,7 @@ with($namespace, function () {
     respond('GET', '/archive/[i:year]', function ($request, $response) {
         $response->session('backurl', $request->uri());
         $response->posts = Post::findByYear($request->param('year'), !$response->loggedin);
-        $response->title .= ' – Archiv (' . $request->param('year') . ')';
+        $response->title .= Config::PAGE_TITLE_S . 'Archiv (' . $request->param('year') . ')';
         $response->year = $request->param('year');
 
         if (count($response->posts) == 0) {
@@ -158,7 +158,7 @@ with($namespace, function () {
     respond('GET', '/tag/[*:tag]', function ($request, $response) {
         $response->session('backurl', $request->uri());
         $tag = rawurldecode(str_replace('/', '%2F', $request->param('tag')));
-        $response->title .= ' – ' . $response->htmlescape($tag);
+        $response->title .= Config::PAGE_TITLE_S . $response->htmlescape($tag);
         $response->posts = Post::findByTag(array($tag), !$response->loggedin);
 
         if (count($response->posts) == 0) {
@@ -174,7 +174,7 @@ with($namespace, function () {
             $response->redirect($response->baseurl);
         }
 
-        $response->title .= ' – Login';
+        $response->title .= Config::PAGE_TITLE_S . 'Login';
 
         $response->render('tpl/login.html');
     });
@@ -203,7 +203,7 @@ with($namespace, function () {
 
         $response->post = new Post();
         $response->alltags = Tag::findAll();
-        $response->title .= ' – Beitrag erstellen';
+        $response->title .= Config::PAGE_TITLE_S . 'Beitrag erstellen';
         $response->render('tpl/postform.html');
     });
 
@@ -252,7 +252,7 @@ with($namespace, function () {
         }
 
         $response->alltags = Tag::findAll();
-        $response->title .= ' – Beitrag bearbeiten';
+        $response->title .= Config::PAGE_TITLE_S . 'Beitrag bearbeiten';
         $response->render('tpl/postform.html');
     });
 
@@ -331,7 +331,7 @@ with($namespace, function () {
     // Search (view)
     respond('GET', '/search', function ($request, $response) {
         $response->alltags = Tag::findAll();
-        $response->title .= ' – Suche';
+        $response->title .= Config::PAGE_TITLE_S . 'Suche';
         $response->render('tpl/search.html');
     });
 
@@ -426,7 +426,7 @@ with($namespace, function () {
     respond('GET', '/files', function ($request, $response) {
         $response->requireLogin($request, $response);
 
-        $response->title .= ' – Dateien';
+        $response->title .= Config::PAGE_TITLE_S . 'Dateien';
 
         $response->sorting = $request->session('filesorting', 'name');
 
