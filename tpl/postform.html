@@ -79,9 +79,14 @@ EOT;
         <tr>
             <td class="left"></td>
             <td style="padding-top: 1em;">
-                <button type="submit" tabindex="7" name="save" value="save" style="margin-right: 0.5em;">Speichern</button>
-                <button type="submit" tabindex="8" name="submit" style="margin-right: 2.5em;">Absenden</button>
-                <button type="button" tabindex="9" onClick="updatePreview();">Vorschau</button>
+                <div class="button-container">
+                    <div class="button-group">
+                        <button type="submit" tabindex="7" name="submit" class="button primary">Absenden</button>
+                        <button type="submit" tabindex="8" name="save" value="save" class="button">Speichern</button>
+                    </div>
+                    
+                    <button type="button" tabindex="9" onClick="updatePreview();" class="button">Vorschau</button>
+                </div>
             </td>
         </tr>
     </table>
