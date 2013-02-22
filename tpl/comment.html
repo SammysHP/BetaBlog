@@ -7,13 +7,15 @@
 */
 ?>
 <div class="comment" id="comment-<?php echo $this->comment->getId(); ?>">
+    <?php
+    if ($this->loggedin) {
+        echo '<a href="' . $this->baseurl . 'comment/' . $this->comment->getId() . '/delete" class="button danger icon delete" style="float: right; margin-right: -10em; margin-top: 1em;">löschen</a>';
+    }
+    ?>
     <div class="title">
         <?php
         echo '<span style="font-weight: bold;">' . $this->htmlescape($this->comment->getAuthor()) . '</span>';
         echo ', ' . date("d.m.Y H:i", $this->comment->getDate());
-        if ($this->loggedin) {
-            echo '&nbsp;&nbsp;&nbsp;<a href="' . $this->baseurl . 'comment/' . $this->comment->getId() . '/delete" style="font-size: 0.7em;">löschen</a>';
-        }
         ?>
     </div>
     <div class="content"><?php

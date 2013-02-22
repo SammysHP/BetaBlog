@@ -28,14 +28,17 @@
 
     <?php if ($this->loggedin) { ?>
     <div class="adminbox">
-        <a href="<?php echo $this->baseurl . 'post/' . $this->post->getId() . '/edit';   ?>">bearbeiten</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="<?php echo $this->baseurl . 'post/' . $this->post->getId() . '/delete'; ?>">löschen</a>
-        <?php
-        if (!$this->post->isPublished()) {
-            echo '<br /><span style="color: red;">nicht veröffentlicht</span>';
-        }
-        ?>
+        <div class="button-group">
+            <a href="<?php echo $this->baseurl . 'post/' . $this->post->getId() . '/edit';   ?>" class="button icon icon-only edit" title="Bearbeiten"></a>
+            <?php
+            if ($this->post->isPublished()) {
+                echo '<a href="' . $this->baseurl . 'post/' . $this->post->getId() . '/unpublish' . '" class="button icon icon-only lock" title="Verstecken"></a>';
+            } else {
+                echo '<a href="' . $this->baseurl . 'post/' . $this->post->getId() . '/publish' . '" class="button icon icon-only lock active" title="Veröffentlichen"></a>';
+            }
+            ?>
+            <a href="<?php echo $this->baseurl . 'post/' . $this->post->getId() . '/delete'; ?>" class="button icon icon-only danger delete" title="Löschen"></a>
+        </div>
     </div>
     <?php } ?>
 

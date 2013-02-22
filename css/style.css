@@ -154,9 +154,8 @@ input:focus, textarea:focus {
 .entry .adminbox {
     float: right;
     width: 11em;
-    font-size: 0.7em;
     margin-right: -12em;
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 /*--- ENTRY ELEMENTS -----------------------------------------*/
@@ -424,8 +423,6 @@ input:focus, textarea:focus {
 
 .archive .adminbox {
     float: right;
-    width: 11em;
-    font-size: 0.7em;
 }
 
 .archive h2 {
@@ -554,4 +551,17 @@ p.msg-success {
 .comment .content {
     margin-left: 2em;
     text-align: justify;
+}
+
+/*--- ICONS --------------------------------------------------*/
+.icon.edit:before {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAMCAYAAAB4MH11AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAALpJREFUeNq0k8ENwjAMRZsJsrI3YISM4m7gFXrkCDc4mVhywDJ2Qg986UtVGr2nNs625am92Mta1LUwzFx7kT+R5zqDk4FbSQYn/g6u4E1rJTN4076zgo+0SODhZr1FggxuBbiCOwGegdM45B/hNA75r3AJGAhoQ7hCwEBAm8Ilu5sSyOAq2N1IwgwuOZyAMrgKDjfrNINLHsGFouzWOsESXhT47L3q18gvu/TeEwHru5vdX0oJ978EGAB9MYSwpAPp3wAAAABJRU5ErkJggg==");
+}
+
+.icon.lock:before {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAMCAYAAAB4MH11AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPZJREFUeNqMlOENgjAUhFvDf9wAN2AFNoENOoJuApsgExAngA3qBvVIrviobfGSS/vg8x2PBpVzTglV8Ag72sJmu7Fx3l7YV/DovrLwgZc/KOGFjWcGWdYmDMBawgsbzwyyrE0swLBZLyaqGWIjAYbNejFRzZCdv4hmV66DuPaCn+KeyvFa6x++4HqHG+47sVex5niyA486yettDCQ7dSJwWpbqXFpO4EcdImBHh/qLl2ewwhPXJqhjWjH5gRe1igV43eBHcA45ZfkicjiTf3+pQ5bX+dRJvgje3aZ3AHeJgI7fRJ4n1Iq/h5hb+aHBrctr5z8CDAACOPhHMCy5dwAAAABJRU5ErkJggg==");
+}
+
+.icon.delete:before {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAMCAYAAAB4MH11AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAANNJREFUeNq0lMENgzAMRRPUe7IBjMAIHLtVOwojsEImCCOEG8dukNqSi0ziGC61ZIWQ5/+DkWzMOSJkLjKaRuScY67jxD8gX/TsIUdBZ2QMiporHpiDt3TL28EMbkUHOUHOtJ9IxLIL/M5mOq94tlY8GgTIRC+TcIkPOwvWWolPEo9sV4gNgoFXOjAIdb5sEY8giGwtdfqasm7TDHpBxyk/vBfqnGbw9xatgsiuGKxCi3bNYKHevmmP61MxWBin8q4xJvi4cKz3rjEmjnGBDLJfAQYAYwF7Bykz4ToAAAAASUVORK5CYII=");
 }
