@@ -70,7 +70,7 @@ if (count($this->posts) == 0) {
                     <a href="<?php echo $this->baseurl . 'post/' . $post->getId() . '/edit';   ?>" class="button icon icon-only edit" title="Bearbeiten"></a>
                     <?php
                     if ($post->isPublished()) {
-                        echo '<a href="' . $this->baseurl . 'post/' . $post->getId() . '/unpublish' . '" class="button icon icon-only lock" title="Verstecken"></a>';
+                        echo '<a href="' . $this->baseurl . 'post/' . $post->getId() . '/retract' . '" class="button icon icon-only lock" title="Zurückziehen"></a>';
                     } else {
                         echo '<a href="' . $this->baseurl . 'post/' . $post->getId() . '/publish' . '" class="button icon icon-only lock active" title="Veröffentlichen"></a>';
                     }

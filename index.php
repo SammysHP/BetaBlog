@@ -293,6 +293,31 @@ with($namespace, function () {
         }
     });
 
+    // Publish/retract post
+    respond('GET', '/post/[i:id]/[publish|retract:action]', function ($request, $response) {
+        $response->requireLogin($request, $response);
+
+        try {
+            $post = Post::findById($request->param('id'), false);
+            if ($request->param('action') == 'publish') {
+                $post->setPublished(true);
+                $response->flash('Beitrag veröffentlicht', 'success');
+            } else {
+                $post->setPublished(false);
+                $response->flash('Beitrag zurückgezogen', 'success');
+            }
+            $post->save();
+        } catch (PostNotFoundException $e) {
+            $response->flash('Beitrag nicht gefunden', 'error');
+            $response->code(404);
+        } catch (BetablogException $e) {
+            $response->flash('Fehler beim Ändern der Sichtbarkeit', 'error');
+            $response->code(500);
+        }
+
+        $response->redirect($response->backurl);
+    });
+
     // Delete post (view)
     respond('GET', '/post/[i:id]/delete', function ($request, $response) {
         $response->requireLogin($request, $response);
