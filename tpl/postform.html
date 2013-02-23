@@ -38,7 +38,7 @@ EOT;
 ?>
 <script src="<?php echo $this->baseurl; ?>js/texttools.js"></script>
 
-<form action="" method="POST">
+<form action="" method="POST" id="postform">
     <table class="table">
         <tr>
             <td class="left">Titel:</td><td><input type="text" tabindex="1" name="title" id="title" value="<?php echo $this->htmlescape($this->post->getTitle()); ?>" /></td>
@@ -96,4 +96,22 @@ EOT;
 
 <script>
     $('#title').focus();
+    
+    $(document).ready(function() {
+        var unloadAttached = false;
+        $('input, textarea').each(function(i, e) {
+            $(e).change(function() {
+                if (!unloadAttached) {
+                    unloadAttached = true;
+                    $(window).bind('beforeunload', function(){ 
+                    	return 'Es gibt nicht gespeicherte Änderungen.';
+                    });
+                }
+            });
+        });
+        
+        $('#postform').submit(function(){
+            $(window).unbind('beforeunload');
+        });
+    });
 </script>
