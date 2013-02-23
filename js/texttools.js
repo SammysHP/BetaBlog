@@ -204,7 +204,7 @@ function insertTag(tag) {
 
 function updatePreview() {
     var container = $('#preview');
-    container.html('<div class="adminbox"><a href="#" onClick="hidePreview(); return false;">ausblenden</a></div><h2>' + $('#title').val() + '</h2>' + $('#content').val() + $('#extended').val() + '<div style="clear: both;">&nbsp;</div>');
+    container.html('<div class="adminbox"><a href="#" onClick="hidePreview(); return false;" class="button">ausblenden</a></div><h2>' + $('#title').val() + '</h2>' + $('#content').val() + $('#extended').val() + '<div style="clear: both;">&nbsp;</div>');
     $('code', container).each(function(i, e) {hljs.highlightBlock(e)});
     container.show();
 }
