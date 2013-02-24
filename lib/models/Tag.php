@@ -1,4 +1,8 @@
 <?php
+namespace models;
+
+use exceptions\DatabaseException;
+use util\Database;
 
 /**
  * Model of a tag.
@@ -18,7 +22,7 @@ class Tag {
      */
     public static function findByPost($post) {
         $db = Database::getConnection();
-        if (!($statement = $db->prepare('SELECT tag FROM ' . Config::DB_PREFIX . 'tags WHERE post=? ORDER BY tag ASC'))) {
+        if (!($statement = $db->prepare('SELECT tag FROM ' . Database::getPrefix() . 'tags WHERE post=? ORDER BY tag ASC'))) {
             throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $post)) {
@@ -49,7 +53,7 @@ class Tag {
     public static function findAll() {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('SELECT tag, count(tag) FROM ' . Config::DB_PREFIX . 'tags GROUP BY tag ORDER BY tag ASC'))) {
+        if (!($statement = $db->prepare('SELECT tag, count(tag) FROM ' . Database::getPrefix() . 'tags GROUP BY tag ORDER BY tag ASC'))) {
             throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->execute()) {
@@ -88,7 +92,7 @@ class Tag {
 
         $db = Database::getConnection();
 
-        if (!$dbResult = $db->query("SELECT post, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags FROM " . Config::DB_PREFIX . 'tags WHERE post IN (' . implode(', ', $ids) . ') GROUP BY post')) {
+        if (!$dbResult = $db->query("SELECT post, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags FROM " . Database::getPrefix() . 'tags WHERE post IN (' . implode(', ', $ids) . ') GROUP BY post')) {
             throw new DatabaseException("Execute failed: (" . $db->errno . ") " . $db->error);
         }
 
@@ -131,7 +135,7 @@ class Tag {
 
         self::delete($post);
 
-        if (!$db->query('INSERT INTO ' . Config::DB_PREFIX . 'tags (post, tag) VALUES ' . $tagString)) {
+        if (!$db->query('INSERT INTO ' . Database::getPrefix() . 'tags (post, tag) VALUES ' . $tagString)) {
             throw new DatabaseException("Execute failed: (" . $db->errno . ") " . $db->error);
         }
     }
@@ -145,7 +149,7 @@ class Tag {
     public static function delete($post) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('DELETE FROM ' . Config::DB_PREFIX . 'tags WHERE post=?'))) {
+        if (!($statement = $db->prepare('DELETE FROM ' . Database::getPrefix() . 'tags WHERE post=?'))) {
             throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $post)) {
@@ -164,8 +168,8 @@ class Tag {
     public static function install() {
         $db = Database::getConnection();
 
-        if (!$db->query('CREATE TABLE IF NOT EXISTS ' . Config::DB_PREFIX . 'tags (post INT NOT NULL, tag VARCHAR(100) NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
-            throw new DatabaseException("Could not create table" . Config::DB_PREFIX . "tags: (" . $db->errno . ") " . $db->error);
+        if (!$db->query('CREATE TABLE IF NOT EXISTS ' . Database::getPrefix() . 'tags (post INT NOT NULL, tag VARCHAR(100) NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
+            throw new DatabaseException("Could not create table" . Database::getPrefix() . "tags: (" . $db->errno . ") " . $db->error);
         }
     }
 }

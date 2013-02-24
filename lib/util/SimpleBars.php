@@ -1,4 +1,6 @@
 <?php
+namespace util;
+
 /*
  * Copyright (C) 2013 Sven Karsten Greiner
  *

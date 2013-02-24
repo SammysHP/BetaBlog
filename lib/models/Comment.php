@@ -1,4 +1,9 @@
 <?php
+namespace models;
+
+use exceptions\CommentNotFoundException;
+use exceptions\DatabaseException;
+use util\Database;
 
 /**
  * Model of a comment.
@@ -38,7 +43,7 @@ class Comment {
     public static function findById($id) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('SELECT post, author, comment, date FROM ' . Config::DB_PREFIX . 'comments WHERE id=?'))) {
+        if (!($statement = $db->prepare('SELECT post, author, comment, date FROM ' . Database::getPrefix() . 'comments WHERE id=?'))) {
             throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $id)) {
@@ -68,7 +73,7 @@ class Comment {
     public static function findByPost($post) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('SELECT id, author, comment, date FROM ' . Config::DB_PREFIX . 'comments WHERE post=? ORDER BY date ASC'))) {
+        if (!($statement = $db->prepare('SELECT id, author, comment, date FROM ' . Database::getPrefix() . 'comments WHERE post=? ORDER BY date ASC'))) {
             throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $post)) {
@@ -103,7 +108,7 @@ class Comment {
     public static function findByPage($pageNo, $pageSize) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('SELECT id, post, author, comment, date FROM ' . Config::DB_PREFIX . 'comments ORDER BY date DESC LIMIT ?, ?'))) {
+        if (!($statement = $db->prepare('SELECT id, post, author, comment, date FROM ' . Database::getPrefix() . 'comments ORDER BY date DESC LIMIT ?, ?'))) {
             throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("ii", ($page = ($pageNo - 1) * $pageSize), $pageSize)) {
@@ -135,7 +140,7 @@ class Comment {
     public static function getCommentCount($post) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('SELECT count(*) FROM ' . Config::DB_PREFIX . 'comments WHERE post=?'))) {
+        if (!($statement = $db->prepare('SELECT count(*) FROM ' . Database::getPrefix() . 'comments WHERE post=?'))) {
             throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $post)) {
@@ -175,7 +180,7 @@ class Comment {
 
         $db = Database::getConnection();
 
-        if (!$dbResult = $db->query("SELECT post, count(*) AS count FROM " . Config::DB_PREFIX . 'comments WHERE post IN (' . implode(', ', $ids) . ') GROUP BY post')) {
+        if (!$dbResult = $db->query("SELECT post, count(*) AS count FROM " . Database::getPrefix() . 'comments WHERE post IN (' . implode(', ', $ids) . ') GROUP BY post')) {
             throw new DatabaseException("Execute failed: (" . $db->errno . ") " . $db->error);
         }
 
@@ -205,7 +210,7 @@ class Comment {
     public function create() {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('INSERT INTO ' . Config::DB_PREFIX . 'comments (post, author, comment, date) VALUES (?, ?, ?, ?)'))) {
+        if (!($statement = $db->prepare('INSERT INTO ' . Database::getPrefix() . 'comments (post, author, comment, date) VALUES (?, ?, ?, ?)'))) {
             throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("issi", $this->post, $this->author, $this->comment, $this->date)) {
@@ -229,7 +234,7 @@ class Comment {
     public static function delete($id) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('DELETE FROM ' . Config::DB_PREFIX . 'comments WHERE id=?'))) {
+        if (!($statement = $db->prepare('DELETE FROM ' . Database::getPrefix() . 'comments WHERE id=?'))) {
             throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $id)) {
@@ -253,7 +258,7 @@ class Comment {
     public static function deleteAll($post) {
         $db = Database::getConnection();
 
-        if (!($statement = $db->prepare('DELETE FROM ' . Config::DB_PREFIX . 'comments WHERE post=?'))) {
+        if (!($statement = $db->prepare('DELETE FROM ' . Database::getPrefix() . 'comments WHERE post=?'))) {
             throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
         }
         if (!$statement->bind_param("i", $post)) {
@@ -272,8 +277,8 @@ class Comment {
     public static function install() {
         $db = Database::getConnection();
 
-        if (!$db->query('CREATE TABLE IF NOT EXISTS ' . Config::DB_PREFIX . 'comments (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, post INT NOT NULL, author VARCHAR(100) NOT NULL, comment TEXT NOT NULL, date INT UNSIGNED NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
-            throw new DatabaseException("Could not create table" . Config::DB_PREFIX . "comments: (" . $db->errno . ") " . $db->error);
+        if (!$db->query('CREATE TABLE IF NOT EXISTS ' . Database::getPrefix() . 'comments (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, post INT NOT NULL, author VARCHAR(100) NOT NULL, comment TEXT NOT NULL, date INT UNSIGNED NOT NULL) CHARACTER SET utf8 COLLATE utf8_unicode_ci')) {
+            throw new DatabaseException("Could not create table" . Database::getPrefix() . "comments: (" . $db->errno . ") " . $db->error);
         }
     }
 

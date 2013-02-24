@@ -1,4 +1,9 @@
 <?php
+namespace util;
+
+use mysqli;
+use Config;
+use exceptions\DatabaseException;
 
 /**
  * Helper to access the database.
@@ -31,5 +36,9 @@ class Database {
     public static function getConnection() {
         $i = self::getInstance();
         return $i->connection;
+    }
+
+    public static function getPrefix() {
+        return Config::DB_PREFIX;
     }
 }

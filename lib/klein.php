@@ -152,7 +152,7 @@ function dispatch($uri = null, $req_method = null, array $params = null, $captur
         // Easily handle 404's
         } elseif ($_route === '404' && !$matched && count($methods_matched) <= 0) {
             try {
-                $callback($request, $response, $app, $matched, $methods_matched);
+                call_user_func($callback, $request, $response, $app, $matched, $methods_matched);
             } catch (Exception $e) {
                 $response->error($e);
             }
@@ -161,7 +161,7 @@ function dispatch($uri = null, $req_method = null, array $params = null, $captur
         // Easily handle 405's
         } elseif ($_route === '405' && !$matched && count($methods_matched) > 0) {
             try {
-                $callback($request, $response, $app, $matched, $methods_matched);
+                call_user_func($callback, $request, $response, $app, $matched, $methods_matched);
             } catch (Exception $e) {
                 $response->error($e);
             }
@@ -224,7 +224,7 @@ function dispatch($uri = null, $req_method = null, array $params = null, $captur
                        $_REQUEST = array_merge($_REQUEST, $params);
                   }
                   try {
-                       $callback($request, $response, $app, $matched, $methods_matched);
+                       call_user_func($callback, $request, $response, $app, $matched, $methods_matched);
                   } catch (Exception $e) {
                        $response->error($e);
                   }
@@ -292,6 +292,8 @@ class _Request {
 
     // HTTP headers helper
     static $_headers = null;
+
+    protected $_body = null;
 
     // Returns all parameters (GET, POST, named) that match the mask
     public function params($mask = null) {
@@ -394,6 +396,14 @@ class _Request {
     // Gets the request URI
     public function uri() {
         return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+    }
+
+    // Gets the request body
+    public function body() {
+        if (null === $this->_body) {
+            $this->_body = @file_get_contents('php://input');
+        }
+        return $this->_body;
     }
 }
 
@@ -884,3 +894,4 @@ class _Headers {
 }
 
 _Request::$_headers = _Response::$_headers = new _Headers;
+
