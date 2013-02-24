@@ -1,6 +1,9 @@
 <?php
 namespace controllers;
 
+use models\Comment;
+use models\Post;
+
 class Rss {
     // Post RSS
     public static function posts($request, $response) {
