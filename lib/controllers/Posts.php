@@ -31,7 +31,7 @@ class Posts {
             foreach ($response->post->getTags() as $tag) {
                 $tags[] = $response->htmlescape($tag);
             }
-            $response->htmlkeywords = implode(', ', $tags);
+            $response->htmlkeywords = $tags;
 
             $response->render('tpl/post.html');
         } catch (PostNotFoundException $e) {

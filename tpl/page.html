@@ -16,7 +16,7 @@
         <meta charset="utf-8" />
         <title><?php echo $this->htmlescape($this->title); ?></title>
         <link rel="shortcut icon" type="image/png" href="<?php echo $this->baseurl; ?>img/favicon.png">
-        <meta name="keywords" content="<?php echo $this->htmlkeywords; ?>" />
+        <meta name="keywords" content="<?php echo implode(', ', $this->htmlkeywords); ?>" />
         
         <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php echo $this->baseurl; ?>rss" />
         <link rel="alternate" type="application/rss+xml" title="RSS (Kommentare)" href="<?php echo $this->baseurl; ?>rss/comments" />
