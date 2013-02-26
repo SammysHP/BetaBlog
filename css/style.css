@@ -542,6 +542,16 @@ p.msg-success {
     text-align: justify;
 }
 
+
+.comment .content a {
+    text-decoration: underline;
+    color: #748300;
+}
+
+.comment .content a:hover {
+    color: #9a2e2e;
+}
+
 .comment input, .comment textarea {
     margin-bottom: 0.5em;
 }

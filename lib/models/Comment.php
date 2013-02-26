@@ -4,6 +4,7 @@ namespace models;
 use exceptions\CommentNotFoundException;
 use exceptions\DatabaseException;
 use util\Database;
+use util\StringUtils;
 
 /**
  * Model of a comment.
@@ -319,6 +320,15 @@ class Comment {
      */
     public function getComment() {
         return $this->comment;
+    }
+
+    /**
+     * Get the content of this comment with escaped html and links.
+     *
+     * @return string
+     */
+    public function getHtmlComment() {
+        return StringUtils::linkify($this->comment, false, StringUtils::SHORTEN_ELLIPSIS);
     }
 
     /**
