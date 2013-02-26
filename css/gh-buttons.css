@@ -111,6 +111,11 @@
     padding-right: 0px !important;
 }
 
+.button.icon.icon-only:after {
+    content: "\00a0";
+    display: block;
+}
+
 /* Example:
     .button.iconname.icon:before {
         background: url("data:image/png;base64,…");
@@ -317,6 +322,21 @@
 
 .button-group.minor-group .button.icon:before {
     opacity: 0.8;
+}
+
+/* Slim group
+   ========================================================================== */
+
+.button-group.slim-group .button {
+    padding: 0.2em 0.5em;
+}
+
+.button-group.slim-group .button.icon:before {
+    margin: 0 0.5em 0 0;
+}
+
+.button-group.slim-group + .button-group.slim-group {
+    margin-left: 5px;
 }
 
 
