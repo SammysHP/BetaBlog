@@ -537,6 +537,7 @@ p.msg-success {
     width: 30em;
     margin: auto;
     margin-bottom: 2em;
+    position: relative;
 }
 
 .comment h2 {
@@ -556,6 +557,16 @@ p.msg-success {
 .comment .content {
     margin-left: 2em;
     text-align: justify;
+}
+
+.comment input, .comment textarea {
+    margin-bottom: 0.5em;
+}
+
+.comment button {
+    margin-top: 1.5em;
+    position: absolute;
+    right: 0;
 }
 
 /*--- ICONS --------------------------------------------------*/
