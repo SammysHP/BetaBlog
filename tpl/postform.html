@@ -41,13 +41,13 @@ EOT;
 <form action="" method="POST" id="postform">
     <table class="table">
         <tr>
-            <td class="left">Titel:</td><td><input type="text" tabindex="1" name="title" id="title" value="<?php echo $this->htmlescape($this->post->getTitle()); ?>" /></td>
+            <td class="left">Titel:</td><td><input type="text" tabindex="1" name="title" id="title" autofocus value="<?php echo $this->htmlescape($this->post->getTitle()); ?>" /></td>
         </tr>
         <tr>
             <td class="left">Datum:</td><td><input type="text" tabindex="2" name="date" value="<?php echo date("Y-m-d H:i:s", $this->post->getDate()); ?>" /></td>
         </tr>
         <tr>
-            <td class="left">Veröffentlicht:</td><td><input type="checkbox" tabindex="3" style="width: auto;" name="published" <?php if ($this->post->isPublished()) echo 'checked="checked" '; ?>/></td>
+            <td class="left">Veröffentlicht:</td><td><input type="checkbox" tabindex="3" style="width: auto;" name="published" <?php if ($this->post->isPublished()) echo 'checked '; ?>/></td>
         </tr>
         <tr>
             <td class="left">
@@ -95,8 +95,6 @@ EOT;
 <div id="preview" class="entry preview" style="display: none;"></div>
 
 <script>
-    $('#title').focus();
-    
     $(document).ready(function() {
         var unloadAttached = false;
         $('input, textarea').each(function(i, e) {
