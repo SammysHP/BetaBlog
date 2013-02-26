@@ -8,29 +8,39 @@
 
 function renderTextTools($element) {
     echo <<<EOT
-    <div class="texttools">
-        <a href="#" onClick="makeBold(\$('$element')[0]); return false;"><b>B</b></a>
-        <a href="#" onClick="makeItalic(\$('$element')[0]); return false;"><i>I</i></a>
-        <a href="#" onClick="makeUnderline(\$('$element')[0]); return false;"><u>U</u></a>
-        <br />
-        <a href="#" onClick="makeLink(\$('$element')[0]); return false;">a</a>
-        <a href="#" onClick="makeHeading(\$('$element')[0]); return false;">h</a>
-        <a href="#" onClick="makeParagraph(\$('$element')[0]); return false;">p</a>
-        <a href="#" onClick="makeDel(\$('$element')[0]); return false;"><del>S</del></a>
-        <br />
-        <a href="#" onClick="makeUnorderedList(\$('$element')[0]); return false;">ul</a>
-        <a href="#" onClick="makeOrderedList(\$('$element')[0]); return false;">ol</a>
-        <a href="#" onClick="makeListItem(\$('$element')[0]); return false;">li</a>
-        <a href="#" onClick="makeBreak(\$('$element')[0]); return false;">br</a>
-        <br />
-        <a href="#" onClick="makeImage(\$('$element')[0]); return false;">img</a>
-        <a href="#" onClick="makeImageBox(\$('$element')[0]); return false;">img-box</a>
-        <br />
-        <a href="#" onClick="makeCode(\$('$element')[0]); return false;">code</a>
-        <a href="#" onClick="makeCodeBlock(\$('$element'));">code-b</a>
-        <br />
-        <a href="#" onClick="escapeSelectedText(\$('$element')[0]); return false;">esc</a>
-        <a href="#" onClick="unescapeSelectedText(\$('$element')[0]); return false;">un-esc</a>
+    <div class="texttools button-container">
+        <div class="button-group slim-group">
+            <a href="#" class="button" onClick="makeBold(\$('$element')[0]); return false;"><b>B</b></a>
+            <a href="#" class="button" onClick="makeItalic(\$('$element')[0]); return false;"><i>I</i></a>
+            <a href="#" class="button" onClick="makeUnderline(\$('$element')[0]); return false;"><u>U</u></a>
+            <a href="#" class="button" onClick="makeDel(\$('$element')[0]); return false;"><del>S</del></a>
+        </div>
+        <div class="button-group slim-group">
+            <a href="#" class="button" onClick="makeLink(\$('$element')[0]); return false;">a</a>
+            <a href="#" class="button" onClick="makeHeading(\$('$element')[0]); return false;">h</a>
+            <a href="#" class="button" onClick="makeParagraph(\$('$element')[0]); return false;">p</a>
+            <a href="#" class="button" onClick="makeBreak(\$('$element')[0]); return false;">br</a>
+        </div>
+        <div class="button-group slim-group">
+            <a href="#" class="button" onClick="makeUnorderedList(\$('$element')[0]); return false;">ul</a>
+            <a href="#" class="button" onClick="makeOrderedList(\$('$element')[0]); return false;">ol</a>
+            <a href="#" class="button" onClick="makeListItem(\$('$element')[0]); return false;">li</a>
+        </div>
+        <div class="button-group slim-group">
+            <a href="#" class="button" onClick="makeImage(\$('$element')[0]); return false;">img</a>
+            <a href="#" class="button" onClick="makeImageBox(\$('$element')[0]); return false;">box</a>
+        </div>
+        <div class="button-group slim-group">
+            <a href="#" class="button" onClick="makeCode(\$('$element')[0]); return false;">code</a>
+            <a href="#" class="button" onClick="makeCodeBlock(\$('$element'));">block</a>
+        </div>
+        <div class="button-group slim-group">
+            <a href="#" class="button" onClick="escapeSelectedText(\$('$element')[0]); return false;">esc</a>
+            <a href="#" class="button" onClick="unescapeSelectedText(\$('$element')[0]); return false;">un-esc</a>
+        </div>
+        <div class="button-group slim-group">
+            <a href="#" class="button" onClick="toggleMonospace(\$('$element')[0], this); return false;">tt</a>
+        </div>
     </div>
 EOT;
 }
@@ -50,18 +60,18 @@ EOT;
             <td class="left">Veröffentlicht:</td><td><input type="checkbox" tabindex="3" style="width: auto;" name="published" <?php if ($this->post->isPublished()) echo 'checked '; ?>/></td>
         </tr>
         <tr>
-            <td class="left">
-                Inhalt:
+            <td class="left">Inhalt:</td>
+            <td>
                 <?php renderTextTools('#content'); ?>
+                <textarea style="height: 20em;" tabindex="4" name="content" id="content"><?php echo $this->htmlescape($this->post->getContent()); ?></textarea>
             </td>
-            <td><textarea rows="15" tabindex="4" name="content" id="content"><?php echo $this->htmlescape($this->post->getContent()); ?></textarea></td>
         </tr>
         <tr>
-            <td class="left">
-                Erweitert:
+            <td class="left">Erweitert:</td>
+            <td>
                 <?php renderTextTools('#extended'); ?>
+                <textarea style="height: 40em;" tabindex="5" name="extended" id="extended"><?php echo $this->htmlescape($this->post->getExtended()); ?></textarea>
             </td>
-            <td><textarea rows="30" tabindex="5" name="extended" id="extended"><?php echo $this->htmlescape($this->post->getExtended()); ?></textarea></td>
         </tr>
         <tr>
             <td class="left">Tags:</td>

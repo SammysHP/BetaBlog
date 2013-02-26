@@ -192,6 +192,19 @@ function makeImageBox(el) {
     setCaretPosition(el, sel.start + newtext.length);
 }
 
+function toggleMonospace(el, btn) {
+    var element = $(el);
+    var button = $(btn);
+
+    if (element.hasClass('monospace')) {
+        element.removeClass('monospace');
+        button.removeClass('active').blur();
+    } else {
+        element.addClass('monospace');
+        button.addClass('active').blur();
+    }
+}
+
 function insertTag(tag) {
     var el = document.getElementById('taginput');
     
