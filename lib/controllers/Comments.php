@@ -4,9 +4,11 @@ namespace controllers;
 use Config;
 use exceptions\CommentNotFoundException;
 use exceptions\DatabaseException;
+use exceptions\MailException;
 use exceptions\PostNotFoundException;
 use models\Comment;
 use models\Post;
+use util\Mail;
 
 class Comments {
     // Create comment
@@ -49,6 +51,27 @@ class Comments {
         try {
             $comment->create();
             $response->flash('Kommentar gespeichert', 'success');
+
+            if (Config::NOTIFY_EMAIL != '') {
+                try {
+                    $mail = new Mail();
+
+                    $mail->setFrom(Config::NOTIFY_EMAIL, $comment->getAuthor());
+                    $mail->setTo(Config::NOTIFY_EMAIL);
+
+                    $mail->setSubject('Neuer Kommentar');
+
+                    $message = $comment->getAuthor() . " hat geschrieben:\n\n" . $comment->getComment();
+                    $message .= "\n\n\n";
+                    $message .= 'Ansehen: http://' . $_SERVER['SERVER_NAME'] . $response->baseurl . 'post/' . $comment->getPost() . '#comment-' . $comment->getId() . "\n";
+                    $message .= 'Löschen: http://' . $_SERVER['SERVER_NAME'] . $response->baseurl . 'comment/' . $comment->getId() . '/delete';
+                    $mail->setMessage($message);
+
+                    $mail->send();
+                } catch (MailException $e) {
+                    // Nothing to do
+                }
+            }
         } catch (DatabaseException $e) {
             $response->flash('Fehler beim Speichern des Kommentars', 'error');
         }
@@ -77,18 +100,20 @@ class Comments {
     public static function deleteComment($request, $response) {
         $response->requireLogin($request, $response);
 
-        if ($request->param('delete') != '') {
-            try {
-                Comment::delete($request->param('id'));
-                $response->flash('Kommentar gelöscht', 'success');
-            } catch (CommentNotFoundException $e) {
-                $response->flash('Kommentar nicht gefunden', 'error');
-                $response->code(404);
-                $response->render('tpl/plain.html');
-                exit;
-            }
-        }
+        try {
+            $comment = Comment::findById($request->param('id'));
 
-        $response->redirect($response->backurl);
+            if ($request->param('delete') != '') {
+                Comment::delete($comment->getId());
+                $response->flash('Kommentar gelöscht', 'success');
+            }
+
+            $response->redirect($response->baseurl . 'post/' . $comment->getPost());
+        } catch (CommentNotFoundException $e) {
+            $response->flash('Kommentar nicht gefunden', 'error');
+            $response->code(404);
+            $response->render('tpl/plain.html');
+            exit;
+        }
     }
 }

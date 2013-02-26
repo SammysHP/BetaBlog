@@ -44,6 +44,10 @@ final class Config {
     // Text in header
     const HEADER_TITLE  = 'BetaBlog';
 
+    // Comment notification email address
+    // If empty, no mail will be sent
+    const NOTIFY_EMAIL  = '';
+
     private function __construct() {
     }
 }
