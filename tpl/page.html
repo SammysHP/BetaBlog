@@ -45,6 +45,9 @@
         <script src="<?php echo $this->baseurl; ?>js/fancybox.js"></script>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>css/fancybox.css" />
         <script>
+            $.fancybox.defaults.minHeight = 0;
+            $.fancybox.defaults.minWidth = 0;
+            
             $(document).ready(function() {
                 $('.imagebox').fancybox();
             });
