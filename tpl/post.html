@@ -22,7 +22,7 @@
     <div class="date">
         <span class="day"><?php echo date("j", $this->post->getDate()); ?></span>.<br />
         <div>
-            <?php echo strftime("%B", $this->post->getDate()) . date(' Y<\b\r />G:i', $this->post->getDate()); ?>
+            <?php echo utf8_encode(strftime("%B", $this->post->getDate())) . date(' Y<\b\r />G:i', $this->post->getDate()); ?>
         </div>
     </div>
 
