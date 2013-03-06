@@ -363,7 +363,7 @@ class Post {
         if ($statement->affected_rows == 0) {
             // Check if post does not exist or if there are no changes
             // Following call will throw a PostNotFoundException if post does not exist
-            Post::findById($this->getId());
+            Post::findById($this->getId(), false);
         }
 
         Tag::update($this->id, $this->tags);
