@@ -22,7 +22,7 @@ class Comments {
 
         $author = trim(stripslashes($request->param('author')));
         $message = trim(stripslashes($request->param('message')));
-        $challenge = trim(stripslashes($request->param('challenge')));
+        $challenge = stripslashes($request->param('challenge'));
 
         if (strlen($message) < 4) {
             $response->flash('Der Kommentar muss mindestens 4 Zeichen lang sein.', 'error');
