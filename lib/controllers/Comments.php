@@ -31,9 +31,9 @@ class Comments {
             $response->redirect($response->baseurl . 'post/' . $request->param('id'));
         }
         
-        if (strlen($challenge) != 4 || 0 != substr_compare(
-                $message,
-                $challenge,
+        if (strlen(utf8_decode($challenge)) != 4 || 0 != substr_compare(
+                utf8_decode($message),
+                utf8_decode($challenge),
                 -4,
                 4)) {
             $response->flash('Die Kontrolle stimmt nicht mit den letzten 4 Zeichen des Kommentars überein.', 'error');
