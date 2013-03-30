@@ -15,7 +15,7 @@ class Comments {
     public static function createComment($request, $response) {
         // Check if post exists
         try {
-            Post::findById($request->param('id'), false);
+            $post = Post::findById($request->param('id'), false);
         } catch (PostNotFoundException $e) {
             $response->redirect($response->baseurl . 'post/' . $request->param('id'));
         }
@@ -61,7 +61,7 @@ class Comments {
 
                     $mail->setSubject('Neuer Kommentar');
 
-                    $message = $comment->getAuthor() . " hat geschrieben:\n\n" . $comment->getComment();
+                    $message = $comment->getAuthor() . " hat für \"" . $post->getTitle() .  "\" geschrieben:\n\n" . $comment->getComment();
                     $message .= "\n\n\n";
                     $message .= 'Ansehen: http://' . $_SERVER['SERVER_NAME'] . $response->baseurl . 'post/' . $comment->getPost() . '#comment-' . $comment->getId() . "\n";
                     $message .= 'Löschen: http://' . $_SERVER['SERVER_NAME'] . $response->baseurl . 'comment/' . $comment->getId() . '/delete';
