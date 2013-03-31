@@ -10,7 +10,7 @@ class Files {
 
         $response->title .= Config::PAGE_TITLE_S . 'Dateien';
 
-        $response->sorting = $request->session('filesorting', 'name');
+        $response->sorting = $request->session('filesorting', 'dateup');
 
         $directory = Config::UPLOAD_DIR;
         $files = array();
