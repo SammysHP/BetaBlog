@@ -30,12 +30,12 @@ class Files {
         switch ($response->sorting) {
             case 'name':
                 usort($files, function ($a, $b) {
-                    return strcmp($a['name'], $b['name']);
+                    return strcmp(strtolower($a['name']), strtolower($b['name']));
                 });
                 break;
             case 'nameup':
                 usort($files, function ($a, $b) {
-                    return strcmp($b['name'], $a['name']);
+                    return strcmp(strtolower($b['name']), strtolower($a['name']));
                 });
                 break;
             case 'date':
