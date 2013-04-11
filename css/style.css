@@ -173,12 +173,12 @@ input.monospace, textarea.monospace {
     text-align: justify;
 }
 
-.entry p a {
+.entry p a, .entry li a {
     text-decoration: underline;
     color: #748300;
 }
 
-.entry p a:hover {
+.entry p a:hover, .entry li a:hover {
     color: #9a2e2e;
 }
 
