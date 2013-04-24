@@ -20,7 +20,7 @@
         }
     }
     
-    $a = - 2.5 / (1 - $max);
+    $a = 2.5 / ($max == 0 ? 1 : -1 + $max);
     
     $tags = array();
     foreach ($this->alltags as $tag) {
