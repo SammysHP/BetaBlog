@@ -2,6 +2,7 @@
 namespace controllers;
 
 use Config;
+use util\AntiCSRF;
 
 class Authentication {
     // Login (view)
@@ -17,6 +18,8 @@ class Authentication {
 
     // Login (handler)
     public static function login($request, $response) {
+        AntiCSRF::verifyOrFail();
+
         if (Config::LOGIN_PW_HASH == md5(Config::SALT . $request->param('password', ''))) {
             $response->session('loggedin', true);
             $response->redirect($response->backurl);
@@ -28,8 +31,8 @@ class Authentication {
 
     // Logout
     public static function logout($request, $response) {
+        session_unset();
         $response->flash('Erfolgreich abgemeldet', 'success');
-        $response->session('loggedin', false);
         $response->redirect($response->baseurl);
     }
 }

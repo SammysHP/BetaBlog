@@ -1,10 +1,16 @@
 <?php
+use util\AntiCSRF;
+
 /*
     $this->htmlescape()
     $this->filename
 */
 ?>
 <form action="" method="POST" class="popup">
+    <?php
+        $csrf = new AntiCSRF();
+        echo $csrf->getPostString();
+    ?>
     <h2>Datei umbenennen</h2>
     <p style="margin-bottom: 1em; text-align: left;">Alter Name:<br /><b><?php echo $this->htmlescape($this->filename); ?></b></p>
     <input type="text" name="newname" placeholder="Neuer Name" autofocus />

@@ -1,4 +1,11 @@
+<?php
+use util\AntiCSRF;
+?>
 <form action="" method="POST" class="popup">
+    <?php
+        $csrf = new AntiCSRF();
+        echo $csrf->getPostString();
+    ?>
     <h2>Einloggen</h2>
     <input type="password" name="password" placeholder="Passwort" autofocus />
     <button type="submit" class="button">Login</button>

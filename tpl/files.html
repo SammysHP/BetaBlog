@@ -1,4 +1,6 @@
 <?php
+use util\AntiCSRF;
+
 /*
     $this->htmlescape()
     $this->baseurl
@@ -8,6 +10,10 @@
 ?>
 <div class="files">
     <form enctype="multipart/form-data" action="<?php echo $this->baseurl ?>files/upload" method="POST" class="popup">
+        <?php
+            $csrf = new AntiCSRF();
+            echo $csrf->getPostString();
+        ?>
         <h2>Datei hochladen</h2>
         <input type="file" name="upload" />
         <input type="text" name="filename" placeholder="Dateiname (optional)" />

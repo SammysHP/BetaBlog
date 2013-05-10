@@ -1,10 +1,16 @@
 <?php
+use util\AntiCSRF;
+
 /*
     $this->htmlescape()
     $this->message
 */
 ?>
 <form action="" method="POST" class="popup">
+    <?php
+        $csrf = new AntiCSRF();
+        echo $csrf->getPostString();
+    ?>
     <h2>Wirklich löschen?</h2>
     <p style="margin-bottom: 1em;"><?php echo $this->htmlescape($this->message); ?></p>
     <div class="button-container">

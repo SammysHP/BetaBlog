@@ -2,6 +2,7 @@
 namespace controllers;
 
 use Config;
+use util\AntiCSRF;
 
 class Files {
     // List files
@@ -56,6 +57,7 @@ class Files {
 
     // Upload file
     public static function uploadFile($request, $response) {
+        AntiCSRF::verifyOrFail();
         $response->requireLogin($request, $response);
 
         $file = $_FILES['upload'];
@@ -100,6 +102,7 @@ class Files {
 
     // Delete file
     public static function deleteFile($request, $response) {
+        AntiCSRF::verifyOrFail();
         $response->requireLogin($request, $response);
 
         if ($request->param('delete') != '') {
@@ -134,6 +137,7 @@ class Files {
 
     // Rename file
     public static function renameFile($request, $response) {
+        AntiCSRF::verifyOrFail();
         $response->requireLogin($request, $response);
 
         $oldname = utf8_decode(basename(rawurldecode($request->param('name'))));

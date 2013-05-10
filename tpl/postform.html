@@ -1,4 +1,6 @@
 <?php
+use util\AntiCSRF;
+
 /*
     $this->baseurl
     $this->htmlescape()
@@ -49,6 +51,10 @@ EOT;
 <script src="<?php echo $this->baseurl; ?>js/texttools.js"></script>
 
 <form action="" method="POST" id="postform">
+    <?php
+        $csrf = new AntiCSRF();
+        echo $csrf->getPostString();
+    ?>
     <table class="table">
         <tr>
             <td class="left">Titel:</td><td><input type="text" tabindex="1" name="title" id="title" autofocus value="<?php echo $this->htmlescape($this->post->getTitle()); ?>" /></td>

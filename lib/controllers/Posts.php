@@ -7,6 +7,7 @@ use exceptions\PostNotFoundException;
 use models\Comment;
 use models\Post;
 use models\Tag;
+use util\AntiCSRF;
 
 class Posts {
     // Single post
@@ -66,6 +67,7 @@ class Posts {
 
     // Create post (handler)
     public static function createPost($request, $response) {
+        AntiCSRF::verifyOrFail();
         $response->requireLogin($request, $response);
 
         $post = new Post(
@@ -98,6 +100,7 @@ class Posts {
 
     // Edit post (handler)
     public static function editPost($request, $response) {
+        AntiCSRF::verifyOrFail();
         $response->requireLogin($request, $response);
 
         $post = new Post(
@@ -135,6 +138,7 @@ class Posts {
 
     // Publish/retract post
     public static function changePublishStatus($request, $response) {
+        AntiCSRF::verifyOrFail();
         $response->requireLogin($request, $response);
 
         try {
@@ -177,6 +181,7 @@ class Posts {
 
     // Delete post
     public static function deletePost($request, $response) {
+        AntiCSRF::verifyOrFail();
         $response->requireLogin($request, $response);
 
         if ($request->param('delete') != '') {

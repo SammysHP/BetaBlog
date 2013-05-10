@@ -8,11 +8,14 @@ use exceptions\MailException;
 use exceptions\PostNotFoundException;
 use models\Comment;
 use models\Post;
+use util\AntiCSRF;
 use util\Mail;
 
 class Comments {
     // Create comment
     public static function createComment($request, $response) {
+        AntiCSRF::verifyOrFail();
+
         // Check if post exists
         try {
             $post = Post::findById($request->param('id'), false);
@@ -98,6 +101,7 @@ class Comments {
 
     // Delete comment
     public static function deleteComment($request, $response) {
+        AntiCSRF::verifyOrFail();
         $response->requireLogin($request, $response);
 
         try {
