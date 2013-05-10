@@ -12,7 +12,7 @@ use util\AntiCSRF;
         echo $csrf->getPostString();
     ?>
     <h2>Datei umbenennen</h2>
-    <p style="margin-bottom: 1em; text-align: left;">Alter Name:<br /><b><?php echo $this->htmlescape($this->filename); ?></b></p>
-    <input type="text" name="newname" placeholder="Neuer Name" autofocus />
+    <p style="margin-bottom: 1em; text-align: left;"><?php echo $this->htmlescape($this->filename); ?></p>
+    <input type="text" name="newname" placeholder="Neuer Name" value="<?php echo $this->htmlescape($this->filename); ?>" autofocus />
     <button type="submit" class="button">Umbenennen</button>
 </form>
