@@ -191,6 +191,10 @@ input.monospace, textarea.monospace {
 .entry p {
     margin-bottom: 1em;
     text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
 }
 
 .entry p a, .entry li a {
@@ -214,6 +218,10 @@ input.monospace, textarea.monospace {
     margin-bottom: 1em;
     margin-left: 2.5em;
     list-style-type: disc;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
 }
 
 .entry ol {
@@ -559,6 +567,10 @@ p.msg-success {
 .comment .content {
     margin-left: 2em;
     text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
 }
 
 

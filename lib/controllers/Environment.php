@@ -33,5 +33,6 @@ class Environment {
         $response->infourl = Config::INFO_URL;
         $response->headertitle = Config::HEADER_TITLE;
         $response->htmlkeywords = array();
+        $response->lang = Config::LANG;
     }
 }

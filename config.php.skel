@@ -48,6 +48,10 @@ final class Config {
     // If empty, no mail will be sent
     const NOTIFY_EMAIL  = '';
 
+    // Language of the content (ISO-639)
+    // e.g. en=English, de=German, ...
+    const LANG          = '';
+
     private function __construct() {
     }
 }

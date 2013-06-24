@@ -1,5 +1,6 @@
 <?php
 /*
+    $this->lang
     $this->baseurl
     $this->loggedin
     $this->htmlescape()
@@ -11,7 +12,7 @@
 */
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo $this->lang; ?>">
     <head>
         <meta charset="utf-8" />
         <title><?php echo $this->htmlescape($this->title); ?></title>
