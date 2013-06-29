@@ -35,6 +35,7 @@ input, textarea {
     -ms-box-sizing: border-box;
     font-family: Arial, sans-serif;
     font-size: 0.8em;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
 }
 
 input:focus, textarea:focus {
