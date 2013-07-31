@@ -236,6 +236,10 @@ input.monospace, textarea.monospace {
     text-align: justify;
 }
 
+.entry .compact li {
+    margin-bottom: 0.3em;
+}
+
 .entry pre {
     margin-bottom: 1.4em;
     font-family: 'Courier New', Courier, monospace;
