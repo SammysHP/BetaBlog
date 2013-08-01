@@ -17,6 +17,8 @@ class Post {
     private $tags;
     private $published;
     private $commentCount;
+    private $pevious;
+    private $next;
 
     /**
      * Create a new post.
@@ -477,5 +479,75 @@ class Post {
     public function setCommentCount($value) {
         $this->commentCount = (int) $value;
         return $this;
+    }
+
+    /**
+     * Get the previous (sorted by date) post.
+     *
+     * @return Post or null
+     * @throws DatabaseException
+     */
+    public function getPreviousPost($publishedIn = true) {
+        if (count($this->previous) == 0) {
+            $db = Database::getConnection();
+
+            if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . Database::getPrefix() . 'posts WHERE date<? AND published>=? ORDER BY date DESC LIMIT 1'))) {
+                throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
+            }
+            if (!$statement->bind_param("ii", $this->getDate(), $publishedIn)) {
+                throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            }
+            if (!$statement->execute()) {
+                throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            }
+            if (!$statement->bind_result($id, $title, $content, $extended, $date, $published)) {
+                throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            }
+
+            if (!$statement->fetch()) {
+                $this->previous[0] = null;
+            } else {
+                $this->previous[0] = new Post($title, $content, $extended, $date, array(), $published, $id);
+            }
+
+            $statement->close();
+        }
+
+        return $this->previous[0];
+    }
+
+    /**
+     * Get the next (sorted by date) post.
+     *
+     * @return Post or null
+     * @throws DatabaseException
+     */
+    public function getNextPost($publishedIn = true) {
+        if (count($this->next) == 0) {
+            $db = Database::getConnection();
+
+            if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . Database::getPrefix() . 'posts WHERE date>? AND published>=? ORDER BY date ASC LIMIT 1'))) {
+                throw new DatabaseException("Prepare failed: (" . $db->errno . ") " . $db->error);
+            }
+            if (!$statement->bind_param("ii", $this->getDate(), $publishedIn)) {
+                throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            }
+            if (!$statement->execute()) {
+                throw new DatabaseException("Execute failed: (" . $statement->errno . ") " . $statement->error);
+            }
+            if (!$statement->bind_result($id, $title, $content, $extended, $date, $published)) {
+                throw new DatabaseException("Binding parameters failed: (" . $statement->errno . ") " . $statement->error);
+            }
+
+            if (!$statement->fetch()) {
+                $this->next[0] = null;
+            } else {
+                $this->next[0] = new Post($title, $content, $extended, $date, array(), $published, $id);
+            }
+
+            $statement->close();
+        }
+
+        return $this->next[0];
     }
 }

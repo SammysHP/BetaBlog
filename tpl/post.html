@@ -72,7 +72,24 @@ use util\AntiCSRF;
         echo '<div class="commentcount"><a href="' . $this->baseurl . 'post/' . $this->post->getId() . '#comments">' . $this->post->getCommentCount() . ($this->post->getCommentCount() == 1 ? ' Kommentar' : ' Kommentare') . '</a></div>';
         ?>
     </div>
-
+    
+    <?php
+    if ($this->fullentry) {
+        echo '<div class="postnavigation">';
+        
+        $next = $this->post->getNextPost(!$this->loggedin);
+        if ($next != null) {
+            echo '<a href="' . $this->baseurl . 'post/' . $next->getId() . '" title="' . $this->htmlescape($next->getTitle()) . '" style="float: left;">« neuerer Beitrag</a>';
+        }
+        
+        $previous = $this->post->getPreviousPost(!$this->loggedin);
+        if ($previous != null) {
+            echo '<a href="' . $this->baseurl . 'post/' . $previous->getId() . '" title="' . $this->htmlescape($previous->getTitle()) . '" style="float: right;">älterer Beitrag »</a>';
+        }
+        
+        echo '</div>';
+    }
+    ?>
 </div>
 
 <?php

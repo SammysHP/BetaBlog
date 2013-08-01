@@ -163,6 +163,12 @@ input.monospace, textarea.monospace {
     color: #aaaaaa;
 }
 
+.entry .postnavigation {
+    overflow: hidden;
+    margin-top: 1em;
+    color: #aaaaaa;
+}
+
 .entry .date {
     font-variant: small-caps;
     float: left;
@@ -171,7 +177,6 @@ input.monospace, textarea.monospace {
     text-align: right;
     margin-top: 1em;
     letter-spacing: 0.1em;
-    /*color: #666666;*/
 }
 
 .entry .day {
