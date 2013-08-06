@@ -19,14 +19,13 @@ if ($this->paginationCount > 1) {
     }
     
     if ($windowStart > 1) {
-        // first element of window is used for first-page-link
-        $windowStart++;
-        echo "<a href=\"{$this->baseurl}page/1\" class=\"end\">1</a>";
+        $windowStart = $windowStart + 2;
+        echo "<a href=\"{$this->baseurl}page/1\">1</a>";
+        echo '<span class="skip"></span>';
     }
     
     if ($this->paginationCount > $windowEnd) {
-        // last element of window is used for last-page-link
-        $windowEnd--;
+        $windowEnd = $windowEnd - 2;
     }
     
     for ($i = $windowStart; $i <= $windowEnd; $i++) {
@@ -35,7 +34,8 @@ if ($this->paginationCount > 1) {
     }
     
     if ($this->paginationCount > $windowEnd) {
-        echo "<a href=\"{$this->baseurl}page/{$this->paginationCount}\" class=\"end\">{$this->paginationCount}</a>";
+        echo '<span class="skip"></span>';
+        echo "<a href=\"{$this->baseurl}page/{$this->paginationCount}\">{$this->paginationCount}</a>";
     }
 }
 
