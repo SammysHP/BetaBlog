@@ -310,7 +310,7 @@ input.monospace, textarea.monospace {
     margin-bottom: 0;
 }
 
-blockquote:after {
+.entry blockquote:after {
     content: attr(cite);
     font-size: 0.6em;
     color: #aaaaaa;
