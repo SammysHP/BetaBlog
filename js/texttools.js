@@ -145,6 +145,14 @@ function makeParagraph(el) {
     surroundSelectedText(el, '<p>\n', '\n</p>');
 }
 
+function makeBlockquote(el) {
+    surroundSelectedText(el, '<blockquote cite=""><p>\n', '\n</p></blockquote>');
+}
+
+function makeQuoteInsert(el) {
+    surroundSelectedText(el, '<span class="quoteinsert">', '</span>');
+}
+
 function makeLink(el) {
     surroundSelectedText(el, '<a href="">', '</a>');
 }

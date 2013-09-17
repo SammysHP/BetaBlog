@@ -16,12 +16,16 @@ function renderTextTools($element) {
             <a href="#" class="button" onClick="makeItalic(\$('$element')[0]); return false;"><i>I</i></a>
             <a href="#" class="button" onClick="makeUnderline(\$('$element')[0]); return false;"><u>U</u></a>
             <a href="#" class="button" onClick="makeDel(\$('$element')[0]); return false;"><del>S</del></a>
+            <a href="#" class="button" onClick="makeLink(\$('$element')[0]); return false;">a</a>
         </div>
         <div class="button-group slim-group">
-            <a href="#" class="button" onClick="makeLink(\$('$element')[0]); return false;">a</a>
             <a href="#" class="button" onClick="makeHeading(\$('$element')[0]); return false;">h</a>
             <a href="#" class="button" onClick="makeParagraph(\$('$element')[0]); return false;">p</a>
             <a href="#" class="button" onClick="makeBreak(\$('$element')[0]); return false;">br</a>
+        </div>
+        <div class="button-group slim-group">
+            <a href="#" class="button" onClick="makeBlockquote(\$('$element')[0]); return false;">„”</a>
+            <a href="#" class="button" onClick="makeQuoteInsert(\$('$element')[0]); return false;">[ ]</a>
         </div>
         <div class="button-group slim-group">
             <a href="#" class="button" onClick="makeUnorderedList(\$('$element')[0]); return false;">ul</a>

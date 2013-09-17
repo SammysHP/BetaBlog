@@ -328,7 +328,7 @@ blockquote:after {
 .entry blockquote p:before { content: "„ "; }
 .entry blockquote p:after { content: " “"; }
 
-.entry blockquote .quoteskip {
+.entry blockquote .quoteinsert {
     color: #888;
     font-size: 0.8em;
 }
@@ -426,7 +426,7 @@ blockquote:after {
 
 /*--- TABLE USED IN POSTFORM AND ARCHIVE ---------------------*/
 .table {
-    width: 90%;
+    width: 95%;
     margin: auto;
     margin-bottom: 2em;
 }
@@ -436,7 +436,7 @@ blockquote:after {
 }
 
 .table .left {
-    width: 10em;
+    width: 8.5em;
     text-align: right;
     vertical-align: top;
 }
