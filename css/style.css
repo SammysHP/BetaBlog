@@ -299,6 +299,40 @@ input.monospace, textarea.monospace {
     border-radius: 3px;
 }
 
+.entry blockquote {
+    font-size: 1.1em;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+
+.entry blockquote p {
+    margin-bottom: 0;
+}
+
+blockquote:after {
+    content: attr(cite);
+    font-size: 0.6em;
+    color: #aaaaaa;
+    font-style: italic;
+    display: block;
+    text-align: right;
+}
+
+.entry blockquote p:before, .entry blockquote p:after {
+    font-family: Georgia, serif;
+    font-size: 1.3em;
+    color: #aaaaaa;
+}
+
+.entry blockquote p:before { content: "„ "; }
+.entry blockquote p:after { content: " “"; }
+
+.entry blockquote .quoteskip {
+    color: #888;
+    font-size: 0.8em;
+}
+
 /*--- PAGE HEADER --------------------------------------------*/
 #header {
     margin-bottom: 5em;
