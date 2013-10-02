@@ -31,7 +31,7 @@ I'm using some third-party components:
 - [fancybox](http://fancyapps.com/fancybox/) (CC by-nc 3.0)
 - [highlight.js](http://softwaremaniacs.org/soft/highlight/en/) (custom license)
 - [jQuery](http://jquery.com/) (MIT)
-- [klein.php](https://github.com/chriso/klein.php) (custom license)
+- [klein.php](https://github.com/chriso/klein.php) (MIT)
 - [placeholder-compat](https://github.com/SammysHP/placeholder-compat) (GPL v3)
 - [SimpleBars](https://github.com/SammysHP/SimpleBars) (GPL v3)
 
