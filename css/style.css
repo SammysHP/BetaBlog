@@ -278,6 +278,10 @@ input.monospace, textarea.monospace {
     background: #f3f3f3;
     color: #000000;
     border-radius: 3px;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
 }
 
 .entry .imagebox {
