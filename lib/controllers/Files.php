@@ -69,7 +69,7 @@ class Files {
 
         $filename = utf8_decode(basename($request->param('filename', '')));
         if (empty($filename)) {
-            $filename = basename($file['name']);
+            $filename = utf8_decode(basename($file['name']));
         }
 
         if (substr($filename, 0, 1) == '.' || substr($filename, -4) == '.php') {
