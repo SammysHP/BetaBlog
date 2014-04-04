@@ -76,7 +76,7 @@ class AntiCSRF {
         } else {
             return false;
         }
-        
+
         $sessionToken = $_SESSION[self::N_SESSION . $key];
         unset($_SESSION[self::N_SESSION . $key]);
 

@@ -16,15 +16,15 @@ class Files {
         $directory = Config::UPLOAD_DIR;
         $files = array();
         $content = scandir($directory);
-        
+
         foreach ($content as $file) {
             if (substr($file, 0, 1) == '.') {
                 continue;
             }
-            
+
             $entry['name'] = utf8_encode($file);
             $entry['time'] = filemtime($directory . '/' . $file);
-            
+
             $files[] = $entry;
         }
 

@@ -257,7 +257,7 @@ class Post {
 
     /**
      * Creates statistics for all posts.
-     * 
+     *
      * The resulting array has the following keys:
      *      max: (int) maximum number of posts in a month
      *      data: (int[][])

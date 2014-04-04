@@ -33,7 +33,7 @@ class Comments {
             $response->flash($message, 'commentformmessage');
             $response->redirect($response->baseurl . 'post/' . $request->param('id'));
         }
-        
+
         if (strlen(utf8_decode($challenge)) != 4 || 0 != substr_compare(
                 utf8_decode($message),
                 utf8_decode($challenge),
