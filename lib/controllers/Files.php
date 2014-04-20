@@ -22,7 +22,7 @@ class Files {
                 continue;
             }
 
-            $entry['name'] = utf8_encode($file);
+            $entry['name'] = $file;
             $entry['time'] = filemtime($directory . '/' . $file);
 
             $files[] = $entry;
@@ -67,9 +67,9 @@ class Files {
             $response->redirect($response->baseurl . 'files');
         }
 
-        $filename = utf8_decode(basename($request->param('filename', '')));
+        $filename = basename($request->param('filename', ''));
         if (empty($filename)) {
-            $filename = utf8_decode(basename($file['name']));
+            $filename = basename($file['name']);
         }
 
         if (substr($filename, 0, 1) == '.' || substr($filename, -4) == '.php') {
@@ -106,7 +106,7 @@ class Files {
         $response->requireLogin($request, $response);
 
         if ($request->param('delete') != '') {
-            $filename = utf8_decode(basename(rawurldecode($request->param('name'))));
+            $filename = basename(rawurldecode($request->param('name')));
             $filepath = Config::UPLOAD_DIR . '/' . $filename;
 
             if (substr($filename, 0, 1) == '.' || !file_exists($filepath)) {
@@ -140,8 +140,8 @@ class Files {
         AntiCSRF::verifyOrFail();
         $response->requireLogin($request, $response);
 
-        $oldname = utf8_decode(basename(rawurldecode($request->param('name'))));
-        $newname = utf8_decode(basename($request->param('newname')));
+        $oldname = basename(rawurldecode($request->param('name')));
+        $newname = basename($request->param('newname'));
         $oldfile = Config::UPLOAD_DIR . '/' . $oldname;
         $newfile = Config::UPLOAD_DIR . '/' . $newname;
 
