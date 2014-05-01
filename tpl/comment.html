@@ -15,7 +15,7 @@
     <div class="title">
         <?php
         echo '<span style="font-weight: bold;">' . $this->htmlescape($this->comment->getAuthor()) . '</span>';
-        echo ', ' . date("d.m.Y H:i", $this->comment->getDate());
+        echo ', <span title="' . $this->comment->getHumanDate() . '">' . date("d.m.Y H:i", $this->comment->getDate()) . '</span>';
         ?>
     </div>
     <div class="content"><?php

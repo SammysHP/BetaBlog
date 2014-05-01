@@ -21,7 +21,7 @@ use util\AntiCSRF;
     }
     ?>
 
-    <div class="date">
+    <div class="date" title="<?php echo $this->post->getHumanDate(); ?>">
         <span class="day"><?php echo date("j", $this->post->getDate()); ?></span>.<br />
         <div>
             <?php echo utf8_encode(strftime("%B", $this->post->getDate())) . date(' Y<\b\r />G:i', $this->post->getDate()); ?>

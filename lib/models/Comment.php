@@ -371,6 +371,10 @@ class Comment {
         return $this->date;
     }
 
+    public function getHumanDate() {
+        return StringUtils::formatHumanDate($this->date);
+    }
+
     /**
      * Set the date of this comment.
      *

@@ -42,4 +42,94 @@ class StringUtils {
             htmlspecialchars($string)
         );
     }
+
+    /**
+     * Format date and time human readable.
+     *
+     * Currently limited to de_DE.
+     *
+     * @param int $then The other date and time as Unix timestamp
+     * @param int $now The reference date and time
+     * @return String Date and time in human readable format
+     */
+    public static function formatHumanDate($then, $now = -1) {
+        $then = (int) $then;
+        $now = (int) $now;
+
+        if ($now < 0) {
+            $now = time();
+        }
+
+        $difference = $now - $then;
+
+        // In the future
+        if ($difference < 0) {
+            return "zukünftig";
+        }
+
+        // < 1 minute
+        if ($difference < 60) {
+            return "gerade eben";
+        }
+
+        // < 1 hour
+        if ($difference < 60 * 60) {
+            $minutes = (int) ($difference / 60);
+            if ($minutes > 1) {
+                return "vor $minutes Minuten";
+            } else {
+                return "vor einer Minute";
+            }
+        }
+
+        // < 1 day
+        if ($difference < 60 * 60 * 24) {
+            $hours = (int) ($difference / (60 * 60));
+            if ($hours > 1) {
+                return "vor $hours Stunden";
+            } else {
+                return "vor einer Stunde";
+            }
+        }
+
+        // < 1 week
+        if ($difference < 60 * 60 * 24 * 7) {
+            $days = (int) ($difference / (60 * 60 * 24));
+            if ($days > 2) {
+                return "vor $days Tagen";
+            } elseif ($days > 1) {
+                return "vorgestern";
+            } else {
+                return "gestern";
+            }
+        }
+
+        // < 1 month
+        if ($difference < 60 * 60 * 24 * 31) {
+            $weeks = (int) ($difference / (60 * 60 * 24 * 7));
+            if ($weeks > 1) {
+                return "vor $weeks Wochen";
+            } else {
+                return "vor einer Woche";
+            }
+        }
+
+        // < 1 year
+        if ($difference < 60 * 60 * 24 * 365) {
+            $months = (int) ($difference / (60 * 60 * 24 * 31));
+            if ($months > 1) {
+                return "vor $months Monaten";
+            } else {
+                return "vor einem Monat";
+            }
+        }
+
+        // everything else
+        $years = (int) ($difference / (60 * 60 * 24 * 365));
+        if ($years > 1) {
+            return "vor $years Jahren";
+        } else {
+            return "vor einem Jahr";
+        }
+    }
 }

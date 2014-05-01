@@ -4,6 +4,7 @@ namespace models;
 use exceptions\DatabaseException;
 use exceptions\PostNotFoundException;
 use util\Database;
+use util\StringUtils;
 
 /**
  * Model of a post.
@@ -452,6 +453,10 @@ class Post {
         $value = (int) $value;
         $this->date = $value < 0 ? time() : $value;
         return $this;
+    }
+
+    public function getHumanDate() {
+        return StringUtils::formatHumanDate($this->date);
     }
 
     public function getTags() {
