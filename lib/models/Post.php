@@ -32,7 +32,7 @@ class Post {
      * @param boolean $published
      * @param int $id
      */
-    public function __construct($title = "", $content = "<p>\n\n</p>", $extended = "", $date = -1, $tags = array(), $published = true, $id = -1, $commentCount = 0) {
+    public function __construct($title = "", $content = "<p>\n\n</p>", $extended = "", $date = -1, $tags = array(), $published = false, $id = -1, $commentCount = 0) {
         $this->setTitle($title);
         $this->setContent($content);
         $this->setExtended($extended);
