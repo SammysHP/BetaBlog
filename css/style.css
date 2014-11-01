@@ -170,7 +170,6 @@ input.monospace, textarea.monospace {
 }
 
 .entry .date {
-    font-variant: small-caps;
     float: left;
     margin-left: -12em;
     width: 10em;
@@ -184,6 +183,10 @@ input.monospace, textarea.monospace {
     line-height: 0.8em;
     padding-right: 0.1em;
     letter-spacing: 0em;
+}
+
+.entry .month {
+    font-variant: small-caps;
 }
 
 .entry .adminbox {
