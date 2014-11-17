@@ -138,7 +138,7 @@ function makeUnderline(el) {
 }
 
 function makeBreak(el) {
-    surroundSelectedText(el, '<br />\n', '');
+    surroundSelectedText(el, '<br>\n', '');
 }
 
 function makeParagraph(el) {
@@ -215,7 +215,7 @@ function toggleMonospace(el, btn) {
 
 function insertTag(tag) {
     var el = document.getElementById('taginput');
-    
+
     if (el.value.length == 0) {
         el.value += tag;
     } else {
