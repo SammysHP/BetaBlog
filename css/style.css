@@ -329,6 +329,7 @@ input.monospace, textarea.monospace {
     font-family: Georgia, serif;
     font-size: 1.3em;
     color: #aaaaaa;
+    line-height: 0.1em;
 }
 
 .entry blockquote p:before { content: "„ "; }
