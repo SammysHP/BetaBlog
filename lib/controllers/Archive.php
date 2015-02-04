@@ -14,9 +14,10 @@ class Archive {
         $statistics = Post::getYearStatistics(!$response->loggedin);
 
         // Fill up to 3*n matrix
-        $start = $statistics['first'] - 2 + (($statistics['last'] - $statistics['first']) % 3);
+        $lastYear = max($statistics['last'], date('Y'));
+        $start = $statistics['first'] - 2 + (($lastYear - $statistics['first']) % 3);
         $response->graphs = array();
-        for ($year = $start; $year <= $statistics['last']; $year++) {
+        for ($year = $start; $year <= $lastYear; $year++) {
             if (array_key_exists($year, $statistics['data'])) {
                 $data = $statistics['data'][$year];
             } else {
