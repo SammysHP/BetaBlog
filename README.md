@@ -2,7 +2,7 @@
 
 ## What is BetaBlog?
 
-*BetaBlog* is the software I'm using for my blog at <http://www.sammyshp.de/betablog>. After several years with ready-made blog software I was tired of software that doesn't fit my needs. So I decided to write ony myself.
+*BetaBlog* is the software I'm using for my blog at <http://www.sammyshp.de/betablog>. After several years with ready-made blog software I was tired of software that doesn't fit my needs. So I decided to write one myself.
 
 I like minimalism, so *BetaBlog* was designed as a single-file script. After one week I realized that it got too complex and I splitted it up into several files, using object oriented programming. Many features were added in the following months, but it's still a very minimal system.
 
