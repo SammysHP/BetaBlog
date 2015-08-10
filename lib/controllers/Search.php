@@ -15,7 +15,7 @@ class Search {
 
     // Remote search (Google)
     public static function remoteSearch($request, $response) {
-        $searchstring = stripslashes($request->param('keywords')) . ' site:' . rtrim($_SERVER['HTTP_HOST'], '/') . $response->baseurl;
+        $searchstring = $request->param('keywords') . ' site:' . rtrim($_SERVER['HTTP_HOST'], '/') . $response->baseurl;
         $response->redirect('http://www.google.com/search?hl=de&q=' . rawurlencode($searchstring));
     }
 

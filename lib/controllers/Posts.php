@@ -71,11 +71,11 @@ class Posts {
         $response->requireLogin($request, $response);
 
         $post = new Post(
-            stripslashes($request->param('title')),
-            stripslashes($request->param('content')),
-            stripslashes($request->param('extended')),
+            $request->param('title'),
+            $request->param('content'),
+            $request->param('extended'),
             strtotime($request->param('date')),
-            preg_split('@,\s?@', stripslashes($request->param('tags')), NULL, PREG_SPLIT_NO_EMPTY),
+            preg_split('@,\s?@', $request->param('tags'), NULL, PREG_SPLIT_NO_EMPTY),
             ($request->param('published') != '')
         );
 
@@ -104,11 +104,11 @@ class Posts {
         $response->requireLogin($request, $response);
 
         $post = new Post(
-            stripslashes($request->param('title')),
-            stripslashes($request->param('content')),
-            stripslashes($request->param('extended')),
+            $request->param('title'),
+            $request->param('content'),
+            $request->param('extended'),
             strtotime($request->param('date')),
-            preg_split('@,\s?@', stripslashes($request->param('tags')), NULL, PREG_SPLIT_NO_EMPTY),
+            preg_split('@,\s?@', $request->param('tags'), NULL, PREG_SPLIT_NO_EMPTY),
             ($request->param('published') != ''),
             $request->param('id')
         );

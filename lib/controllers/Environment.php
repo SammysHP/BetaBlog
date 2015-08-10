@@ -34,5 +34,12 @@ class Environment {
         $response->headertitle = Config::HEADER_TITLE;
         $response->htmlkeywords = array();
         $response->lang = Config::LANG;
+
+        // undo magic quotes gpc
+        if (function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) {
+            foreach($_GET as $k => $v) $_GET[$k] = stripslashes($v);
+            foreach($_POST as $k => $v) $_POST[$k] = stripslashes($v);
+            foreach($_COOKIE as $k => $v) $_COOKIE[$k] = stripslashes($v);
+        }
     }
 }

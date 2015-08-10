@@ -23,9 +23,9 @@ class Comments {
             $response->redirect($response->baseurl . 'post/' . $request->param('id'));
         }
 
-        $author = trim(stripslashes($request->param('author')));
-        $message = trim(stripslashes($request->param('message')));
-        $challenge = stripslashes($request->param('challenge'));
+        $author = trim($request->param('author'));
+        $message = trim($request->param('message'));
+        $challenge = $request->param('challenge');
 
         if (strlen($message) < 4) {
             $response->flash('Der Kommentar muss mindestens 4 Zeichen lang sein.', 'error');
