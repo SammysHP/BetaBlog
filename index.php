@@ -5,6 +5,8 @@ require_once('lib/autoloader.php');
 
 setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'de');
 
+error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
+
 respond('\controllers\Environment::initialize');
 
 
