@@ -340,6 +340,15 @@ input.monospace, textarea.monospace {
     font-size: 0.8em;
 }
 
+.entry hr {
+    display: block;
+    visibility: visible;
+    border: none;
+    border-bottom: 1px solid #999999;
+    width: 5em;
+    margin: 1em auto;
+}
+
 /*--- PAGE HEADER --------------------------------------------*/
 #header {
     margin-bottom: 5em;
