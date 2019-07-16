@@ -654,6 +654,19 @@ p.msg-success {
     right: 0;
 }
 
+/*--- SEARCH -------------------------------------------------*/
+.tagcloud {
+    text-align: center;
+    padding: 0 6em;
+    line-height: 2.4em;
+}
+.tagcloud a { display: inline-block; }
+.tagcloud a:nth-child(2n+1)  { transform: translateY( 3px); }
+.tagcloud a:nth-child(3n+2)  { transform: translateY(-2px); }
+.tagcloud a:nth-child(5n+3)  { transform: translateY( 3px); }
+.tagcloud a:nth-child(7n+5)  { transform: translateY(-2px); }
+.tagcloud a:nth-child(11n+7) { transform: translateY( 3px); }
+
 /*--- ICONS --------------------------------------------------*/
 .icon.edit:before {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAMCAYAAAB4MH11AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAALpJREFUeNq0k8ENwjAMRZsJsrI3YISM4m7gFXrkCDc4mVhywDJ2Qg986UtVGr2nNs625am92Mta1LUwzFx7kT+R5zqDk4FbSQYn/g6u4E1rJTN4076zgo+0SODhZr1FggxuBbiCOwGegdM45B/hNA75r3AJGAhoQ7hCwEBAm8Ilu5sSyOAq2N1IwgwuOZyAMrgKDjfrNINLHsGFouzWOsESXhT47L3q18gvu/TeEwHru5vdX0oJ978EGAB9MYSwpAPp3wAAAABJRU5ErkJggg==");
