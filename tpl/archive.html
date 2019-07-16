@@ -45,7 +45,7 @@ if (count($this->posts) == 0) {
                     echo '</table>';
                 }
                 $headervalue = (int) date("n", $post->getDate());
-                echo '<h2>' . utf8_encode(strftime("%B", $post->getDate())) . '</h2>';
+                echo '<h2>' . strftime("%B", $post->getDate()) . '</h2>';
                 echo '<table class="table">';
                 $close = true;
             }
