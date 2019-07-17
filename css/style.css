@@ -157,12 +157,6 @@ input.monospace, textarea.monospace {
     text-align: right;
 }
 
-.entry .backlink {
-    float: left;
-    margin-top: -2em;
-    color: #aaaaaa;
-}
-
 .entry .postnavigation {
     overflow: hidden;
     margin-top: 1em;
