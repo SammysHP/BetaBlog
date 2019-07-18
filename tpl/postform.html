@@ -59,7 +59,7 @@ EOT;
         $csrf = new AntiCSRF();
         echo $csrf->getPostString();
     ?>
-    <table class="table">
+    <table class="table editor">
         <tr>
             <td class="left">Titel:</td><td><input type="text" tabindex="1" name="title" id="title" autofocus value="<?php echo $this->htmlescape($this->post->getTitle()); ?>" /></td>
         </tr>

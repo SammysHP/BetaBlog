@@ -18,6 +18,10 @@ html, body {
     height: 100%;
 }
 
+body {
+    min-width: 320px;
+}
+
 a:hover {
     color: #9a2e2e;
 }
@@ -165,21 +169,29 @@ input.monospace, textarea.monospace {
 
 .entry .date {
     float: left;
+    margin-top: 1.5em;
     margin-left: -12em;
     width: 10em;
     text-align: right;
-    margin-top: 1em;
     letter-spacing: 0.1em;
 }
 
-.entry .day {
+.entry .date > span {
+    display: block;
+}
+
+.entry .date .day {
     font-size: 2.5em;
     line-height: 0.8em;
-    padding-right: 0.1em;
     letter-spacing: 0em;
 }
 
-.entry .month {
+.entry .date .day:after {
+    content: '.';
+    font-size: 0.7em;
+}
+
+.entry .date .month {
     font-variant: small-caps;
 }
 
@@ -672,4 +684,127 @@ p.msg-success {
 
 .icon.delete:before {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAMCAYAAAB4MH11AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAANNJREFUeNq0lMENgzAMRRPUe7IBjMAIHLtVOwojsEImCCOEG8dukNqSi0ziGC61ZIWQ5/+DkWzMOSJkLjKaRuScY67jxD8gX/TsIUdBZ2QMiporHpiDt3TL28EMbkUHOUHOtJ9IxLIL/M5mOq94tlY8GgTIRC+TcIkPOwvWWolPEo9sV4gNgoFXOjAIdb5sEY8giGwtdfqasm7TDHpBxyk/vBfqnGbw9xatgsiuGKxCi3bNYKHevmmP61MxWBin8q4xJvi4cKz3rjEmjnGBDLJfAQYAYwF7Bykz4ToAAAAASUVORK5CYII=");
+}
+
+@media screen and (max-width: 50em) {
+    #container {
+        width: auto;
+        max-width: 32em;
+        margin-top: 1em;
+    }
+
+    .entry {
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+
+    .entry .imagebox img {
+        max-width: 93%;
+        max-height: 450px;
+    }
+
+    .entry .date {
+        float: none;
+        margin: 1em 0 0.5em 0;
+        width: auto;
+        text-align: left;
+        letter-spacing: normal;
+    }
+
+    .entry .date * {
+        display: inline !important;
+        font-size: inherit !important;
+        line-height: inherit !important;
+        letter-spacing: inherit !important;
+        font-variant: normal !important;
+    }
+
+    .entry .date .day:after {
+        font-size: inherit;
+    }
+
+    .entry .date .time {
+        margin-left: 0.5em;
+    }
+
+    #header {
+        margin-bottom: 3em;
+    }
+
+    #header h1 {
+        font-size: 2.5em;
+        padding-left: 0.3em;
+    }
+
+    #header #navigation {
+        float: right;
+        margin-top: -0.5em;
+        margin-right: 1em;
+        text-align: right;
+    }
+
+    #header #navigation a {
+        margin-left: 0em;
+        padding: 0;
+        font-size: 0.9em;
+        display: block
+    }
+
+    .comment {
+        width: auto;
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+
+    .comment h2 {
+        margin-top: 2em;
+    }
+
+    .comment .content {
+        margin-top: 1em;
+        margin-left: 0em;
+    }
+
+    .tagcloud {
+        padding: 0 1em;
+    }
+
+    .statistics .graphs a {
+        float: none;
+        margin: auto;
+        margin-bottom: 10px;
+    }
+
+    .statistics .graphs .graph {
+        float: none;
+    }
+
+    .archive .timeline {
+        width: auto;
+        padding-bottom: 2em;
+    }
+
+    .archive .timeline a {
+        display: block;
+        margin: 0;
+    }
+
+    .entry .adminbox {
+        float: none;
+        margin: 0;
+    }
+
+    .table .left {
+        width: 8em;
+    }
+
+    .editor .left {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .table .left {
+        width: 0;
+    }
 }
