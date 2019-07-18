@@ -15,8 +15,11 @@ use util\AntiCSRF;
 ?>
 <div class="entry">
     <div class="date" title="<?php echo $this->post->getHumanDate(); ?>">
-        <span class="day"><?php echo date("j", $this->post->getDate()); ?></span>.<br />
-        <?php echo '<span class="month">' . strftime("%B", $this->post->getDate()) . '</span> ' . date('Y<\b\r />G:i', $this->post->getDate()); ?>
+        <?php
+            echo '<span class="day">' . date("j", $this->post->getDate()) . '</span> ';
+            echo '<span><span class="month">' . strftime("%B", $this->post->getDate()) . '</span> ' . date('Y', $this->post->getDate()) . '</span> ';
+            echo '<span class="time">' . date('G:i', $this->post->getDate()) . '</span>';
+        ?>
     </div>
 
     <?php if ($this->loggedin) { ?>
