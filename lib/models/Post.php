@@ -18,8 +18,8 @@ class Post {
     private $tags;
     private $published;
     private $commentCount;
-    private $pevious;
-    private $next;
+    private $previous = 0;
+    private $next = 0;
 
     /**
      * Create a new post.
@@ -493,7 +493,7 @@ class Post {
      * @throws DatabaseException
      */
     public function getPreviousPost($publishedIn = true) {
-        if (count($this->previous) == 0) {
+        if ($this->previous === 0) {
             $db = Database::getConnection();
 
             if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . Database::getPrefix() . 'posts WHERE date<? AND published>=? ORDER BY date DESC LIMIT 1'))) {
@@ -510,15 +510,15 @@ class Post {
             }
 
             if (!$statement->fetch()) {
-                $this->previous[0] = null;
+                $this->previous = null;
             } else {
-                $this->previous[0] = new Post($title, $content, $extended, $date, array(), $published, $id);
+                $this->previous = new Post($title, $content, $extended, $date, array(), $published, $id);
             }
 
             $statement->close();
         }
 
-        return $this->previous[0];
+        return $this->previous;
     }
 
     /**
@@ -528,7 +528,7 @@ class Post {
      * @throws DatabaseException
      */
     public function getNextPost($publishedIn = true) {
-        if (count($this->next) == 0) {
+        if ($this->next === 0) {
             $db = Database::getConnection();
 
             if (!($statement = $db->prepare('SELECT id, title, content, extended, date, published FROM ' . Database::getPrefix() . 'posts WHERE date>? AND published>=? ORDER BY date ASC LIMIT 1'))) {
@@ -545,14 +545,14 @@ class Post {
             }
 
             if (!$statement->fetch()) {
-                $this->next[0] = null;
+                $this->next = null;
             } else {
-                $this->next[0] = new Post($title, $content, $extended, $date, array(), $published, $id);
+                $this->next = new Post($title, $content, $extended, $date, array(), $published, $id);
             }
 
             $statement->close();
         }
 
-        return $this->next[0];
+        return $this->next;
     }
 }
